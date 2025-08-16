@@ -1,0 +1,13 @@
+#para c
+*.o
+*.out
+*.exe
+#logs e temporários
+*.log
+*.tmp
+#build
+/build/
+/bin/
+/obj/
+#vs
+.vscode/
