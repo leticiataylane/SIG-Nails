@@ -96,8 +96,3 @@ void executar_tela_inicial(void) {
 
     printf(C_GREEN "\nVocê escolheu");
 }
-
-int main(void) {
-    executar_tela_inicial();
-    return 0; // encerra o programa
-}
