@@ -1,6 +1,47 @@
-# SIG-Nails
+# ★ SIG-Nails
+Sistema de agendamento e gestão de serviços de manicure e pedicure.
 
-Sistema de Gerenciamento para Manicure e Pedicure (SIG-Nails).
+Universidade Federal do Rio Grande do Norte
+Centro de Ensino Superior do Seridó
+Departamento de Computação e Tecnologia
+Bacharelado em Sistemas de Informação
 
-Funcionalidades:
-Tela inicial com menu de navegação, tela de ajuda e contato, tela "sobre" com informações do sistema, tela final de encerramento, estrutura modular (cada tela implementada em arquivo separado)
+Developed by Letícia Taylane - since Ago, 2025
+# ★ ★ ★ ★ ★ ★ ★ ★ 
+SIG-Nails é um software educativo desenvolvido em linguagem C para prática de programação.
+O programa permite:
+
+- Registrar novos agendamentos de serviços
+
+- Editar, remover e confirmar agendamentos
+
+- Validar datas e horários automaticamente
+
+- Consultar tabela de preços
+
+- Acessar telas de ajuda e informações sobre o sistema
+
+- Todos os dados utilizados são fictícios, e o sistema serve apenas para fins didáticos.
+
+
+# ★ Atualizações do Projeto:
+
+SEMANAS 1 e 2:
+
+- Tela de edição de agendamento implementada
+
+- Validação de datas e horários corrigida
+
+- Ajustes nas telas de conf★ ★ ★ ★ ★ ★ ★ ★irmação e remoção
+
+- Pequenos ajustes no menu principal
+
+- Criação das telas iniciais
+
+- Cadastro de agendamento básico
+
+- Implementação das telas de ajuda e sobre
+
+  
+
+
