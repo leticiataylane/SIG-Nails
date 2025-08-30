@@ -3,23 +3,24 @@
 #include <stdlib.h>
 #include <ctype.h>
 
-// ==== Cores ANSI para terminal Linux ====
-#define C_RESET   "\033[0m"
-#define C_BOLD    "\033[1m"
-#define C_CYAN    "\033[36m"
-#define C_MAGENTA "\033[35m"
-#define C_YELLOW  "\033[33m"
-#define C_RED     "\033[31m"
-#define C_GREEN   "\033[32m"
+// cores ANSI
+#define reset   "\033[0m"
+#define negrito    "\033[1m"
+#define ciano    "\033[36m"
+#define roxo "\033[35m"
+#define rosa     "\033[38;5;213m"
+#define amarelo  "\033[33m"
+#define vermelho     "\033[31m"
+#define verde   "\033[32m"
 
 // Função que espera Enter
 void pauseEnter(void) {
-    printf("\n" C_YELLOW "(Pressione Enter para continuar...)" C_RESET);
+    printf("\n" roxo "(Pressione Enter para continuar...)" );
     int c;
     while ((c = getchar()) != '\n' && c != EOF) { }
 }
 
-// Função auxiliar: verifica se nome tem só letras e espaços
+// verifica se nome tem só letras e espaços
 int nomeValido(const char *nome) {
     for (int i = 0; nome[i] != '\0'; i++) {
         if (!isalpha(nome[i]) && nome[i] != ' ') {
@@ -32,26 +33,26 @@ int nomeValido(const char *nome) {
 // Função para mostrar a "tela inicial"
 void telaInicial(char usuario[50]) {
     do {
-        system("clear"); // limpa a tela
+        system("clear");
 
-        printf(C_MAGENTA "=============================================\n" C_RESET);
-        printf(C_BOLD   "        BEM-VINDO AO SISTEMA SIG-NAILS        \n" C_RESET);
-        printf(C_MAGENTA "=============================================\n" C_RESET);
+        printf(roxo "✿ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ✿ \n" reset);
+        printf(roxo "★"rosa negrito "        BEM-VINDO AO SISTEMA SIG-NAILS       "roxo "★ \n" reset);
+        printf(roxo "✿ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ✿ \n" reset);
 
-        printf("\nDigite seu nome para entrar: ");
+        printf(ciano "\nDigite seu nome: "reset);
         fgets(usuario, 50, stdin);
 
         // remove '\n'
         usuario[strcspn(usuario, "\n")] = '\0';
 
         if (strlen(usuario) == 0 || !nomeValido(usuario)) {
-            printf(C_RED "\n⚠️  Nome inválido! Use apenas letras e espaços.\n" C_RESET);
+            printf(vermelho "\n⚠️  Nome inválido! Use apenas letras e espaços.\n" reset);
             pauseEnter();
         }
 
     } while (strlen(usuario) == 0 || !nomeValido(usuario));
 
-    printf("\nOlá, " C_CYAN "%s" C_RESET "! Seja bem-vindo(a) ao sistema.\n", usuario);
+    printf("\nOlá, " rosa negrito "%s" reset "! Seja bem-vindo(a) ao sistema.\n", usuario);
 
     pauseEnter();
 }
@@ -64,13 +65,13 @@ int menuPrincipal(void) {
     do {
         system("clear"); // limpa a tela
 
-        printf(C_MAGENTA "=============== MENU PRINCIPAL ===============\n" C_RESET);
-        printf("1. Agendamentos\n");
-        printf("2. Serviços\n");
-        printf("3. Sobre o sistema\n");
-        printf("4. Sair\n");
-        printf(C_MAGENTA "==============================================\n" C_RESET);
-        printf("Escolha uma opção (1-4): ");
+        printf(roxo negrito "✿ ★ ★ ★ ★ ★ OPÇÕES DE SERVIÇO ★ ★ ★ ★ ★ ★ ✿ \n" reset);
+        printf(rosa "1. Agendamentos                           "roxo negrito "★\n"reset);
+        printf(rosa "2. Como agendar                           "roxo negrito "★\n"reset);
+        printf(rosa "3. Informações                            "roxo negrito "★\n"reset);
+        printf(rosa "4. Sair                                   "roxo negrito "★\n"reset);
+        printf(roxo negrito "✿ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ✿\n" reset);
+        printf(ciano "Escolha uma opção (1-4): " reset);
 
         if (fgets(entrada, sizeof(entrada), stdin) != NULL) {
             entrada[strcspn(entrada, "\n")] = '\0';
@@ -78,7 +79,7 @@ int menuPrincipal(void) {
         }
 
         if (opcao < 1 || opcao > 4) {
-            printf(C_RED "\n⚠️  Opção inválida! Digite um número de 1 a 4.\n" C_RESET);
+            printf(vermelho negrito "\n⚠️  Opção inválida! Digite um número de 1 a 4.\n" reset);
             pauseEnter();
         }
 
@@ -94,7 +95,7 @@ int main(void) {
     telaInicial(usuario);
     opcao = menuPrincipal();
 
-    printf(C_GREEN "\nVocê escolheu a opção %d.\n" C_RESET, opcao);
+    printf(rosa negrito "\nVocê escolheu a opção %d.\n" reset, opcao);
 
     return 0;
 }
