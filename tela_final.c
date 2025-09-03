@@ -1,16 +1,32 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+
+//Cores ANSI
+#define reset   "\033[0m"
+#define negrito    "\033[1m"
+#define ciano     "\033[1;36m"
+#define roxo  "\033[1;35m"
+#define rosa     "\033[38;5;213m"
+#define vermelho     "\033[31m"
+
 
 void telaFinal() {
     system("clear"); // limpa a tela
-    printf("\n====================================\n");
-    printf("         SIG-Nails - ENCERRAR        \n");
-    printf("====================================\n");
-    printf(" Obrigada por utilizar o sistema!    \n");
-    printf(" Cuide-se e volte sempre!            \n");
-    printf("====================================\n\n");
+    printf(roxo negrito"\n★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★\n"reset);
+    printf(roxo negrito"★"rosa negrito"         SIG-Nails - ENCERRAR        "roxo negrito "★\n"reset);
+    printf(roxo negrito"★_____________________________________★\n"reset);
+    printf(roxo negrito"★                                     ★\n"reset);
+    printf(roxo negrito"★"rosa negrito" Obrigada por utilizar o sistema!    "roxo negrito"★\n"reset);
+    printf(roxo negrito"★"rosa negrito " Cuide-se e volte sempre!            "roxo negrito"★\n"reset);
+    printf(roxo negrito"★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★\n\n"reset);
 
-    printf("Pressione ENTER para sair...");
+    printf(ciano"Pressione ENTER para sair..."reset);
     getchar(); // espera o usuário apertar enter
 }
 
+// int main (void) {
+//     telaFinal();
+//     return 0;
+// }
