@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
-#include <stdlib.h>
-#include <ctype.h>
+#include <stdlib.h> 
+#include <ctype.h> 
 
 //Cores ANSI
 #define reset   "\033[0m"
