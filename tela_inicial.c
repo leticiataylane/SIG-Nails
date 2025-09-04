@@ -40,7 +40,7 @@ void telaInicial(char usuario[50]) {
         printf(ciano "\nDigite seu nome para entrar: "reset);
         fgets(usuario, 50, stdin);
 
-        // remove '\n'
+        // remove '\n' (ajuda do chatGPT)
         usuario[strcspn(usuario, "\n")] = '\0';
 
         if (strlen(usuario) == 0 || !nomeValido(usuario)) {
@@ -63,28 +63,30 @@ int menuPrincipal(void) {
     do {
         system("clear"); // limpa a tela
         printf(roxo negrito "✿ ★ ★ ★ ★ OPÇÕES DO CLIENTE ★ ★ ★ ★ ✿\n" reset);
-        printf(rosa "1. Agendamentos\n"reset);
-        printf(rosa "2. Serviços\n"reset);
-        printf(rosa "3. Informações\n"reset);
-        printf(rosa "4. Sair\n"reset);
+        printf(rosa "1. Agendamentos e preços\n"reset);
+        printf(rosa "2. Cores\n"reset);
+        printf(rosa "3. Atendentes\n"reset);
+        printf(rosa "4. Informações\n"reset);
+        printf(rosa "0. Sair\n"reset);
         printf(roxo negrito "✿ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ✿\n" reset);
-        printf(ciano "Escolha uma opção (1-4): "reset);
+        printf(ciano "Escolha uma opção (0-4): "reset);
 
         if (fgets(entrada, sizeof(entrada), stdin) != NULL) {
             entrada[strcspn(entrada, "\n")] = '\0';
             opcao = atoi(entrada);
         }
 
-        if (opcao < 1 || opcao > 4) {
-            printf(vermelho "\nOpção inválida! Digite um número de 1 a 4.\n" reset);
+        if (opcao < 0 || opcao > 4) {
+            printf(vermelho "\nOpção inválida! Digite um número de 0 a 4.\n" reset);
             pauseEnter();
         }
 
-    } while (opcao < 1 || opcao > 4);
+    } while (opcao < 0 || opcao > 4);
 
     return opcao;
 }
 
+/*
 int main(void) {
     char usuario[50];
     int opcao;
@@ -93,3 +95,4 @@ int main(void) {
     opcao = menuPrincipal();
 
 }
+*/
