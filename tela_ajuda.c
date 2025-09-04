@@ -26,7 +26,7 @@ void telaAjuda(void) {
     getchar(); // aguarda Enter do usuário
 }
 
-int main() {
-    telaAjuda ();
-    return 0;
-}
+// int main() {
+//     telaAjuda ();
+//     return 0;
+// }
