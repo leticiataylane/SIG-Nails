@@ -244,12 +244,12 @@ void telaConfirmacao(void) {
     printf(rosa negrito"Pressione ENTER para voltar...\n"reset);
     getchar();
 }
- int main(void) {
-    telaComoAgendar();
-    telaPrecos();
-    telaNovoAgendamento();
-    telaEditarAgendamento();
-    telaConfirmacao();
-    telaRemoverAgendamento();
-    return 0;
-}
+//  int main(void) {
+//     telaComoAgendar();
+//     telaPrecos();
+//     telaNovoAgendamento();
+//     telaEditarAgendamento();
+//     telaConfirmacao();
+//     telaRemoverAgendamento();
+//     return 0;
+// }
