@@ -33,11 +33,11 @@ void telaInicial(char usuario[50]) {
     do {
         system("clear");
 
-        printf(roxo "✿ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ✿ \n" reset);
-        printf(roxo "★"rosa negrito "        BEM-VINDO AO SISTEMA SIG-NAILS       "roxo "★ \n" reset);
-        printf(roxo "✿ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ✿ \n" reset);
+        printf(roxo negrito "✿ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ✿\n" reset);
+        printf(roxo negrito "★"rosa negrito "        BEM-VINDO AO SISTEMA SIG-NAILS       "roxo negrito "★\n" reset);
+        printf(roxo negrito "✿ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ✿\n" reset);
 
-        printf(ciano "\nDigite seu nome: "reset);
+        printf(ciano "\nDigite seu nome para entrar: "reset);
         fgets(usuario, 50, stdin);
 
         // remove '\n'
@@ -62,14 +62,13 @@ int menuPrincipal(void) {
 
     do {
         system("clear"); // limpa a tela
-
-        printf(roxo negrito "✿ ★ ★ ★ ★ ★ OPÇÕES DE SERVIÇO ★ ★ ★ ★ ★ ★ ✿ \n" reset);
-        printf(rosa "1. Agendamentos                           "roxo negrito "★\n"reset);
-        printf(rosa "2. Como agendar                           "roxo negrito "★\n"reset);
-        printf(rosa "3. Informações                            "roxo negrito "★\n"reset);
-        printf(rosa "4. Sair                                   "roxo negrito "★\n"reset);
-        printf(roxo negrito "✿ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ✿\n" reset);
-        printf(ciano "Escolha uma opção (1-4): " reset);
+        printf(roxo negrito "✿ ★ ★ ★ ★ OPÇÕES DO CLIENTE ★ ★ ★ ★ ✿\n" reset);
+        printf(rosa "1. Agendamentos\n"reset);
+        printf(rosa "2. Serviços\n"reset);
+        printf(rosa "3. Informações\n"reset);
+        printf(rosa "4. Sair\n"reset);
+        printf(roxo negrito "✿ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ✿\n" reset);
+        printf(ciano "Escolha uma opção (1-4): "reset);
 
         if (fgets(entrada, sizeof(entrada), stdin) != NULL) {
             entrada[strcspn(entrada, "\n")] = '\0';
@@ -77,7 +76,7 @@ int menuPrincipal(void) {
         }
 
         if (opcao < 1 || opcao > 4) {
-            printf(vermelho negrito "\n⚠️  Opção inválida! Digite um número de 1 a 4.\n" reset);
+            printf(vermelho "\nOpção inválida! Digite um número de 1 a 4.\n" reset);
             pauseEnter();
         }
 
@@ -93,7 +92,3 @@ int menuPrincipal(void) {
 //     telaInicial(usuario);
 //     opcao = menuPrincipal();
 
-//     printf(rosa negrito "\nVocê escolheu a opção %d.\n" reset, opcao);
-
-//     return 0;
-// }
