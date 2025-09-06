@@ -24,7 +24,10 @@ void telaSobre(void) {
 
     printf("👩 Equipe responsável:" rosa negrito "Letícia Taylane\n"reset);
     printf(roxo negrito "✿ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ✿\n\n"reset);
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
     printf("Pressione ENTER para voltar ao menu...\n");
     getchar(); 
 }
