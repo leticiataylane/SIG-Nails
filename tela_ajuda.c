@@ -28,7 +28,14 @@ void telaAjuda(void) {
     printf(rosa "Pressione ENTER para voltar ao menu...\n"reset);
     getchar(); 
 }
+<<<<<<< Updated upstream
 // int main() {
 //     telaAjuda();
 //     return 0;
 // }
+=======
+int main() {
+    telaAjuda();
+    return 0;
+}
+>>>>>>> Stashed changes
