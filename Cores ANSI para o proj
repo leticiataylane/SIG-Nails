@@ -1,0 +1,7 @@
+// ===== Cores ANSI =====
+#define C_RESET    "\x1b[0m"
+#define C_BOLD     "\x1b[1m"
+#define C_TITLE    "\x1b[38;5;219m"   // rosa
+#define C_MENU     "\x1b[38;5;117m"   // azul claro
+#define C_OPTION   "\x1b[38;5;190m"   // amarelo
+#define C_DIM      "\x1b[2m"
