@@ -16,7 +16,6 @@
 #define vermelho     "\033[31m"
 
 
-// ===== TELA DE ATENDENTES =====
 void atendentes(void) {
     system("clear");
 
@@ -24,10 +23,11 @@ void atendentes(void) {
     printf(roxo "★" rosa negrito "             EQUIPE SIG-NAILS              " roxo "★\n" reset);
     printf(roxo negrito "✿ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ✿\n\n" reset);
 
-    printf(verde   "✿"reset " Ana Souza .......... Design de Unhas\n");
-    printf(azul    "✿"reset " Maria Oliveira ..... Manicure e Pedicure\n");
-    printf(rosa    "✿"reset " Juliana Lima ....... Nail Art\n");
-    printf(amarelo "✿"reset " Carla Santos ....... Alongamento de Unhas\n\n");
+    printf(verde"✿"reset " Ana Souza .......... Blindagem de Unhas\n");
+    printf(azul"✿"reset " Maria Oliveira ..... Manicure e Pedicure\n");
+    printf(rosa"✿"reset " Juliana Lima ....... Nail Art\n");
+    printf(roxo"✿"reset " Fernanda Costa ..... Spa dos Pés\n");
+    printf(amarelo"✿"reset " Carla Santos ....... Alongamento de Unhas\n\n");
 
     printf(ciano negrito "OBS.:" normal " Cada atendente é responsável por sua especialidade.\n" reset);
     printf("Ao agendar um serviço, o sistema selecionará automaticamente quem irá atendê-lo.\n\n");
@@ -36,6 +36,14 @@ void atendentes(void) {
     getchar();
 }
 
+
+
+//     printf(rosa negrito "Pedicure ............ "ciano"R$30\n"reset);
+//     printf(rosa negrito "Mani + Pedi ......... "ciano"R$50\n"reset);
+//     printf(rosa negrito "Spa dos Pés ......... "ciano"R$45\n"reset);
+//     printf(rosa negrito "Blindagem de Unhas .. "ciano"R$60\n"reset);
+//     printf(rosa negrito "Nail Art ............ "ciano"R$65\n"reset);
+//     printf(rosa negrito "Alongamento de Unhas. "ciano"R$80\n"reset);
 
 // int main() {
 //     atendentes();
