@@ -5,7 +5,6 @@
 #include "tela_inicial.c"
 #include "tela_sobre.c"
 #include "tela_ajuda.c"
-#include "tela_edicao_remocao.c"
 #include "tela_final.c"
 
 int main(void) {
