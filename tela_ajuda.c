@@ -21,17 +21,14 @@ void telaAjuda(void) {
     printf("- Pressione ENTER quando solicitado para voltar.\n");
     printf("- Evite usar teclas diferentes dos números indicados.\n\n");
 
-    printf("\033[1;36mPrecisa de suporte?\033[0m\n");
+    printf(ciano negrito "✿ Precisa de suporte?\n"reset);
     printf("- Email: suporte@signails.com\n");
     printf("- WhatsApp: (99) 99999-9999\n");
     printf("- Instagram: @sig_nails\n\n");
-    
-    printf("Pressione ENTER para voltar ao menu...\n");
-
-    getchar(); // aguarda Enter do usuário
+    printf(rosa "Pressione ENTER para voltar ao menu...\n"reset);
+    getchar(); 
 }
-
 // int main() {
-//     telaAjuda ();
+//     telaAjuda();
 //     return 0;
 // }
