@@ -73,7 +73,7 @@ void telaComoAgendar(void) {
     printf(roxo negrito "✿ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ✿\n"reset);
     printf(ciano negrito"1."reset" Consulte nossa tabela de preços.\n"reset);
     printf(ciano negrito"2."reset" Escolha o serviço desejado.\n"reset);
-    printf(ciano negrito"3."reset" Informe seus dados: nome, data e hora.\n"reset);
+    printf(ciano negrito"3."reset" Informe seus dados: nome, data e hora (a partir das 8h).\n"reset);
     printf(ciano negrito"4."reset" Aguarde a confirmação.\n"reset);
     printf(rosa negrito "\nPressione ENTER para continuar...\n"reset);
     getchar();
