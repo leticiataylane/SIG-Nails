@@ -32,7 +32,7 @@ SEMANAS 1 e 2:
 
 - Validação de datas e horários corrigida
 
-- Ajustes nas telas de conf★ ★ ★ ★ ★ ★ ★ ★irmação e remoção
+- Ajustes nas telas de confirmação e remoção
 
 - Pequenos ajustes no menu principal
 
@@ -41,6 +41,17 @@ SEMANAS 1 e 2:
 - Cadastro de agendamento básico
 
 - Implementação das telas de ajuda e sobre
+
+SEMANAS 3 e 4:
+
+- Novos módulos de atendentes e cores
+  
+- Nova validação de hora
+
+- Nova validação de data
+  
+- Mudanças estéticas
+  
 
   
 
