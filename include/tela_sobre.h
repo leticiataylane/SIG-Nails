@@ -1,4 +1,4 @@
-#ifndef TELA_SOBRE.H
-#define TELA_SOBRE.H
+#ifndef TELA_SOBRE_H
+#define TELA_SOBRE_H
 void telaSobre(void);
 #endif
