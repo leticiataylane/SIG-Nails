@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include "tela_final.h"
 
 #define reset   "\033[0m"
 #define negrito    "\033[1m"
