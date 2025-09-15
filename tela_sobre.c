@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "tela_sobre.h"
 
 //Cores ANSI
 #define reset   "\033[0m"
