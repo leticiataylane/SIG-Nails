@@ -51,7 +51,10 @@ SEMANAS 3 e 4:
 - Nova validação de data
   
 - Mudanças estéticas
-  
+
+SEMANA 5:
+
+- Modularização, adição dos headers
 
   
 
