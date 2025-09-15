@@ -10,26 +10,27 @@
 #define rosa    "\033[38;5;213m"
 #define vermelho "\033[31m"
 
-void telaInicial(char usuario[50]);
-int menuPrincipal(void);
-void telaSobre(void);
-void telaAjuda(void);
-void telaEditarAgendamento(void);
-void telaComoAgendar(void);
-void telaRemoverAgendamento(void);
-void telaConfirmacao(void);
-void telaPrecos(void);
-void telaFinal();
-void atendentes(void);
-void cores(void);
+// void telaInicial(char usuario[50]);
+// int menuPrincipal(void);
+// void telaSobre(void);
+// void telaAjuda(void);
+// void telaEditarAgendamento(void);
+// void telaComoAgendar(void);
+// void telaRemoverAgendamento(void);
+// void telaConfirmacao(void);
+// void telaPrecos(void);
+// void telaFinal();
+// void atendentes(void);
+// void cores(void);
 
-#include "tela_inicial.c"
-#include "tela_edição_remoção.c"
-#include "tela_sobre.c"
-#include "tela_atendentes.c"
-#include "tela_cores.c"
-#include "tela_ajuda.c"
-#include "tela_final.c"
+#include "tela_inicial.h"
+#include "tela_edicao_remocao.h"
+#include "tela_sobre.h"
+#include "tela_atendentes.h"
+#include "tela_cores.h"
+#include "tela_ajuda.h"
+#include "tela_final.h"
+#include "variaveis.h"
 
  
 int main() {
