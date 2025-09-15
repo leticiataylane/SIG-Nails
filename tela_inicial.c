@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdlib.h> 
 #include <ctype.h> 
+#include "tela_inicial.h"
 
 //Cores ANSI
 #define reset   "\033[0m"
