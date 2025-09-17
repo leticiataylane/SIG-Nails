@@ -7,12 +7,12 @@ Departamento de Computação e Tecnologia
 Bacharelado em Sistemas de Informação
 
 Desenvolvido por Letícia Taylane - Desde Ago, 2025
-# ★ ★ ★ ★ ★ ★ ★ ★ 
+# ★ ★ ★ ★ ★ ★
 SIG-Nails é um software educativo desenvolvido em linguagem C para prática de programação.
 
 O programa permite:
 
-- Registrar novos agendamentos de serviços
+- Registrar novos agendamentos de serviços★
 
 - Editar, remover e confirmar agendamentos
 
@@ -134,6 +134,24 @@ sig_nails.exe
 
 - Se ocorrer erro com acentos no nome do arquivo (tela_edicao_remoção.c), verifique se o seu sistema suporta UTF-8 corretamente.
 
-  
+
+
+
+
+
+
+
+
+
+
+# ★ TO DO:
+
+Olá, aqui está os principais pontos a serem ajustados a partir da semana 6:
+
+- Ajuste nas variáveis globais;
+
+- Adição do header de cores, caso você queira mantê-lo;
+
+- Adição de mais algum módulo.
 
 
