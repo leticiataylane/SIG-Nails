@@ -133,18 +133,19 @@ sig_nails.exe
 - Todos os arquivos .h estão na pasta include.
 
 - Se ocorrer erro com acentos no nome do arquivo (tela_edicao_remoção.c), verifique se o seu sistema suporta UTF-8 corretamente.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
 
 
-
-
-
-
-
-
-
-
-
-# ★ TO DO:
+**★ TO DO:**
 
 Olá, aqui está os principais pontos a serem ajustados a partir da semana 6:
 
@@ -153,5 +154,7 @@ Olá, aqui está os principais pontos a serem ajustados a partir da semana 6:
 - Adição do header de cores, caso você queira mantê-lo;
 
 - Adição de mais algum módulo.
+
+  (apagar posteriormente)
 
 
