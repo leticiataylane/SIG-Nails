@@ -6,7 +6,13 @@ Centro de Ensino Superior do Seridó
 Departamento de Computação e Tecnologia
 Bacharelado em Sistemas de Informação
 
-Desenvolvido por Letícia Taylane - Desde Ago, 2025
+Desenvolvido por:
+
+- Letícia Taylane (1)
+  
+- Flávia Juliana (2)
+  
+Desde Ago, 2025
 # ★ ★ ★ ★ ★ ★
 SIG-Nails é um software educativo desenvolvido em linguagem C para prática de programação.
 
