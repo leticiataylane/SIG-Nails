@@ -22,8 +22,8 @@
 // void telaFinal();
 // void atendentes(void);
 // void cores(void);
-
-#include "tela_inicial.h"
+#include "cores.h"
+#include "telas_gerais.h"
 #include "tela_edicao_remocao.h"
 #include "tela_sobre.h"
 #include "tela_atendentes.h"
@@ -33,11 +33,10 @@
 #include "variaveis.h"
 
  
-int main() {
-    int opcao;
-    char usuario[50];
-    telaInicial(usuario);
-    int editar_op;
+int main(void) {
+    char opcao;
+
+    telaInicial();
     do {
         opcao = menuPrincipal();
         switch(opcao) {
@@ -45,16 +44,16 @@ int main() {
                 telaComoAgendar();
                 telaPrecos();
                 telaNovoAgendamento();
-                printf(rosa negrito"✿ Deseja editar ou remover o agendamento?\n");
-                printf(ciano"1"reset" - Editar\n");
-                printf(ciano"2"reset" - Remover\n");
-                scanf("%d", &editar_op);
-                if (editar_op == 1){
-                    telaEditarAgendamento();
-                    telaConfirmacao();
-                } else if (editar_op == 2){ 
-                    telaRemoverAgendamento();
-                }
+                // printf(rosa negrito"✿ Deseja editar ou remover o agendamento?\n");
+                // printf(ciano"1"reset" - Editar\n");
+                // printf(ciano"2"reset" - Remover\n");
+                // scanf("%d", &editar_op);
+                // if (editar_op == 1){
+                //     telaEditarAgendamento();
+                //     telaConfirmacao();
+                // } else if (editar_op == 2){ 
+                //     telaRemoverAgendamento();
+                // }
                 break;
             case 2:
                 system("clear");
