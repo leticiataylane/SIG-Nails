@@ -208,10 +208,10 @@ void carregarClientesCSV(Cliente clientes[], int *qtd) {
     fclose(fp);
 }
 
-int main(void) {
-    carregarClientesCSV(clientes, &qtdClientes);
-    printf("Iniciando módulo de clientes...\n");
-    modCliente();
-    printf("\nEncerrando sistema...\n");
-    return 0;
-}
+// int main(void) {
+//     carregarClientesCSV(clientes, &qtdClientes);
+//     printf("Iniciando módulo de clientes...\n");
+//     modCliente();
+//     printf("\nEncerrando sistema...\n");
+//     return 0;
+// }
