@@ -6,5 +6,7 @@ void telaSobre(void);
 void telaInicial(void);
 char menuPrincipal(void);
 void telaAjuda(void);
+void opcaoInvalida(void);
+void dadosInvalidos(void);
 
 #endif
