@@ -2,12 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
-
-typedef struct cliente {
-    char nome[80];
-    char dataNascimento[11];
-    char telefone[20];
-} Cliente;
+#include "telas_clientes.h"
 
 Cliente clientes[100];
 int qtdClientes = 0;
@@ -61,15 +56,18 @@ void telaCadastrarCliente(void) {
     printf("Nome do cliente: ");
     fgets(novo.nome, 80, stdin);
     novo.nome[strcspn(novo.nome, "\n")] = '\0';
+
     printf("Data de nascimento (dd/mm/aaaa): ");
     fgets(novo.dataNascimento, 11, stdin);
     novo.dataNascimento[strcspn(novo.dataNascimento, "\n")] = '\0';
     int c; while ((c = getchar()) != '\n' && c != EOF);
+
     printf("Telefone com DDD: ");
     fgets(novo.telefone, 20, stdin);
     novo.telefone[strcspn(novo.telefone, "\n")] = '\0';
     clientes[qtdClientes++] = novo;
     salvarClientesCSV(clientes, qtdClientes);
+
     printf("Cliente cadastrado com sucesso!\n");
     int d; while ((d = getchar()) != '\n' && d != EOF);
     printf("\nPressione ENTER para voltar ao menu...");
@@ -208,10 +206,10 @@ void carregarClientesCSV(Cliente clientes[], int *qtd) {
     fclose(fp);
 }
 
-// int main(void) {
-//     carregarClientesCSV(clientes, &qtdClientes);
-//     printf("Iniciando módulo de clientes...\n");
-//     modCliente();
-//     printf("\nEncerrando sistema...\n");
-//     return 0;
-// }
+int main(void) {
+    carregarClientesCSV(clientes, &qtdClientes);
+    printf("Iniciando módulo de clientes...\n");
+    modCliente();
+    printf("\nEncerrando sistema...\n");
+    return 0;
+}
