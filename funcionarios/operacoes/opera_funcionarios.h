@@ -1,5 +1,7 @@
 #ifndef OPERA_FUNCIONARIOS_H
 #define OPERA_FUNCIONARIOS_H
+#define True 1
+#define False 0
 
 typedef struct {
     char cpf[20];
@@ -9,11 +11,13 @@ typedef struct {
     char email[70];
     char turno[10];
     float salario;
-    char situacao[10];
+    int status;
 } Funcionario;
 
-int cadsFuncionario(void);
-int atualizaFuncionario(void);
+int cadastrarFuncionario(void);
+int atualizarFuncionario(void);
+int pesquisarFuncionario(void);
+int listarFuncionarios(void);
 int excluirFuncionario(void);
 
 #endif
