@@ -177,7 +177,7 @@ void menuServico() {
 }
 
 
-int main(void) {
-    menuServico();
-    return 0;
-}
+// int main(void) {
+//     menuServico();
+//     return 0;
+// }
