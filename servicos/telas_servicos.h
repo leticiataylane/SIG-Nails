@@ -2,15 +2,17 @@
 #define TELAS_SERVICOS_H
 
 typedef struct servico {
+    int id;
     char nome[50];
     float preco;
+    int status;
 } Servico;
 
-char modServico(void);
-char menuServico(void);
-void telaCadastrarServico(void);
-void telaAtualizarServico(void);
-void telaPesquisarServico(void);
-void telaExcluirServico(void);
+void menuServico(void);
+void cadastrarServico(void);
+void listarServicos(void);
+void atualizarServico(void);
+void excluirServico(void);
+int gerarNovoIdServico(void);
 
 #endif
