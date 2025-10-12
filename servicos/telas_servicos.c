@@ -187,7 +187,7 @@ void menuServico() {
     } while (opcao != 0);
 }
 
-int main() {
-    menuServico();
-    return 0;
-}
+// int main() {
+//     menuServico();
+//     return 0;
+// }
