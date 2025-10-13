@@ -1,10 +1,10 @@
-#include <ctype.h>
 #include <stdio.h>
 #include <string.h>
+#include <ctype.h>
 #include <time.h>
 
-#define true 1
-#define false 0
+#define True 1
+#define False 0
 
 
 int validaDataInserida(char *dataInserida){
@@ -30,34 +30,34 @@ int validaDataInserida(char *dataInserida){
     int tam = strlen(dataInserida);
     if(tam != 8){
         //mensagem de data de dataInserida incompleta, pedir para o usáario colocar no modelo 00/00/0000
-        return false;
+        return False;
     }
     int diaI = ((dataInserida[0] - '0')*10 + (dataInserida[1] - '0'));
     int mesI = ((dataInserida[2] - '0')*10 + (dataInserida[3] - '0'));
     int anoI = ((dataInserida[4] - '0')*1000 + (dataInserida[5] - '0')*100 + (dataInserida[6] - '0')*10 + (dataInserida[7] - '0'));
 
     if(diaI > 31 || diaI < 1){
-        return false;
+        return False;
     }
     if(mesI > 12 || mesI < 1){
-        return false;
+        return False;
     }
     if(anoI < anoA || anoI > anoA + 2){
-        return false;
+        return False;
     }
     
     if(mesI ==  4 || mesI == 6 || mesI == 9 || mesI == 11){
         if(diaI > 30){
-            return false;
+            return False;
         }
     }
     if(mesI == 2){
         if(diaI > 29){
-            return false;
+            return False;
         }
         if(diaI == 29){
             if(!((anoI % 4 == 0 && anoI %100 != 0) || (anoI % 400 == 0))){
-                return false;
+                return False;
             }
         }
     }
@@ -71,10 +71,10 @@ int validaDataInserida(char *dataInserida){
 
     // Rejeita sábado (6) ou domingo (0)
     if(dataI.tm_wday == 0 || dataI.tm_wday == 6){
-        return false;//trabalha apenas de segunda a sexta
+        return False;//trabalha apenas de segunda a sexta
     }
 
-return true;
+return True;
 }
 
 
@@ -103,38 +103,38 @@ int validaNascimento(char *nascimento){
     int tam = strlen(nascimento);
     if(tam != 8){
         //mensagem de data de nascimento incompleta, pedir para o usáario colocar no modelo 00/00/0000
-        return false;
+        return False;
     }
     int diaN = ((nascimento[0] - '0')*10 + (nascimento[1] - '0'));
     int mesN = ((nascimento[2] - '0')*10 + (nascimento[3] - '0'));
     int anoN = ((nascimento[4] - '0')*1000 + (nascimento[5] - '0')*100 + (nascimento[6] - '0')*10 + (nascimento[7] - '0'));
 
     if(diaN > 31 || diaN < 1){
-        return false;
+        return False;
     }
     if(mesN > 12 || mesN < 1){
-        return false;
+        return False;
     }
     if(anoN > anoA || anoN < anoA - 100){
-        return false;
+        return False;
     }
     
     if(mesN ==  4 || mesN == 6 || mesN == 9 || mesN == 11){
         if(diaN > 30){
-            return false;
+            return False;
         }
     }
     if(mesN == 2){
         if(diaN > 29){
-            return false;
+            return False;
         }
         if(diaN == 29){
             if(!((anoN % 4 == 0 && anoN %100 != 0) || (anoN % 400 == 0))){
-                return false;
+                return False;
             }
         }
     }
-return true;
+return True;
 }
 
 
@@ -165,9 +165,9 @@ int validaIdade(char *nascimento){
     }
 
     if(idade < 18 || idade > 66){
-        return false;
+        return False;
     }
-    return true;
+    return True;
 }
 
 
@@ -181,7 +181,7 @@ int validaCPF(char *cpf) {//código de validação feito por Flávia Carvalho
     int verifica2 = 0;
     tam = strlen(cpf);
     if(tam != 11){
-        return false;
+        return False;
     }
     for(int i = 0; i < 11; i +=1){
         if(cpf[0] == cpf[i]){
@@ -189,7 +189,7 @@ int validaCPF(char *cpf) {//código de validação feito por Flávia Carvalho
         }
     }
     if (cont >= 11){
-        return false;
+        return False;
     }
 
     for(int i = 0; i<9; i +=1){
@@ -206,7 +206,7 @@ int validaCPF(char *cpf) {//código de validação feito por Flávia Carvalho
     }
 
     if((cpf[9] - '0') != verifica1){
-        return false;
+        return False;
     }
 
     soma = 0;
@@ -225,9 +225,9 @@ int validaCPF(char *cpf) {//código de validação feito por Flávia Carvalho
         verifica2 = 11 - resto;
     }
     if(cpf[10] - '0' != verifica2){
-        return false;
+        return False;
     }
-    return true;
+    return True;
 
     }
 
@@ -241,10 +241,10 @@ int validaEmail(char *email){//validação feita por Flávia Carvalho
         if(email[i] == '@'){
             cont += 1;//conta quantos @ tem no email
             if(i == 0){
-                return false;//se o @ estiver na posição inicial, retorna falso
+                return False;//se o @ estiver na posição inicial, retorna falso
             }
             if((!isalnum(email[i+1])) || (!isalnum(email[i-1]))){//se os caracteres imediatamente antes ou apos o @ não forem letra ou número, invalido
-                return false;
+                return False;
             }
             for(int j = i; email[j] != '\0'; j +=1){
                 if(email[j] == '.'){
@@ -253,43 +253,43 @@ int validaEmail(char *email){//validação feita por Flávia Carvalho
             }
         }
         if(email[i] == '.' && email[i+1] == '.'){//se um ponto vier seguido de outro, retorna falso
-                return false;
+                return False;
             }
         letra = email[i];
         if (!(isalnum(letra) || letra == '.' || letra == '-' || letra == '_' || letra == '@')){ //se o caracter não for nenhuma dessas alternativas, retorna falso
-            return false;
+            return False;
         }
     }
     if(cont != 1){//se a contagem de @ for diferente de 1
-        return false;
+        return False;
     }
     if(cont2 < 1){//se acontagem de . for menor que 1, retorna falso
-        return false;
+        return False;
     }
 
     cont = 0;
 
     tam = strlen(email);//recebe o tamanho da string começando a contagem por 1
     if(!isalnum(email[tam - 1])){//se o caracter não for letra ou numero, invalido
-        return false;
+        return False;
     }
     if(!isalnum(email[0])){//se o primeiro caracter não for letra ou número, invalido
-        return false;
+        return False;
     }
     for(int j = tam-1; email[j] != '.'; j -= 1){//enquanto o caracter do email na posição j não for um . conta quantos caracteres tem
         cont +=1;
     }
     if(cont < 2){ //se for menor que 2, não aceita
-        return false;
+        return False;
     }
     cont = 0;
     for(int k = 0; email[k] != '@'; k += 1){//na mesma ideia, só que conta o tamanho da parte local do email
         cont +=1;
     }
     if(cont < 3 || cont > 64){//se for menor que 3 ou maior que 64, invalido (minimo e maximo permitido que encontrei que algumas empresas permitem, Outlook/Hotmail por exemplo, varia 3 a 6 o minimo)
-        return false;
+        return False;
     }
-return true;
+return True;
 }
 
 
@@ -299,31 +299,31 @@ int validaNome(char *nome){
     int cont = 0;
     int tam = strlen(nome);
     if(tam < 5){
-        return false;
+        return False;
     }
     for(int i = 0; nome[i] != '\0'; i += 1 ){
         if((!(isalpha((unsigned char)nome[i])) && nome[i] != '\'' && nome[i] != '-' && nome[i] != ' ')){//testa se não é letra ou simbolo comum, para depois testar se é letra acentuada
             if(!(strchr(acentos, nome[i]))){
-                return false;
+                return False;
             }
         }
         if(nome[i] == ' '){
             cont +=1;
         }
         if((nome[i] == ' ' && nome[i+1] == ' ') || (nome[i] == ' ' && nome[i+1] == '\'') || (nome[i] == ' ' && nome[i+1] == '-')){
-            return false;
+            return False;
         }
         if((nome[i] == '\'' && nome[i+1] == ' ') || (nome[i] == '\'' && nome[i+1] == '\'') || (nome[i] == '\'' && nome[i+1] == '-')){
-            return false;
+            return False;
         }
         if((nome[i] == '-' && nome[i+1] == ' ') || (nome[i] == '-' && nome[i+1] == '\'') || (nome[i] == '-' && nome[i+1] == '-')){
-            return false;
+            return False;
         }
     }
     if(cont == 0){
-            return false;
+            return False;
         }
-    return true;
+    return True;
 }
 
 
@@ -345,21 +345,21 @@ int validaTelefone(char *telefone){
     d1 = (telefone[0] - '0');
     if (tam == 11){
         if(d1 == 0){
-            return false;
+            return False;
         }
         if(telefone[2]-'0' != 9){
-            return false;
+            return False;
         }
-        return true;
+        return True;
     }
     if(tam == 10){
         if((telefone[2] - '0') < 2){
-            return false;
+            return False;
         }
         else if((telefone[2] - '0') > 5){
-            return false;
+            return False;
         }
-        return true;
+        return True;
     }
-    return false;
+    return False;
 }
