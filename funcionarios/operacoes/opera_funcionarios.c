@@ -176,7 +176,7 @@ int cadastrarFuncionario(void){
     fwrite(f, sizeof(Funcionario), 1, fp);
     fclose(fp);
     free(f);
-    printf("\nDados salvos com sucesso em funcionarios.csv!\n");
+    printf("\nDados salvos com sucesso em funcionarios.dat!\n");
 
     return 0;
 
@@ -357,14 +357,19 @@ int pesquisarFuncionario(void){
     limpaCPF(quemPesquisar);
 
 
-    fun = fopen("funcionarios.dat","r+b");
+    fun = fopen("funcionarios.dat","rb");
+    if (fun == NULL) {
+    printf("Erro ao abrir o arquivo de funcionários.\n");
+    free(f);
+    return False;
+    }
 
     while((fread(f, sizeof(Funcionario), 1, fun)) && (!encontrado)){
         if((strcmp(quemPesquisar, f->cpf) == 0) && (f->status)){
-            printf("NOME: %s\nCPF: %s\nDATA DE NASCIMENTO: %s\nTELEFONE: %s\nEMAIL: %s\nTURNO: %s\nSALARIO: %.2f\n");
+            printf("NOME: %s\nCPF: %s\nDATA DE NASCIMENTO: %s\nTELEFONE: %s\nEMAIL: %s\nTURNO: %s\nSALARIO: %.2f\n", f->nome, f->cpf, f->nascimento, f->telefone, f->email, f->turno, f->salario);
             encontrado = True;
         } else if((strcmp(quemPesquisar, f->cpf) == 0) && (!f->status)){
-            printf("Não encontrado");
+            printf("Vinculo inativo, funcionario excluido\n");
             encontrado = True;
         }
     }
@@ -372,6 +377,7 @@ int pesquisarFuncionario(void){
     free(f);
     if(!encontrado){
         printf("Não encontrado");
+        return False;
     }
 
     return 0;
@@ -383,7 +389,7 @@ int listarFuncionarios(void){
     f = (Funcionario*) malloc(sizeof(Funcionario));
     FILE *fun;
 
-    fun = fopen("funcionarios.dat","r+b");
+    fun = fopen("funcionarios.dat","rb");
 
     while(fread(f, sizeof(Funcionario), 1, fun)){
         if(f->status){
@@ -475,8 +481,8 @@ int telaTenteNovamente(void){
 }
 
 
-int main(void){
-    cadsFuncionario();
-    return 0;
-}
+// int main(void){
+//     cadsFuncionario();
+//     return 0;
+// }
 
