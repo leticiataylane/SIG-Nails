@@ -3,6 +3,11 @@
 #include <string.h>
 #include "telas_clientes.h"
 
+void esperarEnter() {
+    printf("\nPressione ENTER para continuar...");
+    while (getchar() != '\n'); // espera apenas o ENTER
+}
+
 void atualizarCSVClientes() {
     FILE *bin = fopen("clientes.dat", "rb");
     FILE *csv = fopen("clientes.csv", "w");
@@ -24,6 +29,7 @@ void atualizarCSVClientes() {
 }
 
 void cadastrarCliente() {
+    system("clear");
     Cliente c;
     FILE *fp;
     int maiorId = 0;
@@ -40,8 +46,9 @@ void cadastrarCliente() {
     c.id = maiorId + 1;
 
     printf("\n=== CADASTRAR CLIENTE ===\n");
-    getchar();
+
     printf("Nome: ");
+    setbuf(stdin, NULL); // limpa buffer
     fgets(c.nome, sizeof(c.nome), stdin);
     c.nome[strcspn(c.nome, "\n")] = '\0';
 
@@ -58,6 +65,7 @@ void cadastrarCliente() {
     fp = fopen("clientes.dat", "ab");
     if (!fp) {
         printf("Erro ao abrir o arquivo!\n");
+        esperarEnter();
         return;
     }
     fwrite(&c, sizeof(Cliente), 1, fp);
@@ -65,13 +73,16 @@ void cadastrarCliente() {
 
     atualizarCSVClientes();
 
-    printf("Cliente cadastrado com sucesso! ID: %d\n", c.id);
+    printf("\nCliente cadastrado com sucesso! ID: %d\n", c.id);
+    esperarEnter();
 }
 
 void listarClientes() {
+    system("clear");
     FILE *fp = fopen("clientes.dat", "rb");
     if (!fp) {
         printf("Nenhum cliente cadastrado.\n");
+        esperarEnter();
         return;
     }
 
@@ -91,18 +102,22 @@ void listarClientes() {
 
     if (!encontrou)
         printf("Nenhum cliente ativo encontrado.\n");
+
+    esperarEnter();
 }
 
 void atualizarCliente() {
+    system("clear");
     int id;
     printf("\n=== ATUALIZAR CLIENTE ===\n");
     printf("Digite o ID do cliente: ");
     scanf("%d", &id);
-    getchar();
+    setbuf(stdin, NULL); // limpa buffer
 
     FILE *fp = fopen("clientes.dat", "r+b");
     if (!fp) {
         printf("Erro ao abrir o arquivo.\n");
+        esperarEnter();
         return;
     }
 
@@ -132,48 +147,71 @@ void atualizarCliente() {
 
     fclose(fp);
 
-    if (encontrado) atualizarCSVClientes();
-    if (!encontrado) printf("Cliente não encontrado ou inativo.\n");
-    else printf("Cliente atualizado com sucesso!\n");
+    if (encontrado) {
+        atualizarCSVClientes();
+        printf("\nCliente atualizado com sucesso!\n");
+    } else {
+        printf("\nCliente não encontrado ou inativo.\n");
+    }
+
+    esperarEnter();
 }
 
 void excluirCliente() {
+    system("clear");
     int id;
-    printf("\n=== EXCLUIR CLIENTE ===\n");
+    printf("\n=== EXCLUIR CLIENTE (FISICAMENTE) ===\n");
     printf("Digite o ID do cliente: ");
     scanf("%d", &id);
-    getchar();
+    setbuf(stdin, NULL); // limpa buffer
 
-    FILE *fp = fopen("clientes.dat", "r+b");
-    if (!fp) {
-        printf("Erro ao abrir o arquivo.\n");
+    FILE *origem = fopen("clientes.dat", "rb");
+    if (!origem) {
+        printf("Erro ao abrir o arquivo ou nenhum cliente existente.\n");
+        esperarEnter();
+        return;
+    }
+
+    FILE *temp = fopen("temp.dat", "wb");
+    if (!temp) {
+        fclose(origem);
+        printf("Erro ao criar arquivo temporario.\n");
+        esperarEnter();
         return;
     }
 
     Cliente c;
     int encontrado = 0;
 
-    while (fread(&c, sizeof(Cliente), 1, fp) == 1) {
-        if (c.id == id && c.status == 1) {
-            c.status = 0;
-            fseek(fp, -sizeof(Cliente), SEEK_CUR);
-            fwrite(&c, sizeof(Cliente), 1, fp);
+    while (fread(&c, sizeof(Cliente), 1, origem) == 1) {
+        if (c.id != id) {
+            fwrite(&c, sizeof(Cliente), 1, temp);
+        } else {
             encontrado = 1;
-            break;
         }
     }
 
-    fclose(fp);
+    fclose(origem);
+    fclose(temp);
 
-    if (encontrado) atualizarCSVClientes();
-    if (!encontrado) printf("Cliente não encontrado.\n");
-    else printf("Cliente excluído com sucesso!\n");
+    if (!encontrado) {
+        printf("\nCliente nao encontrado.\n");
+        remove("temp.dat"); 
+    } else {
+        remove("clientes.dat");         
+        rename("temp.dat", "clientes.dat"); 
+        atualizarCSVClientes();         
+        printf("\nCliente excluido com sucesso (fisicamente)!\n");
+    }
+
+    esperarEnter();
 }
 
 void menu() {
     int opcao;
 
     do {
+        system("clear");
         printf("\n=== MENU CLIENTES ===\n");
         printf("1 - Cadastrar cliente\n");
         printf("2 - Listar clientes\n");
@@ -182,21 +220,21 @@ void menu() {
         printf("0 - Sair\n");
         printf("Escolha uma opção: ");
         scanf("%d", &opcao);
-        getchar();
+        setbuf(stdin, NULL); // limpa buffer
 
         switch (opcao) {
             case 1: cadastrarCliente(); break;
             case 2: listarClientes(); break;
             case 3: atualizarCliente(); break;
             case 4: excluirCliente(); break;
-            case 0: printf("Saindo...\n"); break;
-            default: printf("Opção inválida!\n");
+            case 0: printf("\nSaindo...\n"); break;
+            default: printf("\nOpção inválida!\n"); esperarEnter(); break;
         }
 
     } while (opcao != 0);
 }
 
-// int main() {
-//     menu();
-//     return 0;
-// }
+int main() {
+    menu();
+    return 0;
+}
