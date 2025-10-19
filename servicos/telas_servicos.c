@@ -3,6 +3,11 @@
 #include <string.h>
 #include "telas_servicos.h"
 
+void esperarEnter() {
+    printf("\nPressione ENTER para continuar...");
+    while (getchar() != '\n');
+}
+
 void atualizarCSVServicos() {
     FILE *bin = fopen("servicos.dat", "rb");
     FILE *csv = fopen("servicos.csv", "w");
@@ -24,6 +29,7 @@ void atualizarCSVServicos() {
 }
 
 void cadastrarServico() {
+    system("clear");
     Servico s;
     FILE *fp;
     int maiorId = 0;
@@ -40,20 +46,22 @@ void cadastrarServico() {
     s.id = maiorId + 1;
 
     printf("\n=== CADASTRAR SERVIÇO ===\n");
-    getchar();
+
     printf("Nome do serviço: ");
+    setbuf(stdin, NULL);
     fgets(s.nome, sizeof(s.nome), stdin);
     s.nome[strcspn(s.nome, "\n")] = '\0';
 
     printf("Preço: ");
     scanf("%f", &s.preco);
-    getchar();
+    setbuf(stdin, NULL);
 
     s.status = 1;
 
     fp = fopen("servicos.dat", "ab");
     if (!fp) {
         printf("Erro ao abrir o arquivo!\n");
+        esperarEnter();
         return;
     }
     fwrite(&s, sizeof(Servico), 1, fp);
@@ -61,13 +69,16 @@ void cadastrarServico() {
 
     atualizarCSVServicos();
 
-    printf("Serviço cadastrado com sucesso! ID: %d\n", s.id);
+    printf("\nServiço cadastrado com sucesso! ID: %d\n", s.id);
+    esperarEnter();
 }
 
 void listarServicos() {
+    system("clear");
     FILE *fp = fopen("servicos.dat", "rb");
     if (!fp) {
         printf("Nenhum serviço cadastrado.\n");
+        esperarEnter();
         return;
     }
 
@@ -86,18 +97,22 @@ void listarServicos() {
 
     if (!encontrou)
         printf("Nenhum serviço ativo encontrado.\n");
+
+    esperarEnter();
 }
 
 void atualizarServico() {
+    system("clear");
     int id;
     printf("\n=== ATUALIZAR SERVIÇO ===\n");
     printf("Digite o ID do serviço: ");
     scanf("%d", &id);
-    getchar();
+    setbuf(stdin, NULL);
 
     FILE *fp = fopen("servicos.dat", "r+b");
     if (!fp) {
         printf("Erro ao abrir o arquivo.\n");
+        esperarEnter();
         return;
     }
 
@@ -107,12 +122,13 @@ void atualizarServico() {
     while (fread(&s, sizeof(Servico), 1, fp) == 1) {
         if (s.id == id && s.status == 1) {
             printf("Novo nome: ");
+            setbuf(stdin, NULL);
             fgets(s.nome, sizeof(s.nome), stdin);
             s.nome[strcspn(s.nome, "\n")] = '\0';
 
             printf("Novo preço: ");
             scanf("%f", &s.preco);
-            getchar();
+            setbuf(stdin, NULL);
 
             fseek(fp, -sizeof(Servico), SEEK_CUR);
             fwrite(&s, sizeof(Servico), 1, fp);
@@ -123,21 +139,28 @@ void atualizarServico() {
 
     fclose(fp);
 
-    if (encontrado) atualizarCSVServicos();
-    if (!encontrado) printf("Serviço não encontrado ou inativo.\n");
-    else printf("Serviço atualizado com sucesso!\n");
+    if (encontrado) {
+        atualizarCSVServicos();
+        printf("\nServiço atualizado com sucesso!\n");
+    } else {
+        printf("\nServiço não encontrado ou inativo.\n");
+    }
+
+    esperarEnter();
 }
 
 void excluirServico() {
+    system("clear");
     int id;
     printf("\n=== EXCLUIR SERVIÇO ===\n");
     printf("Digite o ID do serviço: ");
     scanf("%d", &id);
-    getchar();
+    setbuf(stdin, NULL);
 
     FILE *fp = fopen("servicos.dat", "r+b");
     if (!fp) {
         printf("Erro ao abrir o arquivo.\n");
+        esperarEnter();
         return;
     }
 
@@ -158,13 +181,16 @@ void excluirServico() {
 
     if (encontrado) atualizarCSVServicos();
     if (!encontrado) printf("Serviço não encontrado.\n");
-    else printf("Serviço excluído com sucesso!\n");
+    else printf("\nServiço excluído com sucesso!\n");
+
+    esperarEnter();
 }
 
 void menuServico() {
     int opcao;
 
     do {
+        system("clear");
         printf("\n=== MENU SERVIÇOS ===\n");
         printf("1 - Cadastrar serviço\n");
         printf("2 - Listar serviços\n");
@@ -173,15 +199,15 @@ void menuServico() {
         printf("0 - Sair\n");
         printf("Escolha uma opção: ");
         scanf("%d", &opcao);
-        getchar();
+        setbuf(stdin, NULL);
 
         switch (opcao) {
             case 1: cadastrarServico(); break;
             case 2: listarServicos(); break;
             case 3: atualizarServico(); break;
             case 4: excluirServico(); break;
-            case 0: printf("Saindo...\n"); break;
-            default: printf("Opção inválida!\n");
+            case 0: printf("\nSaindo...\n"); break;
+            default: printf("\nOpção inválida!\n"); esperarEnter(); break;
         }
 
     } while (opcao != 0);
