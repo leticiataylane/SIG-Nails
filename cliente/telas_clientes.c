@@ -234,7 +234,7 @@ void menu() {
     } while (opcao != 0);
 }
 
-int main() {
-    menu();
-    return 0;
-}
+// int main() {
+//     menu();
+//     return 0;
+// }
