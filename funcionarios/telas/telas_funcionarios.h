@@ -10,6 +10,8 @@ void telaCadastrarFuncionario(void);
 void telaAtualizarFuncionario(void);
 
 void telaPesquisarFuncionario(void);
+
+void telaListarFuncionario(void);
     
 void telaExcluirFuncionario(void);
 
