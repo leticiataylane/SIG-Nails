@@ -9,7 +9,6 @@ typedef struct {
     char nascimento[15];
     char telefone[20];
     char email[70];
-    char turno[10];
     float salario;
     int status;
 } Funcionario;
