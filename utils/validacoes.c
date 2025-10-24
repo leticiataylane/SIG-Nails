@@ -8,17 +8,7 @@
 
 
 int validaDataInserida(char *dataInserida){
-    //limpa data
-    int j =0;
-    for(int i = 0; dataInserida[i] != '\0'; i +=1){
-        if(isdigit((unsigned char)dataInserida[i])){
-            dataInserida[j] = dataInserida[i];
-            j +=1;
-        }
-    }
-    dataInserida[j] = '\0';
-
-
+    limpaNum(dataInserida);
 
     time_t tempoAtual = time(NULL);        
     struct tm *dataAtual = localtime(&tempoAtual); 
@@ -77,21 +67,40 @@ int validaDataInserida(char *dataInserida){
 return True;
 }
 
+int validaHorario(char *horario) {
+    limpaNum(horario);
+    char horaChar[3]; // 2 dígitos + '\0'
+    char minChar[3];   // 2 dígitos + '\0'
+    int h = 0;
+    int m = 0;
+    int tam = strlen(horario);
+
+    if(tam != 4) return False;
+
+    // copia os dois primeiros caracteres
+    strncpy(horaChar, horario, 2);
+    horaChar[2] = '\0'; // adiciona o terminador de string
+    h = atoi(horaChar);
+
+    // copia os dois últimos caracteres
+    strncpy(minChar, horario + 2, 2);
+    minChar[2] = '\0';
+    m = atoi(minChar);
+
+
+    if (h < 8 || h > 20) return False;  // horário de funcionamento
+    if (h > 12 && h < 14) return False;
+    if (m < 0 || m > 59) return False;
+
+    return True;
+}
+
 
 
 
 
 int validaNascimento(char *nascimento){
-    int j =0;
-    for(int i = 0; nascimento[i] != '\0'; i +=1){
-        if(isdigit((unsigned char)nascimento[i])){
-            nascimento[j] = nascimento[i];
-            j +=1;
-        }
-    }
-    nascimento[j] = '\0';
-
-
+    limpaNum(nascimento);
 
     time_t tempoAtual = time(NULL);        
     struct tm *dataAtual = localtime(&tempoAtual); 
@@ -139,14 +148,7 @@ return True;
 
 
 int validaIdade(char *nascimento){
-    int j =0;
-    for(int i = 0; nascimento[i] != '\0'; i +=1){
-        if(isdigit((unsigned char)nascimento[i])){
-            nascimento[j] = nascimento[i];
-            j +=1;
-        }
-    }
-    nascimento[j] = '\0';
+    limpaNum(nascimento);
 
     time_t tempoAtual = time(NULL);        
     struct tm *dataAtual = localtime(&tempoAtual); 
@@ -329,15 +331,7 @@ int validaNome(char *nome){
 
 
 int validaTelefone(char *telefone){
-    int j = 0;
-    for(int i = 0; telefone[i] != '\0'; i += 1){
-        if(isdigit((unsigned char)telefone[i])){
-            telefone[j] = telefone[i];
-            j += 1;
-        }
-    }
-    telefone[j] = '\0';
-
+    limpaNum(telefone);
 
     int tam;
     int d1;
@@ -362,4 +356,69 @@ int validaTelefone(char *telefone){
         return True;
     }
     return False;
+}
+
+
+int validaSituacao(const char* horario, const char* data, const char* situacao, const char op){
+    time_t agora;
+    struct tm *tempo;
+    int horaAtual, minutoAtual, diaAtual, mesAtual, anoAtual;
+    int dia, mes, ano, h, m;
+    char horaChar[3], minChar[3], diaChar[3], mesChar[3], anoChar[5];
+
+
+    strncpy(horaChar, horario, 2);
+    horaChar[2] = '\0'; 
+    h = atoi(horaChar);
+
+    strncpy(minChar, horario + 2, 2);
+    minChar[2] = '\0';
+    m = atoi(minChar);
+
+
+    strncpy(diaChar, data, 2); diaChar[2] = '\0';
+    strncpy(mesChar, data + 2, 2); mesChar[2] = '\0';
+    strncpy(anoChar, data + 4, 4); anoChar[4] = '\0';
+    dia = atoi(diaChar);
+    mes = atoi(mesChar);
+    ano = atoi(anoChar);
+
+    time(&agora);                 // obtém o tempo atual
+    tempo = localtime(&agora); // converte para o horário local
+
+    diaAtual = tempo->tm_mday;
+    mesAtual = tempo->tm_mon + 1;    // tm_mon vai de 0 a 11
+    anoAtual = tempo->tm_year + 1900; // tm_year é contado desde 1900
+    horaAtual = tempo->tm_hour;   // pega a hora (0–23)
+    minutoAtual = tempo->tm_min;
+
+    int dataAgen = ano * 10000 + mes * 100 + dia; 
+    int dataAtual = anoAtual * 10000 + mesAtual * 100 + diaAtual;
+    int minutosAgen = h * 60 + m;
+    int minutosAtuais = horaAtual * 60 + minutoAtual;
+
+    if(strcmp(situacao, "Pendente") != 0) return False;
+    if(op == '1'){
+        if (dataAgen > dataAtual)
+            return False;
+
+        // se é o mesmo dia, precisa ter passado pelo menos 2h
+        if (dataAgen == dataAtual) {
+            if ((minutosAtuais - minutosAgen) < 120)
+                return False;
+        }
+        return True;
+        
+    } else if (op == '2') {
+        if (dataAtual < dataAgen) {
+            return True;
+        }
+        if (dataAtual == dataAgen) {
+            if ((minutosAgen - minutosAtuais) >= 120)
+                return True; 
+            else
+                return False;
+        }
+        return False;
+    }
 }
