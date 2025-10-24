@@ -1,0 +1,270 @@
+#include <stdio.h>
+#include <string.h>
+#include <unistd.h>
+#include <stdlib.h> 
+#include <ctype.h> 
+#include "ler_dados.h"
+#include "limpeza.h"
+#include "validacoes.h"
+
+char opcao(void){
+    char *escolha = lerString("Digite apenas o número:");
+    char op = escolha[0];
+    free(escolha);
+    return op;
+}
+
+char* lerString(const char* msg){
+    char linha[256] = "";
+    char *str;
+    int tam = 0;
+
+    printf("%s", msg);
+    fgets(linha, 256, stdin);
+    limpaFgets(linha);
+
+    tam = strlen(linha);
+    str = (char*) malloc(tam + 1);
+    if(str == NULL){
+        printf("Erro ao alocar memória.");
+        exit(1);
+    }
+    strcpy(str, linha);
+    return str;
+}
+
+char* lerNome(void){
+    char *nome = NULL;
+    int valido = 0;
+    do{
+        nome = lerString("Digite o nome:\n");
+        limpaNome(nome);
+        valido = validaNome(nome);
+        if(!valido){
+            erroInvalido();
+            free(nome);
+        }
+    }while(!valido);
+
+    return nome;
+}
+
+char* lerCPF(void){
+    char *cpf = NULL;
+    int valido = 0;
+
+    do {
+        cpf = lerString("Digite o CPF:\n");
+        limpaNum(cpf);
+        valido = validaCPF(cpf);
+
+        if (!valido) {
+            erroInvalido();
+            free(cpf);
+        }
+    } while (!valido);
+
+    return cpf;
+}
+
+char* lerNascimento(void){
+    char *nascimento = NULL;
+    int valido = 0;
+    do{
+        nascimento = lerString("Digite a data de nascimento:\n");
+        valido = validaNascimento(nascimento);
+        if(!valido){
+            erroInvalido();
+            free(nascimento);
+        }
+    }while(!valido);
+    
+    return nascimento;
+}
+
+char* lerIdade(void){
+    char *nascimento = NULL;
+    int valido = 0;
+    do{
+        nascimento = lerNascimento();
+        valido = validaIdade(nascimento);
+        if(!valido){
+            system("clear");
+            printf("Idade invalida para contratação. Aceitamos novos funcionários de 18 a 66 anos de idade.\n");
+            free(nascimento);
+        }
+    }while(!valido);
+
+    return nascimento;
+    
+}
+
+char* lerData(void){
+    char *data = NULL;
+    int valido = 0;
+    do{
+        data = lerString("Digite a data:\n");
+        valido = validaDataInserida(data);
+        if(!valido){
+            erroInvalido();
+            free(data);
+        }
+    }while(!valido);
+    
+    return data;
+
+}
+
+char* lerHorario(void){
+    char *horario = NULL;
+    int valido = 0;
+    do{
+        horario = lerString("Digite o horário:");
+        valido = validaHorario(horario);
+        if(!valido){
+            erroInvalido();
+            free(horario);
+        }
+    }while(!valido);
+
+    return horario;
+}
+
+char* lerTelefone(void){
+    char *telefone = NULL;
+    int valido = 0;
+    do{
+        telefone = lerString("Digite o número de telefone:\n");
+        valido = validaTelefone(telefone);
+        if(!valido){
+            erroInvalido();
+            free(telefone);
+        }
+    }while(!valido);
+
+    return telefone;
+}
+
+char* lerEmail(void){
+    char *email = NULL;
+    int valido = 0;
+    do{
+        email = lerString("Digite o email:\n");
+        valido = validaEmail(email);
+        if(!valido){
+            erroInvalido();
+            free(email);
+        }
+    }while(!valido);
+
+    return email;
+}
+
+float lerDinheiro(void){
+    char *dinheiroChar = NULL;
+    float dinheiro = 0;
+    int j = 0;
+    
+    dinheiroChar = lerString("Digite o valor:\n");
+    limpaNum(dinheiroChar);
+    dinheiroChar[j] = '\0';
+
+    dinheiro = atof(dinheiroChar);
+    free(dinheiroChar);
+    return dinheiro;
+}
+
+float lerSalario(void){
+    float salario = 0;
+    int salarioValido = False;
+    do{
+        salario = lerDinheiro();
+        if(salario >= 1518){
+            salarioValido = True;
+        }else{
+            printf("valor insuficiente. Tente novamente:\n");
+        }
+    }while(!salarioValido);
+    return salario;  
+}
+
+char* lerIdAgendamento(void){
+    char* idChar = NULL;
+    int valido = 0;
+
+    do{
+        idChar = lerString("Digite o número do ID:");
+        limpaNum(idChar);
+        valido = idExisteAgendamento(idChar);
+        if(!valido){
+            erroInvalido();
+            free(idChar);
+        }
+    }while(!valido);
+    return idChar;
+}
+
+
+char* lerIdServico(void){
+    char* idChar = NULL;
+    int valido = 0;
+
+    do{
+        idChar = lerString("Digite o número do ID:");
+        limpaNum(idChar);
+        valido = idExisteServico(idChar);
+        if(!valido){
+            erroInvalido();
+            free(idChar);
+        }
+    }while(!valido);
+    return idChar;
+}
+
+
+char* lerIdCliente(void){
+    char* idChar = NULL;
+    int valido = 0;
+
+    do{
+        idChar = lerString("Digite o número do ID:");
+        limpaNum(idChar);
+        valido = idExisteCliente(idChar);
+        if(!valido){
+            erroInvalido();
+            free(idChar);
+        }
+    }while(!valido);
+    return idChar;
+}
+
+
+char* lerSituacao(const char* horario, const char* data, const char* situacao){
+    char *situacao = NULL;
+    char op;
+    int valido = 0; 
+    do{
+        op = telaSituacao();
+        valido = validaSituacao(horario, data, situacao, op);
+        if(valido){
+            switch (op)
+            {
+            case '1':
+                strcpy(situacao, "Concluído");
+                break;
+
+            case '2':
+                strcpy(situacao, "Cancelado");
+                break;
+            case '0':
+                break;
+            default:
+                opInvalida();
+                break;
+            }
+        }
+    }while((op != '0') && (!valido));
+
+    return situacao;
+}
+
