@@ -1,19 +1,8 @@
 #include <ctype.h>
 #include <stdio.h>
 #include <string.h>
-
-
-void limpaCPF(char *cpf){
-    int j = 0;
-    for(int i = 0; cpf[i] != '\0'; i += 1){
-        if(isdigit((unsigned char)cpf[i])){
-            cpf[j] = cpf[i];
-            j += 1;
-        }
-    }
-    cpf[j] = '\0';//necessário para encerrar a string, se não fica erraaaaaaaaaaaaaaaaaaaaaaaaadooooooooooooooooooooooooo
-}
-
+#include "limpeza.h"
+#include "erros.h"
 
 
 void limpaNome(char *nome){
@@ -38,4 +27,15 @@ void limpaNome(char *nome){
 void limpaFgets(char *str){
     int tam = strlen(str);
     str[tam-1] = '\0';
+}
+
+void limpaNum(char *num){
+    int j =0;
+    for(int i = 0; num[i] != '\0'; i +=1){
+        if(isdigit((unsigned char)num[i])){
+            num[j] = num[i];
+            j +=1;
+        }
+    }
+    num[j] = '\0';
 }
