@@ -1,11 +1,37 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include "telas_servicos.h"
 
 void esperarEnter() {
     printf("\nPressione ENTER para continuar...");
     while (getchar() != '\n');
+}
+
+int idExisteServico(int id) {
+    FILE *fp = fopen("servicos.dat", "rb");
+    if (!fp) return 0;
+
+    Servico s;
+    while (fread(&s, sizeof(Servico), 1, fp) == 1) {
+        if (s.id == id) {
+            fclose(fp);
+            return 1;
+        }
+    }
+
+    fclose(fp);
+    return 0;
+}
+
+int gerarIdServico(void) {
+    srand(time(NULL));
+    int id;
+    do {
+        id = rand() % 9000 + 1000; // Gera de 1000 a 9999
+    } while (idExisteServico(id));
+    return id;
 }
 
 void atualizarCSVServicos() {
@@ -31,19 +57,8 @@ void atualizarCSVServicos() {
 void cadastrarServico() {
     system("clear");
     Servico s;
-    FILE *fp;
-    int maiorId = 0;
 
-    fp = fopen("servicos.dat", "rb");
-    if (fp) {
-        Servico temp;
-        while (fread(&temp, sizeof(Servico), 1, fp) == 1) {
-            if (temp.id > maiorId) maiorId = temp.id;
-        }
-        fclose(fp);
-    }
-
-    s.id = maiorId + 1;
+    s.id = gerarIdServico(); // Geração automática do ID
 
     printf("\n=== CADASTRAR SERVIÇO ===\n");
 
@@ -58,7 +73,7 @@ void cadastrarServico() {
 
     s.status = 1;
 
-    fp = fopen("servicos.dat", "ab");
+    FILE *fp = fopen("servicos.dat", "ab");
     if (!fp) {
         printf("Erro ao abrir o arquivo!\n");
         esperarEnter();
@@ -213,7 +228,7 @@ void menuServico() {
     } while (opcao != 0);
 }
 
-// int main() {
-//     menuServico();
-//     return 0;
-// }
+int main() {
+    menuServico();
+    return 0;
+}
