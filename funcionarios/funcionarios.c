@@ -52,16 +52,16 @@ char modFuncionario(void){
 
 char menuFuncionario(void){
     char op;
-
-    printf("ÁREA DO Funcionario\n");
-    printf("___________________");
-    printf("1.cadastrar\n");
-    printf("2.atualizar\n");
-    printf("3.pesquisar\n");
-    printf("4.listar\n");
-    printf("5.excluir\n");
-    printf("0.sair\n");
-
+    printf("╭──────────────────────────────────────────────╮\n");
+    printf("│              ÁREA DO FUNCIONÁRIO             │\n");
+    printf("├──────────────────────────────────────────────┤\n");
+    printf("│  [1] CADASTRAR                               │\n" );
+    printf("│  [2] ATUALIZAR                               │\n");
+    printf("│  [3] PESQUISAR                               │\n");
+    printf("│  [4] LISTAR                                  │\n");
+    printf("│  [5] EXCLUIR                                 │\n");
+    printf("│  [0] SAIR                                    │\n");
+    printf("╰──────────────────────────────────────────────╯\n");
     op = opcao();
     return op;
 
@@ -80,7 +80,6 @@ void telaCadastrarFuncionario(void){
     printf("│ Salário:                                     │\n");
     printf("╰──────────────────────────────────────────────╯\n");
     cadastrarFuncionario();
-    printf("|ENTER| para sair\n");
     esperarEnter();
 
 }
@@ -96,7 +95,6 @@ void telaAtualizarFuncionario(void){
     printf("│   vínculo ativo.                             │\n");
     printf("╰──────────────────────────────────────────────╯\n");
     atualizarFuncionario();
-    printf("|ENTER| para sair\n");
     esperarEnter();
     
 }
@@ -109,8 +107,6 @@ void telaPesquisarFuncionario(void){
     printf("│   CPF do mesmo.                              │\n");
     printf("╰──────────────────────────────────────────────╯\n");
     pesquisarFuncionario();
-    printf("|ENTER| para sair\n");
-
     esperarEnter();
     
 }
@@ -121,7 +117,6 @@ void telaListarFuncionarios(void){
     listarFuncionarios();
     printf("╰──────────────────────────────────────────────╯\n");
     
-    printf("|ENTER| para sair\n");
 
     esperarEnter();
     
