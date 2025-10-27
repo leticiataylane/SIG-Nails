@@ -2,6 +2,10 @@
 #include <string.h>
 #include <ctype.h>
 #include <time.h>
+#include <stdlib.h>  
+#include "validacoes.h"
+#include "limpeza.h"
+#include "erros.h"
 
 #define True 1
 #define False 0
@@ -12,9 +16,7 @@ int validaDataInserida(char *dataInserida){
 
     time_t tempoAtual = time(NULL);        
     struct tm *dataAtual = localtime(&tempoAtual); 
-
-    int diaA = dataAtual->tm_mday;        
-    int mesA = dataAtual->tm_mon + 1;     
+  
     int anoA = dataAtual->tm_year + 1900;
 
     int tam = strlen(dataInserida);
@@ -105,8 +107,6 @@ int validaNascimento(char *nascimento){
     time_t tempoAtual = time(NULL);        
     struct tm *dataAtual = localtime(&tempoAtual); 
 
-    int diaA = dataAtual->tm_mday;        
-    int mesA = dataAtual->tm_mon + 1;     
     int anoA = dataAtual->tm_year + 1900;
 
     int tam = strlen(nascimento);
@@ -421,4 +421,5 @@ int validaSituacao(const char* horario, const char* data, const char* situacao, 
         }
         return False;
     }
+    return False;
 }
