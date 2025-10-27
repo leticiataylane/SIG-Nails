@@ -5,6 +5,10 @@
 #include <ctype.h> 
 #include "telas_gerais.h"
 #include "cores.h"
+#include "ler_dados.h"
+#include "limpeza.h"
+#include "validacoes.h"
+#include "erros.h"
 
 
 // void pauseEnter(void) {
@@ -28,24 +32,21 @@ void telaInicial(void) {
 
 
 char menuPrincipal(void) {
-    char opcao;
+    char op;
 
 
-        system("clear"); // limpa a tela
-        printf(roxo negrito "✿ ★ ★ ★ ★ SIG-NAILS ★ ★ ★ ★ ✿\n" reset);
-        printf(rosa "1. Agendamentos\n"reset);
-        printf(rosa "2. Serviços\n"reset);
-        printf(rosa "3. Clientes\n"reset);
-        printf(rosa "4. Funcionários\n"reset);
-        printf(rosa "5. Informações\n"reset);
-        printf(rosa "6. Sair\n"reset);
-        printf(roxo negrito "✿ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ✿\n" reset);
-        printf(ciano "Escolha uma opção (1-6): "reset);
-
-        scanf("%c", opcao);
-        getchar();
-
-    return opcao;
+    system("clear"); // limpa a tela
+    printf(roxo negrito "✿ ★ ★ ★ ★ SIG-NAILS ★ ★ ★ ★ ✿\n" reset);
+    printf(rosa "1. Agendamentos\n"reset);
+    printf(rosa "2. Serviços\n"reset);
+    printf(rosa "3. Clientes\n"reset);
+    printf(rosa "4. Funcionários\n"reset);
+    printf(rosa "5. Informações\n"reset);
+    printf(rosa "0. Sair\n"reset);
+    printf(roxo negrito "✿ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ✿\n" reset);
+    printf(ciano "Escolha uma opção (1-6): "reset);
+    op = opcao();
+    return op;
 }
 
 
@@ -65,7 +66,7 @@ void telaSobre(void) {
     printf("👩 Equipe responsável:" rosa negrito "Letícia Taylane\n"reset);
     printf(roxo negrito "✿ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ✿\n\n"reset);
     printf("Pressione ENTER para voltar ao menu...\n");
-    getchar(); 
+    esperarEnter(); 
 }
 
 
@@ -80,7 +81,7 @@ void telaFinal() {
     printf(roxo negrito"✿ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ✿\n\n"reset);
 
     printf(ciano "Pressione ENTER para sair..."reset);
-    getchar(); // espera o usuário apertar enter
+    esperarEnter(); // espera o usuário apertar enter
 }
 
 
@@ -101,6 +102,6 @@ void telaAjuda(void) {
     printf("- WhatsApp: (99) 99999-9999\n");
     printf("- Instagram: @sig_nails\n\n");
     printf(rosa "Pressione ENTER para voltar ao menu...\n"reset);
-    getchar(); 
+    esperarEnter(); 
 }
 
