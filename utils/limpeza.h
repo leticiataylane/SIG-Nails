@@ -1,7 +1,7 @@
 #ifndef LIMPEZA_H
 #define LIMPEZA_H
 
-void limpaCPF(char *cpf);
+void limpaNum(char *cpf);
 
 void limpaNome(char *nome);
 

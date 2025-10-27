@@ -7,10 +7,10 @@
 
 
 typedef struct {
-    char agenId[5];
-    char clienteId[5];
+    char agenId[10];
+    char clienteId[10];
     char clienteNome[50];
-    char servicoId[5];
+    char servicoId[10];
     char servicoNome[50];
     char data[15];
     char horario[10];
@@ -37,5 +37,8 @@ void telaAtualizarAgendamento(void);
 void telaPesquisarAgendamento(void);
 void telaExcluirAgendamento(void);
 char telaSituacao(void);
+
+char* gerarIdAgendamento(void);
+int idExisteAgendamento(char *idStr);
 
 #endif

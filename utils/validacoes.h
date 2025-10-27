@@ -3,8 +3,11 @@
 
 #define True 1
 #define False 0
+
 int validaDataInserida(char *dataInserida);
+int validaHorario(char *horario);
 int validaNascimento(char *nascimento);
+int validaIdade(char *nascimento);
 int validaCPF(char *cpf);
 int validaEmail(char *email);
 int validaNome(char *nome);
