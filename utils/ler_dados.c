@@ -6,6 +6,16 @@
 #include "ler_dados.h"
 #include "limpeza.h"
 #include "validacoes.h"
+#include "erros.h"
+#include "agendamentos.h"
+#include "telas_servicos.h"
+#include "telas_clientes.h"
+
+
+void esperarEnter() {
+    printf("\nPressione ENTER para continuar...");
+    while (getchar() != '\n'); // espera apenas o ENTER
+}
 
 char opcao(void){
     char *escolha = lerString("Digite apenas o número:");
@@ -41,7 +51,7 @@ char* lerNome(void){
         limpaNome(nome);
         valido = validaNome(nome);
         if(!valido){
-            erroInvalido();
+            dadosInvalidos();
             free(nome);
         }
     }while(!valido);
@@ -59,7 +69,7 @@ char* lerCPF(void){
         valido = validaCPF(cpf);
 
         if (!valido) {
-            erroInvalido();
+            dadosInvalidos();
             free(cpf);
         }
     } while (!valido);
@@ -74,7 +84,7 @@ char* lerNascimento(void){
         nascimento = lerString("Digite a data de nascimento:\n");
         valido = validaNascimento(nascimento);
         if(!valido){
-            erroInvalido();
+            dadosInvalidos();
             free(nascimento);
         }
     }while(!valido);
@@ -106,7 +116,7 @@ char* lerData(void){
         data = lerString("Digite a data:\n");
         valido = validaDataInserida(data);
         if(!valido){
-            erroInvalido();
+            dadosInvalidos();
             free(data);
         }
     }while(!valido);
@@ -122,7 +132,7 @@ char* lerHorario(void){
         horario = lerString("Digite o horário:");
         valido = validaHorario(horario);
         if(!valido){
-            erroInvalido();
+            dadosInvalidos();
             free(horario);
         }
     }while(!valido);
@@ -137,7 +147,7 @@ char* lerTelefone(void){
         telefone = lerString("Digite o número de telefone:\n");
         valido = validaTelefone(telefone);
         if(!valido){
-            erroInvalido();
+            dadosInvalidos();
             free(telefone);
         }
     }while(!valido);
@@ -152,7 +162,7 @@ char* lerEmail(void){
         email = lerString("Digite o email:\n");
         valido = validaEmail(email);
         if(!valido){
-            erroInvalido();
+            dadosInvalidos();
             free(email);
         }
     }while(!valido);
@@ -197,7 +207,7 @@ char* lerIdAgendamento(void){
         limpaNum(idChar);
         valido = idExisteAgendamento(idChar);
         if(!valido){
-            erroInvalido();
+            dadosInvalidos();
             free(idChar);
         }
     }while(!valido);
@@ -214,7 +224,7 @@ char* lerIdServico(void){
         limpaNum(idChar);
         valido = idExisteServico(idChar);
         if(!valido){
-            erroInvalido();
+            dadosInvalidos();
             free(idChar);
         }
     }while(!valido);
@@ -231,7 +241,7 @@ char* lerIdCliente(void){
         limpaNum(idChar);
         valido = idExisteCliente(idChar);
         if(!valido){
-            erroInvalido();
+            dadosInvalidos();
             free(idChar);
         }
     }while(!valido);
@@ -240,7 +250,7 @@ char* lerIdCliente(void){
 
 
 char* lerSituacao(const char* horario, const char* data, const char* situacao){
-    char *situacao = NULL;
+    char *novaSituacao = NULL;
     char op;
     int valido = 0; 
     do{
@@ -250,21 +260,21 @@ char* lerSituacao(const char* horario, const char* data, const char* situacao){
             switch (op)
             {
             case '1':
-                strcpy(situacao, "Concluído");
+                strcpy(novaSituacao, "Concluído");
                 break;
 
             case '2':
-                strcpy(situacao, "Cancelado");
+                strcpy(novaSituacao, "Cancelado");
                 break;
             case '0':
                 break;
             default:
-                opInvalida();
+                opcaoInvalida();
                 break;
             }
         }
     }while((op != '0') && (!valido));
 
-    return situacao;
+    return novaSituacao;
 }
 
