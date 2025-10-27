@@ -1,5 +1,5 @@
-#ifndef TELAS_FUNCIONARIOS_H 
-#define TELAS_FUNCIONARIOS_H
+#ifndef FUNCIONARIOS_H 
+#define FUNCIONARIOS_H
 #define True 1
 #define False 0
 
@@ -13,20 +13,23 @@ typedef struct {
     int status;
 } Funcionario;
 
-int cadastrarFuncionario(void);
-int atualizarFuncionario(void);
-int pesquisarFuncionario(void);
-int listarFuncionarios(void);
-int excluirFuncionario(void);
-
-
 char modFuncionario(void);
 char menuFuncionario(void);
 void telaCadastrarFuncionario(void);
 void telaAtualizarFuncionario(void);
 void telaPesquisarFuncionario(void);
-void telaListarFuncionario(void);  
+void telaListarFuncionarios(void);
 void telaExcluirFuncionario(void);
 char telaOqueAtualizar(void);
+///////////////////////////////////////////////////////////OPERACOES////////////////////////////////////////////////////////////////////////////////
+
+
+
+int cadastrarFuncionario(void);
+int atualizarFuncionario(void);
+int pesquisarFuncionario(void);
+int listarFuncionarios(void);
+int excluirFuncionario(void);
+int excluirFuncionarioDefinitivo(void);
 
 #endif

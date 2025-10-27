@@ -8,6 +8,7 @@
 #include "validacoes.h"
 #include "funcionarios.h"
 #include "ler_dados.h"
+#include "erros.h"
 
 
 char modFuncionario(void){
@@ -41,7 +42,7 @@ char modFuncionario(void){
             break;
 
         default:
-            opInvalida();
+            opcaoInvalida();
             break;
         }
     }while (opFuncionario != '0');
@@ -62,6 +63,7 @@ char menuFuncionario(void){
     printf("0.sair\n");
 
     op = opcao();
+    return op;
 
 
 }
@@ -79,7 +81,7 @@ void telaCadastrarFuncionario(void){
     printf("╰──────────────────────────────────────────────╯\n");
     cadastrarFuncionario();
     printf("|ENTER| para sair\n");
-    getchar();
+    esperarEnter();
 
 }
 
@@ -95,7 +97,7 @@ void telaAtualizarFuncionario(void){
     printf("╰──────────────────────────────────────────────╯\n");
     atualizarFuncionario();
     printf("|ENTER| para sair\n");
-    getchar();
+    esperarEnter();
     
 }
 
@@ -109,11 +111,11 @@ void telaPesquisarFuncionario(void){
     pesquisarFuncionario();
     printf("|ENTER| para sair\n");
 
-    getchar();
+    esperarEnter();
     
 }
 
-void telaListarFuncionario(void){
+void telaListarFuncionarios(void){
     printf("╭──────────────────────────────────────────────╮\n");
     printf("│              LISTAR FUNCIONÁRIOS             │\n");
     listarFuncionarios();
@@ -121,7 +123,7 @@ void telaListarFuncionario(void){
     
     printf("|ENTER| para sair\n");
 
-    getchar();
+    esperarEnter();
     
 }
 
@@ -150,14 +152,14 @@ void telaExcluirFuncionario(void){
             break;
 
         default:
-            opInvalida();
+            opcaoInvalida();
             break;
         }
     }while (op != '0');
 
     printf("|ENTER| para sair\n");
 
-    getchar();
+    esperarEnter();
     
 }
 
@@ -173,6 +175,7 @@ char telaOqueAtualizar(void){
     printf("│  [4] SALÁRIO                                 │\n");
     printf("╰──────────────────────────────────────────────╯\n");
     op = opcao();
+    return op;
 
 }
 
@@ -224,11 +227,6 @@ int cadastrarFuncionario(void){
     return 0;
 }
 
-
-void erroInvalido(void){
-    system("clear");
-    printf("Ocorreu algum erro, o conteúdo inserido é inválido. Por favor, tente novamente:\n");
-}
 
 int atualizarFuncionario(void){
     Funcionario* f;
@@ -346,7 +344,7 @@ int listarFuncionarios(void){
             printf("│ Nascimento: %-34s │\n", f->nascimento);
             printf("│ Telefone: %-36s │\n", f->telefone);
             printf("│ E-mail: %-38s │\n", f->email);
-            printf("│ Salário: %-36s │\n", f->salario);
+            printf("│ Salário: %-36.2f │\n", f->salario);
         }
     }
     fclose(fun);
@@ -375,7 +373,7 @@ int excluirFuncionario(void){
             printf("Funcionário: %s excluído\n", f->nome);
             f->status = False;
             fseek(fun, (-1)*sizeof(Funcionario), SEEK_CUR);
-            fwrite(fun, sizeof(Funcionario), 1, fun);
+            fwrite(f, sizeof(Funcionario), 1, fun);;
             encontrado = True;
         } else if((strcmp(cpf, f->cpf) == 0) && (!f->status)){
             printf("Não encontrado");
@@ -405,7 +403,7 @@ int excluirFuncionarioDefinitivo(void) {
         return 1;
     }
 
-    funTemp = fopen("temp.dat", "wb");
+    funTemp = fopen("temp.dat", "ab");
     if (funTemp == NULL) {
         printf("Erro: não foi possível criar o arquivo temporário.\n");
         fclose(fun);
