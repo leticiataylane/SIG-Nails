@@ -8,6 +8,9 @@
 #include "limpeza.h"
 #include "validacoes.h"
 #include "ler_dados.h"
+#include "telas_clientes.h"
+#include "telas_servicos.h"
+#include "erros.h"
 
 
 char modAgendamento(void){
@@ -37,7 +40,7 @@ char modAgendamento(void){
             break;
 
         default:
-            opInvalida();
+            opcaoInvalida();
             break;
         }
     }while (opAgendamento != '0');
@@ -75,7 +78,7 @@ void telaCadastrarAgendamento(void){
     printf(azul" 3. Informe os dados do agendamento: ID do cliente, ID do serviço, data e hora (8h - 20h).\n"reset);
     printf(azul" 4. Aguarde a confirmação.\n"reset);
     printf(rosa negrito "\nPressione ENTER para continuar...\n"reset);
-    getchar();
+    esperarEnter();
 
     cadastrarAgendamento();
 
@@ -89,7 +92,7 @@ void telaCadastrarAgendamento(void){
     // printf(negrito "Spa dos Pés"reset rosa negrito" ......... "ciano"R$45\n"reset);
     // printf(negrito "Blindagem de Unhas"reset rosa negrito" .. "ciano"R$60\n"reset);
     // printf(rosa negrito "\nPressione ENTER para continuar...\n"reset);
-    // getchar();
+    // esperarEnter();
 
 }
 
@@ -128,14 +131,14 @@ void telaExcluirAgendamento(void){
             break;
 
         default:
-            opInvalida();
+            opcaoInvalida();
             break;
         }
     }while (op != '0');
 
     printf("|ENTER| para sair\n");
 
-    getchar();
+    esperarEnter();
 
 
     
@@ -149,16 +152,21 @@ char telaSituacao(void){
     printf("2.Cancelado\n");
     printf("0.Sair\n");
     op = opcao();
+    return op;
 }
 
+char telaOqAlterar(void){
+    char op;
+    printf("oq alterar? 1.servico  2.data e horario 3.situacao ");
+    op = opcao();
+    return op;
+}
 ///////////////////////////////////////////////////////////OPERACOES////////////////////////////////////////////////////////////////////////////////
 
 int cadastrarAgendamento(void){
     int encontrado = False;
     Agendamento* a;
     a = (Agendamento*) malloc(sizeof(Agendamento));
-
-    FILE *agen;
 
     system("clear");
     listarClientes();
@@ -167,9 +175,9 @@ int cadastrarAgendamento(void){
     free(idCliente);
 
     FILE *cli = fopen("clientes.dat", "rb");
-    cliente c; 
-    while ((fread(&c, sizeof(cliente), 1, cli)) && (!encontrado)) {
-        if (strcmp(c.servId, a->clienteId) == 0) {
+    Cliente c; 
+    while ((fread(&c, sizeof(Cliente), 1, cli)) && (!encontrado)) {
+        if (strcmp(c.id, a->clienteId) == 0) {
 
             strcpy(a->clienteNome, c.nome);
             fclose(cli);
@@ -187,7 +195,7 @@ int cadastrarAgendamento(void){
     FILE *serv = fopen("Servicos.dat", "rb");
     Servico s; 
     while ((fread(&s, sizeof(Servico), 1, serv)) && (!encontrado)) {
-        if (strcmp(s.servId, a->servicoId) == 0) {
+        if (strcmp(s.id, a->servicoId) == 0) {
             a->preco = s.preco;
             strcpy(a->servicoNome, s.nome);
             fclose(serv);
@@ -228,7 +236,6 @@ int cadastrarAgendamento(void){
     return 0;
 }
 
-
 int atualizarAgendamento(void){
     Agendamento* a;
     a = (Agendamento*) malloc(sizeof(Agendamento));
@@ -238,11 +245,9 @@ int atualizarAgendamento(void){
     listarAgendamentos();
     char *qualAgendamento = lerIdAgendamento();
 
-    FILE *agen;
-
     FILE *agen = fopen("agendamentos.dat", "r+b");
     while((fread(a, sizeof(Agendamento), 1, agen)) && (!encontrado)){
-        if((qualAgendamento == a->agenId) && (a->status) && (strcpm(a->situacao, "Pendente") == 0)){
+        if((strcmp(qualAgendamento, a->agenId) == 0) && (a->status) && (strcmp(a->situacao, "Pendente") == 0)){
             do{
                 oqAlterar = telaOqAlterar();
                 switch (oqAlterar)
@@ -256,7 +261,7 @@ int atualizarAgendamento(void){
                     FILE *serv = fopen("Servicos.dat", "rb");
                     Servico s; 
                     while ((fread(&s, sizeof(Servico), 1, serv)) && (!encontrado)) {
-                        if (strcmp(s.servId, a->servicoId) == 0) {
+                        if (strcmp(s.id, a->servicoId) == 0) {
                             a->preco = s.preco;
                             strcpy(a->servicoNome, s.nome);
                             fclose(serv);
@@ -289,17 +294,17 @@ int atualizarAgendamento(void){
                     break;
 
                 default:
-                    opInvalida();
+                    opcaoInvalida();
                     break;
                 }
             }while(oqAlterar != '1' && oqAlterar != '2' && oqAlterar != '3' && oqAlterar != '0');
             fseek(agen, (-1)*sizeof(Agendamento), SEEK_CUR);
-            fwrite(agen, sizeof(Agendamento), 1, agen);
+            fwrite(a, sizeof(Agendamento), 1, agen);
             encontrado = True;
-        } else if ((qualAgendamento == a->agenId) && (!a->status)){
+        } else if ((strcmp(qualAgendamento, a->agenId) == 0) && (!a->status)){
             printf("Agendamento foi excluído, impossível alterar");
             encontrado = True;
-        }
+        } 
     }
     fclose(agen);
     free(a);
@@ -384,7 +389,7 @@ int excluirAgendamento(void){
             printf("AGENDAMENTO ID: %s\nID CLIENTE: %s\nDATA: %s\nHORA: %s\nSERVICO: %s\nSITUAÇÃO: %s\n", a->agenId, a->clienteId, a->data, a->horario, a->servicoId, a->situacao);
             a->status = False;
             fseek(agen, (-1)*sizeof(Agendamento), SEEK_CUR);
-            fwrite(agen, sizeof(Agendamento), 1, agen);
+            fwrite(a, sizeof(Agendamento), 1, agen);
             encontrado = True;
 
         } else if((qual == a->agenId) && (!a->status)){
@@ -471,68 +476,10 @@ int idExisteAgendamento(char *idStr) {
 }
 
 
-int idExisteServico(char *idStr) {
-    FILE *fp = fopen("Servicos.dat", "rb");
-    if (!fp) return False; // arquivo não existe ainda, ID livre
 
-    Servico s; 
-    while (fread(&s, sizeof(Servico), 1, fp)) {
-        if (strcmp(s.servId, idStr) == 0) {
-            fclose(fp);
-            return True; // ID duplicado
-        }
-    }
-
-    fclose(fp);
-    return False; // ID não existe
-}
-
-
-int idExisteCliente(char *idStr) {
-    FILE *fp = fopen("clientes.dat", "rb");
-    if (!fp) return False; // arquivo não existe ainda, ID livre
-
-    Cliente c; 
-    while (fread(&c, sizeof(Cliente), 1, fp)) {
-        if (strcmp(c.id, idStr) == 0) {
-            fclose(fp);
-            return True; // ID duplicado
-        }
-    }
-
-    fclose(fp);
-    return False; // ID não existe
-}
-
-
-char* gerarIdCliente(void) {
-    char *idStr = malloc(5 * sizeof(char)); // 4 dígitos + '\0'
-    if (!idStr) return NULL;
-
-    int id;
-    do {
-        id = rand() % 9000 + 1000; // gera 1000–9999
-        sprintf(idStr, "%d", id);
-    } while (idExisteCliente(idStr));
-
-    return idStr;
-}
-
-char* gerarIdServico(void) {
-    char *idStr = malloc(5 * sizeof(char)); // 4 dígitos + '\0'
-    if (!idStr) return NULL;
-
-    int id;
-    do {
-        id = rand() % 9000 + 1000; // gera 1000–9999
-        sprintf(idStr, "%d", id);
-    } while (idExisteCliente(idStr));
-
-    return idStr;
-}
 
 char* gerarIdAgendamento(void) {
-    char *idStr = malloc(5 * sizeof(char)); // 4 dígitos + '\0'
+    char *idStr = malloc(10 * sizeof(char)); // 4 dígitos + '\0'
     if (!idStr) return NULL;
 
     int id;
