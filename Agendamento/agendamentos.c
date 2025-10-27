@@ -33,6 +33,10 @@ char modAgendamento(void){
             break;
 
         case '4':
+            telaListarAgendamento();
+            break;
+
+        case '5':
             telaExcluirAgendamento();
             break;
 
@@ -50,21 +54,18 @@ char modAgendamento(void){
 
 char menuAgendamento(void){
     char op;
-
-    printf("ÁREA DO Agendamento\n");
-    printf("___________________");
-    printf("1.cadastrar\n");
-    printf("2.atualizar\n");
-    printf("3.pesquisar\n");
-    printf("4.listar\n");
-    printf("5.excluir\n");
-    printf("0.sair\n");
-
+    printf("╭──────────────────────────────────────────────╮\n");
+    printf("│              ÁREA DO AGENDAMENTO             │\n");
+    printf("├──────────────────────────────────────────────┤\n");
+    printf("│  [1] CADASTRAR                               │\n" );
+    printf("│  [2] ATUALIZAR                               │\n");
+    printf("│  [3] PESQUISAR                               │\n");
+    printf("│  [4] LISTAR                                  │\n");
+    printf("│  [5] EXCLUIR                                 │\n");
+    printf("│  [0] SAIR                                    │\n");
+    printf("╰──────────────────────────────────────────────╯\n");
     op = opcao();
-
     return op;
-
-
 }
 
 void telaCadastrarAgendamento(void){
@@ -97,12 +98,27 @@ void telaCadastrarAgendamento(void){
 }
 
 void telaAtualizarAgendamento(void){
+    printf("╭──────────────────────────────────────────────╮\n");
+    printf("│             ATUALIZAR AGENDAMENTO            │\n");
+    printf("├──────────────────────────────────────────────┤\n");
+    printf("│   A operação de atualização só será efetiva  │\n" );
+    printf("│   se o agendamento estiver pendente e com o  │\n");
+    printf("│   status ativo.                              │\n");
+    printf("╰──────────────────────────────────────────────╯\n");
     atualizarAgendamento();
+    esperarEnter();
     
 }
 
 void telaPesquisarAgendamento(void){
+    printf("╭──────────────────────────────────────────────╮\n");
+    printf("│             PESQUISAR AGENDAMENTO            │\n");
+    printf("├──────────────────────────────────────────────┤\n");
+    printf("│   Para pesquisar um agendamento, informe o   │\n" );
+    printf("│   número do ID do mesmo.                     │\n");
+    printf("╰──────────────────────────────────────────────╯\n");
     pesquisarAgendamento();
+    esperarEnter();
     
 }
 
@@ -139,25 +155,39 @@ void telaExcluirAgendamento(void){
     printf("|ENTER| para sair\n");
 
     esperarEnter();
-
-
     
+}
+
+void telaListarAgendamentos(void){
+    printf("╭──────────────────────────────────────────────╮\n");
+    printf("│              LISTAR AGENDAMENTOS             │\n");
+    listarAgendamentos();
+    printf("╰──────────────────────────────────────────────╯\n");
+
 }
 
 
 char telaSituacao(void){
     char op;
-    printf("Qual a nova situação do agendamento?\n");
-    printf("1.Concluído\n");
-    printf("2.Cancelado\n");
-    printf("0.Sair\n");
+    printf("╭──────────────────────────────────────────────╮\n");
+    printf("│      QUAL A NOVA SITUAÇÃO DO AGENDAMENTO?    │\n");
+    printf("├──────────────────────────────────────────────┤\n");
+    printf("│  [1] CONCLUÍDO                               │\n" );
+    printf("│  [2] CANCELADO                               │\n");
+    printf("╰──────────────────────────────────────────────╯\n");
     op = opcao();
     return op;
 }
 
 char telaOqAlterar(void){
     char op;
-    printf("oq alterar? 1.servico  2.data e horario 3.situacao ");
+    printf("╭──────────────────────────────────────────────╮\n");
+    printf("│            O QUE DESEJA ATUALIZAR?           │\n");
+    printf("├──────────────────────────────────────────────┤\n");
+    printf("│  [1] SERVIÇO                                 │\n" );
+    printf("│  [2] DATA E HORÁRIO                          │\n");
+    printf("│  [3] SITUAÇÃO                                │\n");
+    printf("╰──────────────────────────────────────────────╯\n");
     op = opcao();
     return op;
 }
@@ -169,7 +199,7 @@ int cadastrarAgendamento(void){
     a = (Agendamento*) malloc(sizeof(Agendamento));
 
     system("clear");
-    listarClientes();
+    telaListarClientes();
     char *idCliente = lerIdCliente();
     strcpy(a->clienteId, idCliente);
     free(idCliente);
@@ -187,7 +217,7 @@ int cadastrarAgendamento(void){
     fclose(cli);
     
     system("clear");
-    listarServicos();
+    telaListarServicos();
     char *idServico = lerIdServico();
     strcpy(a->servicoId, idServico);
     free(idServico);
@@ -242,7 +272,7 @@ int atualizarAgendamento(void){
     int encontrado = False;
     char oqAlterar;
     
-    listarAgendamentos();
+    telaListarAgendamentos();
     char *qualAgendamento = lerIdAgendamento();
 
     FILE *agen = fopen("agendamentos.dat", "r+b");
@@ -332,8 +362,17 @@ int pesquisarAgendamento(void){
     char *qual = lerIdAgendamento();
 
     while((fread(a, sizeof(Agendamento), 1, agen)) && (!encontrado)){//quando pesquisar, mostrar nome e data de nascimento do cliente e o valor do serviço
-        if((qual == a->agenId) && (a->status)){
-            printf("AGENDAMENTO ID: %s\nID CLIENTE: %s\nNOME CLIENTE: %s\nDATA: %s\nHORA: %s\nID SERVICO: %s\nNOME SERVICO: %s\nVALOR SERVICO: R$%.2f\nSITUAÇÃO: %s\n", a->agenId, a->clienteNome, a->clienteId, a->data, a->horario, a->servicoId, a->servicoNome, a->preco, a->situacao);
+        if((strcmp(qual, a->agenId) == 0) && (a->status)){
+            printf("├──────────────────────────────────────────────┤\n");
+            printf("│ ID Agendamento: %-38s │\n", a->agenId);
+            printf("│ ID Cliente: %-43s │\n", a->clienteId);
+            printf("│ Nome Cliente: %-41s │\n", a->clienteNome);
+            printf("│ ID Serviço: %-43s │\n", a->servicoId);
+            printf("│ Nome Serviço: %-41s │\n", a->servicoNome);
+            printf("│ Data: %-48s │\n", a->data);
+            printf("│ Horário: %-45s │\n", a->horario);
+            printf("│ Preço: %-46.2f │\n", a->preco);
+            printf("│ Situação: %-43s │\n", a->situacao);
             encontrado = True;
         } else if((qual == a->agenId) && (!a->status)){
             printf("AGENDAMENTO excluido\n");
@@ -361,7 +400,12 @@ int listarAgendamentos(void){
 
     while(fread(a, sizeof(Agendamento), 1, agen)){
         if(a->status){
-            printf("AGENDAMENTO ID: %s\nID CLIENTE: %s\nDATA: %s\nHORA: %s\nID SERVICO: %s\nSITUAÇÃO: %s\n", a->agenId, a->clienteId, a->data, a->horario, a->servicoId, a->situacao);
+            printf("├──────────────────────────────────────────────┤\n");
+            printf("│ ID Agendamento: %-38s │\n", a->agenId);
+            printf("│ ID Cliente: %-43s │\n", a->clienteId);
+            printf("│ ID Serviço: %-43s │\n", a->servicoId);
+            printf("│ Nome Serviço: %-41s │\n", a->servicoNome);
+            printf("│ Situação: %-43s │\n", a->situacao);
         }
     }
     fclose(agen);
