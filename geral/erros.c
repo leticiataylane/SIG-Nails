@@ -7,14 +7,12 @@
 
 void opcaoInvalida(void){
     printf("Opção inválida! Tente novamente.\n");
-    printf("Pressione ENTER para continuar...");
     esperarEnter();
     return;
 }
 
 void dadosInvalidos(void){
     printf("Dado inválido! Tente novamente.\n");
-    printf("Pressione ENTER para continuar...");
     esperarEnter();
     return;
 }
