@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include "telas_servicos.h"
 #include "ler_dados.h"
 #include "limpeza.h"
@@ -128,7 +129,7 @@ void cadastrarServico() {
 
     s.status = 1;
 
-    fp = fopen("servicos.dat", "ab");
+    FILE *fp = fopen("servicos.dat", "ab");
     if (!fp) {
         printf("Erro ao abrir o arquivo!\n");
         esperarEnter();
@@ -302,7 +303,7 @@ int idExisteServico(char *idStr) {
     return False; // ID não existe
 }
 
-// int main() {
-//     menuServico();
-//     return 0;
-// }
+int main() {
+    menuServico();
+    return 0;
+}
