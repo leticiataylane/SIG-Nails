@@ -32,10 +32,13 @@ int excluirAgendamentoDefinitivo(void);
 
 
 char menuAgendamento(void);
+
 void telaCadastrarAgendamento(void);
 void telaAtualizarAgendamento(void);
 void telaPesquisarAgendamento(void);
+void telaListarAgendamentos(void);
 void telaExcluirAgendamento(void);
+
 char telaSituacao(void);
 
 char* gerarIdAgendamento(void);

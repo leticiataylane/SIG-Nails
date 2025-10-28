@@ -33,7 +33,7 @@ char modAgendamento(void){
             break;
 
         case '4':
-            telaListarAgendamento();
+            telaListarAgendamentos();
             break;
 
         case '5':
@@ -124,14 +124,14 @@ void telaPesquisarAgendamento(void){
 
 void telaExcluirAgendamento(void){
     char op;
-    printf("╭──────────────────────────────────────────────╮\n");
-    printf("│              EXCLUIR AGENDAMENTO             │\n");
-    printf("├──────────────────────────────────────────────┤\n");
-    printf("│   [1] Exclusão Lógica                        │\n");
-    printf("│   [2] Exclusão definitiva                    │\n");
-    printf("│   [0] Sair                                   │\n");
-    printf("╰──────────────────────────────────────────────╯\n");
     do{
+        printf("╭──────────────────────────────────────────────╮\n");
+        printf("│              EXCLUIR AGENDAMENTO             │\n");
+        printf("├──────────────────────────────────────────────┤\n");
+        printf("│   [1] Exclusão Lógica                        │\n");
+        printf("│   [2] Exclusão definitiva                    │\n");
+        printf("│   [0] Sair                                   │\n");
+        printf("╰──────────────────────────────────────────────╯\n");
         op = opcao();
         switch (op)
         {
@@ -152,17 +152,16 @@ void telaExcluirAgendamento(void){
         }
     }while (op != '0');
 
-    printf("|ENTER| para sair\n");
-
     esperarEnter();
     
 }
 
 void telaListarAgendamentos(void){
     printf("╭──────────────────────────────────────────────╮\n");
-    printf("│              LISTAR AGENDAMENTOS             │\n");
+    printf("│             LISTA DE AGENDAMENTOS            │\n");
     listarAgendamentos();
     printf("╰──────────────────────────────────────────────╯\n");
+    esperarEnter();
 
 }
 
@@ -187,6 +186,7 @@ char telaOqAlterar(void){
     printf("│  [1] SERVIÇO                                 │\n" );
     printf("│  [2] DATA E HORÁRIO                          │\n");
     printf("│  [3] SITUAÇÃO                                │\n");
+    printf("│  [0] Sair                                    │\n");
     printf("╰──────────────────────────────────────────────╯\n");
     op = opcao();
     return op;
@@ -199,36 +199,43 @@ int cadastrarAgendamento(void){
     a = (Agendamento*) malloc(sizeof(Agendamento));
 
     system("clear");
-    telaListarClientes();
+    listarClientes();
     char *idCliente = lerIdCliente();
     strcpy(a->clienteId, idCliente);
     free(idCliente);
 
     FILE *cli = fopen("clientes.dat", "rb");
+    if (cli == NULL) {
+        printf("Erro: arquivo de clientes não encontrado!\n");
+        free(a);
+        return 1;
+    }
     Cliente c; 
     while ((fread(&c, sizeof(Cliente), 1, cli)) && (!encontrado)) {
         if (strcmp(c.id, a->clienteId) == 0) {
-
             strcpy(a->clienteNome, c.nome);
-            fclose(cli);
             encontrado = True;
         }
     }
     fclose(cli);
-    
+    encontrado = False;
     system("clear");
-    telaListarServicos();
+    listarServicos();
     char *idServico = lerIdServico();
     strcpy(a->servicoId, idServico);
     free(idServico);
 
     FILE *serv = fopen("Servicos.dat", "rb");
+    if (serv == NULL) {
+        printf("Erro: arquivo de serviços não encontrado!\n");
+        free(a);
+        return 1;
+    }
     Servico s; 
     while ((fread(&s, sizeof(Servico), 1, serv)) && (!encontrado)) {
         if (strcmp(s.id, a->servicoId) == 0) {
             a->preco = s.preco;
             strcpy(a->servicoNome, s.nome);
-            fclose(serv);
             encontrado = True;
         }
     }
@@ -266,81 +273,113 @@ int cadastrarAgendamento(void){
     return 0;
 }
 
-int atualizarAgendamento(void){
-    Agendamento* a;
-    a = (Agendamento*) malloc(sizeof(Agendamento));
+int atualizarAgendamento(void) {
+    Agendamento* a = malloc(sizeof(Agendamento));
+    if (a == NULL) {
+        perror("Erro ao alocar memória para Agendamento");
+        return 1;
+    }
+
     int encontrado = False;
     char oqAlterar;
-    
+    FILE *agen = fopen("agendamentos.dat", "r+b");
+    if (agen == NULL) {
+        perror("Erro ao abrir agendamentos.dat");
+        free(a);
+        return 1;
+    }
     telaListarAgendamentos();
+
     char *qualAgendamento = lerIdAgendamento();
 
-    FILE *agen = fopen("agendamentos.dat", "r+b");
-    while((fread(a, sizeof(Agendamento), 1, agen)) && (!encontrado)){
-        if((strcmp(qualAgendamento, a->agenId) == 0) && (a->status) && (strcmp(a->situacao, "Pendente") == 0)){
-            do{
+
+    while ((fread(a, sizeof(Agendamento), 1, agen)) && (!encontrado)) {
+        if ((strcmp(qualAgendamento, a->agenId) == 0) && (a->status) && (strcmp(a->situacao, "Pendente") == 0)) {
+
+            do {
                 oqAlterar = telaOqAlterar();
-                switch (oqAlterar)
-                {
-                case '1':
-                    system("clear");
-                    listarServicos();
-                    char *idServico = lerIdServico();
-                    strcpy(a->servicoId, idServico);
-                    free(idServico);
-                    FILE *serv = fopen("Servicos.dat", "rb");
-                    Servico s; 
-                    while ((fread(&s, sizeof(Servico), 1, serv)) && (!encontrado)) {
-                        if (strcmp(s.id, a->servicoId) == 0) {
-                            a->preco = s.preco;
-                            strcpy(a->servicoNome, s.nome);
-                            fclose(serv);
-                            encontrado = True;
+
+                switch (oqAlterar) {
+                    case '1': { // alterar serviço
+                        system("clear");
+                        listarServicos();
+                        char *idServico = lerIdServico();
+                        strcpy(a->servicoId, idServico);
+                        free(idServico);
+
+                        FILE *serv = fopen("Servicos.dat", "rb");
+                        if (serv == NULL) {
+                            perror("Erro ao abrir Servicos.dat");
+                            break;
                         }
+
+                        Servico s;
+                        int encontradoServico = False;
+
+                        while ((fread(&s, sizeof(Servico), 1, serv)) && (!encontradoServico)) {
+                            if (strcmp(s.id, a->servicoId) == 0) {
+                                a->preco = s.preco;
+                                strcpy(a->servicoNome, s.nome);
+                                encontradoServico = True;
+                            }
+                        }
+                        fclose(serv);
+                        oqAlterar = '0';
+                        break;
                     }
-                    fclose(serv);
-                    break;
 
-                case '2':
-                    char *data = lerData();
-                    strcpy(a->data, data);
-                    free(data);
-                    system("clear");
+                    case '2': { // alterar data e horário
+                        char *data = lerData();
+                        strcpy(a->data, data);
+                        free(data);
 
-                    char *horario = lerHorario();
-                    strcpy(a->horario, horario);
-                    free(horario);
-                    break;
-
-                case '3':
-                    char *situacao = lerSituacao(a->horario, a->data, a->situacao);
-                    if(situacao != NULL){
-                        strcpy(a->situacao, situacao);
-                        free(situacao);
+                        system("clear");
+                        char *horario = lerHorario();
+                        strcpy(a->horario, horario);
+                        free(horario);
+                        oqAlterar = '0';
+                        break;
                     }
-                    break;
 
-                case '0':
-                    break;
+                    case '3': { // alterar situação
+                        char *situacao = lerSituacao(a->horario, a->data, a->situacao);
+                        if (situacao != NULL) {
+                            strncpy(a->situacao, situacao, sizeof(a->situacao));
+                            a->situacao[sizeof(a->situacao) - 1] = '\0';
+                            free(situacao);
+                        }
+                        oqAlterar = '0';
+                        break;
+                    }
 
-                default:
-                    opcaoInvalida();
-                    break;
-                }
-            }while(oqAlterar != '1' && oqAlterar != '2' && oqAlterar != '3' && oqAlterar != '0');
-            fseek(agen, (-1)*sizeof(Agendamento), SEEK_CUR);
+                    case '0':
+                        break;
+
+                    default:
+                        opcaoInvalida();
+                        break;
+                    }
+
+            } while (oqAlterar != '0');
+
+            fseek(agen, (-1) * sizeof(Agendamento), SEEK_CUR);
             fwrite(a, sizeof(Agendamento), 1, agen);
             encontrado = True;
-        } else if ((strcmp(qualAgendamento, a->agenId) == 0) && (!a->status)){
-            printf("Agendamento foi excluído, impossível alterar");
+
+        } else if ((strcmp(qualAgendamento, a->agenId) == 0) && (!a->status)) {
+            printf("Agendamento foi excluído, impossível alterar\n");
             encontrado = True;
-        } 
+        }
     }
+
     fclose(agen);
     free(a);
-    if(!encontrado){
-        printf("Nao encontrado");
+    free(qualAgendamento);
+
+    if (!encontrado) {
+        printf("Agendamento não encontrado\n");
     }
+
     return 0;
 }
 
@@ -358,21 +397,23 @@ int pesquisarAgendamento(void){
         free(a);
         return False;
     }
-    listarAgendamentos();
+    telaListarAgendamentos();
     char *qual = lerIdAgendamento();
 
     while((fread(a, sizeof(Agendamento), 1, agen)) && (!encontrado)){//quando pesquisar, mostrar nome e data de nascimento do cliente e o valor do serviço
         if((strcmp(qual, a->agenId) == 0) && (a->status)){
+            printf("╭──────────────────────────────────────────────╮\n");
+            printf("│              AGENDAMENTO: %s               │\n", a->agenId);
             printf("├──────────────────────────────────────────────┤\n");
-            printf("│ ID Agendamento: %-38s │\n", a->agenId);
-            printf("│ ID Cliente: %-43s │\n", a->clienteId);
-            printf("│ Nome Cliente: %-41s │\n", a->clienteNome);
-            printf("│ ID Serviço: %-43s │\n", a->servicoId);
-            printf("│ Nome Serviço: %-41s │\n", a->servicoNome);
-            printf("│ Data: %-48s │\n", a->data);
-            printf("│ Horário: %-45s │\n", a->horario);
-            printf("│ Preço: %-46.2f │\n", a->preco);
-            printf("│ Situação: %-43s │\n", a->situacao);
+            printf("│ ID Cliente: %-32s │\n", a->clienteId);
+            printf("│ Nome Cliente: %-30s │\n", a->clienteNome);
+            printf("│ ID Serviço: %s                             │\n", a->servicoId);
+            printf("│ Nome Serviço: %-30s │\n", a->servicoNome);
+            printf("│ Data: %.2s/%.2s/%.4s                             │\n", a->data, a->data + 2, a->data + 4);
+            printf("│ Horário: %.2sh%.2sm                              │\n", a->horario, a->horario + 2);
+            printf("│ Preço: R$ %.2f                              │\n", a->preco);
+            printf("│ Situação: %-34s │\n", a->situacao);
+            printf("╰──────────────────────────────────────────────╯\n");
             encontrado = True;
         } else if((qual == a->agenId) && (!a->status)){
             printf("AGENDAMENTO excluido\n");
@@ -392,63 +433,87 @@ int pesquisarAgendamento(void){
 
 
 int listarAgendamentos(void){
+    int cont = 0;
     Agendamento* a;
     a = (Agendamento*) malloc(sizeof(Agendamento));
     FILE *agen;
 
     agen = fopen("agendamentos.dat","rb");
+    if(agen == NULL){
+        printf("├──────────────────────────────────────────────┤\n");
+        printf("│    Não existem agendamentos cadastrados.     │\n");
+        free(a);
+        return cont;
+    }
 
     while(fread(a, sizeof(Agendamento), 1, agen)){
         if(a->status){
             printf("├──────────────────────────────────────────────┤\n");
-            printf("│ ID Agendamento: %-38s │\n", a->agenId);
-            printf("│ ID Cliente: %-43s │\n", a->clienteId);
-            printf("│ ID Serviço: %-43s │\n", a->servicoId);
-            printf("│ Nome Serviço: %-41s │\n", a->servicoNome);
-            printf("│ Situação: %-43s │\n", a->situacao);
+            printf("│ ID Agendamento: %-28s │\n", a->agenId);
+            printf("│ ID Cliente: %-32s │\n", a->clienteId);
+            printf("│ ID Serviço: %-32s │\n", a->servicoId);
+            printf("│ Nome Serviço: %-30s │\n", a->servicoNome);
+            printf("│ Situação: %-34s │\n", a->situacao);
+            cont += 1;
         }
     }
     fclose(agen);
     free(a);
-    return 0;
+    return cont;
 }
 
 
 int excluirAgendamento(void){
-    Agendamento* a;
-    a = (Agendamento*) malloc(sizeof(Agendamento));
-    FILE *agen;
-
+    Agendamento a;
     int encontrado = False;
 
+    FILE *agen = fopen("agendamentos.dat", "r+b");
+    if (agen == NULL) {
+        printf("Erro ao abrir agendamentos.dat");
+        return 1;
+    }
 
-    listarAgendamentos();
+    telaListarAgendamentos();
     char *qual = lerIdAgendamento();
 
 
-    agen = fopen("agendamentos.dat","r+b");
+    while (fread(&a, sizeof(Agendamento), 1, agen) == 1 && !encontrado) {
+        if ((strcmp(qual, a.agenId) == 0) && a.status && strcmp(a.situacao, "Pendente") != 0) {
+            printf("╭──────────────────────────────────────────────╮\n");
+            printf("│              AGENDAMENTO: %s               │\n", a.agenId);
+            printf("├──────────────────────────────────────────────┤\n");
+            printf("│ ID Cliente: %-32s │\n", a.clienteId);
+            printf("│ Nome Cliente: %-30s │\n", a.clienteNome);
+            printf("│ ID Serviço: %s                             │\n", a.servicoId);
+            printf("│ Nome Serviço: %-30s │\n", a.servicoNome);
+            printf("│ Data: %.2s/%.2s/%.4s                             │\n", a.data, a.data + 2, a.data + 4);
+            printf("│ Horário: %.2sh%.2sm                              │\n", a.horario, a.horario + 2);
+            printf("│ Preço: R$ %.2f                              │\n", a.preco);
+            printf("│ Situação: %-34s │\n", a.situacao);
+            printf("╰──────────────────────────────────────────────╯\n");
+            a.status = False;
+            fseek(agen, -sizeof(Agendamento), SEEK_CUR);
+            fwrite(&a, sizeof(Agendamento), 1, agen);
+            encontrado = True;
+            printf("Agendamento excluído com sucesso.\n");
 
-    while((fread(a, sizeof(Agendamento), 1, agen)) && (!encontrado)){
-        if((qual == a->agenId) && (a->status) && (strcmp(a->situacao, "Pendente") != 0)){
-            printf("AGENDAMENTO ID: %s\nID CLIENTE: %s\nDATA: %s\nHORA: %s\nSERVICO: %s\nSITUAÇÃO: %s\n", a->agenId, a->clienteId, a->data, a->horario, a->servicoId, a->situacao);
-            a->status = False;
-            fseek(agen, (-1)*sizeof(Agendamento), SEEK_CUR);
-            fwrite(a, sizeof(Agendamento), 1, agen);
+        } else if ((strcmp(qual, a.agenId) == 0) && !a.status) {
+            printf("Agendamento já foi excluído.\n");
             encontrado = True;
 
-        } else if((qual == a->agenId) && (!a->status)){
-            printf("Agendamento já foi excluído");
-            encontrado = True;
-        }else if((qual == a->agenId) && (a->status) && (strcmp(a->situacao, "Pendente") == 0)){
-            printf("Agendamento não pode ser excluído enquanto se encontra pendente. Atualize a situação antes de excluir.\n");
+        } else if ((strcmp(qual, a.agenId) == 0) && a.status && strcmp(a.situacao, "Pendente") == 0) {
+            printf("Agendamento não pode ser excluído enquanto estiver pendente.\n");
+            printf("Atualize a situação antes de excluir.\n");
             encontrado = True;
         }
     }
-    free(qual); 
+
     fclose(agen);
-    free(a);
-    if(!encontrado){
-        printf("Não encontrado");
+    free(qual);
+
+    if (!encontrado) {
+        printf("Agendamento não encontrado.\n");
+        return 2;
     }
 
     return 0;
@@ -457,14 +522,14 @@ int excluirAgendamento(void){
 
 int excluirAgendamentoDefinitivo(void) {
     FILE *agen, *agenTemp;
-    Agendamento* a;
-    a = (Agendamento*) malloc(sizeof(Agendamento));
+    Agendamento* a = (Agendamento*) malloc(sizeof(Agendamento));
 
     int encontrado = False;
 
-    agen = fopen("Agendamentos.dat", "rb");
+    agen = fopen("agendamentos.dat", "rb");
     if (agen == NULL) {
         printf("Erro: não foi possível abrir o arquivo original.\n");
+        free(a);
         return 1;
     }
 
@@ -472,32 +537,36 @@ int excluirAgendamentoDefinitivo(void) {
     if (agenTemp == NULL) {
         printf("Erro: não foi possível criar o arquivo temporário.\n");
         fclose(agen);
+        free(a);
         return 1;
     }
 
+    telaListarAgendamentos();
     char *id = lerIdAgendamento();
 
-    while (fread(a, sizeof(Agendamento), 1, agen)) {
+    while (fread(a, sizeof(Agendamento), 1, agen) == 1) {
         if ((strcmp(a->agenId, id) == 0) && (strcmp(a->situacao, "Pendente") != 0)) {
             encontrado = True;
             printf("Agendamento encontrado e excluído: %s\n", a->agenId);
         } else {
-            fwrite(&a, sizeof(Agendamento), 1, agenTemp);
+            fwrite(a, sizeof(Agendamento), 1, agenTemp);
         }
     }
 
     fclose(agen);
     fclose(agenTemp);
 
-    // Se encontrou, substitui o arquivo original
     if (encontrado) {
         remove("agendamentos.dat");
         rename("temp.dat", "agendamentos.dat");
         printf("Exclusão realizada com sucesso.\n");
     } else {
         remove("temp.dat");
-        printf("Nenhum agendamento encontrado com o id informado.\n");
+        printf("Nenhum agendamento encontrado com o ID informado ou situação inválida.\n");
     }
+
+    free(a);
+    free(id);
 
     return 0;
 }
