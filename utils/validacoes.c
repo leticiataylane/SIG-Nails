@@ -399,13 +399,16 @@ int validaSituacao(const char* horario, const char* data, const char* situacao, 
 
     if(strcmp(situacao, "Pendente") != 0) return False;
     if(op == '1'){
-        if (dataAgen > dataAtual)
+        if (dataAgen > dataAtual){
+            printf("Impossível marcar como concluído no momento, tente novamente 2h após a conclusão do serviço.\n");//print temporario
             return False;
-
+        }
         // se é o mesmo dia, precisa ter passado pelo menos 2h
         if (dataAgen == dataAtual) {
-            if ((minutosAtuais - minutosAgen) < 120)
+            if ((minutosAtuais - minutosAgen) < 120){
+                printf("Impossível marcar como concluído no momento, tente novamente 2h após a conclusão do serviço.\n");//print temporario
                 return False;
+            }
         }
         return True;
         
@@ -414,10 +417,12 @@ int validaSituacao(const char* horario, const char* data, const char* situacao, 
             return True;
         }
         if (dataAtual == dataAgen) {
-            if ((minutosAgen - minutosAtuais) >= 120)
-                return True; 
-            else
+            if ((minutosAgen - minutosAtuais) >= 120){
+                return True;
+            }else{
+                printf("Impossível marcar como cancelado, cancelamento com mínimo de 2h de antecedência\n");//print temporario
                 return False;
+            }
         }
         return False;
     }

@@ -99,7 +99,6 @@ char* lerIdade(void){
         nascimento = lerNascimento();
         valido = validaIdade(nascimento);
         if(!valido){
-            system("clear");
             printf("Idade invalida para contratação. Aceitamos novos funcionários de 18 a 66 anos de idade.\n");
             free(nascimento);
         }
@@ -173,11 +172,10 @@ char* lerEmail(void){
 float lerDinheiro(void){
     char *dinheiroChar = NULL;
     float dinheiro = 0;
-    int j = 0;
+
     
     dinheiroChar = lerString("Digite o valor:\n");
     limpaNum(dinheiroChar);
-    dinheiroChar[j] = '\0';
 
     dinheiro = atof(dinheiroChar);
     free(dinheiroChar);
@@ -249,32 +247,26 @@ char* lerIdCliente(void){
 }
 
 
-char* lerSituacao(const char* horario, const char* data, const char* situacao){
+char* lerSituacao(const char* horario, const char* data, const char* situacao) {
     char *novaSituacao = NULL;
     char op;
-    int valido = 0; 
-    do{
-        op = telaSituacao();
-        valido = validaSituacao(horario, data, situacao, op);
-        if(valido){
-            switch (op)
-            {
+    int valido = 0;
+
+    op = telaSituacao();  // mostra opções (1 - Concluído, 2 - Cancelado, etc.)
+    valido = validaSituacao(horario, data, situacao, op);
+
+    if (valido) {
+        switch (op) {
             case '1':
                 strcpy(novaSituacao, "Concluído");
                 break;
-
             case '2':
                 strcpy(novaSituacao, "Cancelado");
-                break;
-            case '0':
                 break;
             default:
                 opcaoInvalida();
                 break;
-            }
         }
-    }while((op != '0') && (!valido));
-
+    }
     return novaSituacao;
 }
-
