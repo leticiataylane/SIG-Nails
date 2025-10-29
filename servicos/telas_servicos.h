@@ -8,6 +8,7 @@ typedef struct Servico {
     int status;
 } Servico;
 
+<<<<<<< HEAD
 
 char menuServico(void);
 char modServico(void);
@@ -26,5 +27,23 @@ void telaAtualizarServico(void);
 void telaPesquisarServico(void);
 void telaExcluirServico(void);
 void telaListarServico(void);
+=======
+char menuServico(void);
+char modServico(void);
+void atualizarCSVServicos();
+void cadastrarServico();
+void listarServicos();
+void atualizarServico();
+void excluirServico();
+char* gerarIdServico(void);
+int idExisteServico(char *idStr);
+>>>>>>> 48fee429b30f026078cbcd427d933508d8c35027
 
+
+
+void telaCadastrarServico(void);
+void telaAtualizarServico(void);
+void telaPesquisarServico(void);
+void telaExcluirServico(void);
+void telaListarServico(void);
 #endif

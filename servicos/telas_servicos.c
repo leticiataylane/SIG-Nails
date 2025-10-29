@@ -301,3 +301,8 @@ int idExisteServico(char *idStr) {
     fclose(fp);
     return False; // ID não existe
 }
+
+// int main() {
+//     menuServico();
+//     return 0;
+// }
