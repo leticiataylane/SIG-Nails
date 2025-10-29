@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include "telas_clientes.h"
-#include "telas_servicos.h"
 #include "validacoes.h"
 #include "ler_dados.h"
 #include "erros.h"
@@ -25,11 +24,8 @@ char modCliente(void){
         case '3':
             telaPesquisarCliente();
             break;
-        case '4':
-            telaPesquisarCliente();
-            break;
 
-        case '5':
+        case '4':
             telaExcluirCliente();
             break;
 
@@ -49,7 +45,6 @@ char modCliente(void){
 
 void telaCadastrarCliente(void){
     printf("dados necessários para cadastro:\n");
-    cadastrarCliente();
     printf("|ENTER| para sair\n");
 
     esperarEnter();
@@ -82,7 +77,6 @@ void telaExcluirCliente(void){
 
 void telaListarCliente(void){
     printf("nome e data de nascimento para pesquisa:\n");
-    listarClientes();
     printf("|ENTER| para sair\n");
 
     esperarEnter();
@@ -295,6 +289,35 @@ char menuCliente() {
     op = opcao();
     return op;
         
+}
+
+char* gerarIdCliente(void) {
+    char *idStr = malloc(10 * sizeof(char)); // 4 dígitos + '\0'
+    if (!idStr) return NULL;
+
+    int id;
+    do {
+        id = rand() % 9000 + 1000; // gera 1000–9999
+        sprintf(idStr, "%d", id);
+    } while (idExisteCliente(idStr));
+
+    return idStr;
+}
+
+int idExisteCliente(char *idStr) {
+    FILE *fp = fopen("clientes.dat", "rb");
+    if (!fp) return False; // arquivo não existe ainda, ID livre
+
+    Cliente c; 
+    while (fread(&c, sizeof(Cliente), 1, fp)) {
+        if (strcmp(c.id, idStr) == 0) {
+            fclose(fp);
+            return True; // ID duplicado
+        }
+    }
+
+    fclose(fp);
+    return False; // ID não existe
 }
 
 char* gerarIdCliente(void) {
