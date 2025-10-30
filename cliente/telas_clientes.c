@@ -2,113 +2,75 @@
 #include <stdlib.h>
 #include <string.h>
 #include "telas_clientes.h"
-#include "validacoes.h"
-#include "ler_dados.h"
-#include "erros.h"
+#include "../utils/validacoes.h"
+#include "../utils/ler_dados.h"
+#include "../geral/erros.h"
+#include "../geral/cores.h"
 
-char modCliente(void){
+
+char modCliente(void) {
     char opCliente;
 
-    do{
+    do {
         opCliente = menuCliente();
-        switch (opCliente)
-        {
-        case '1':
-            telaCadastrarCliente();
-            break;
-
-        case '2':
-            telaAtualizarCliente();
-            break;
-
-        case '3':
-            telaPesquisarCliente();
-            break;
-
-        case '4':
-            telaExcluirCliente();
-            break;
-
-        case '0':
-            break;
-
-        default:
-            opcaoInvalida();
-            break;
+        switch (opCliente) {
+            case '1':
+                telaCadastrarCliente();
+                break;
+            case '2':
+                telaAtualizarCliente();
+                break;
+            case '3':
+                telaPesquisarCliente();
+                break;
+            case '4':
+                telaExcluirCliente();
+                break;
+            case '0':
+                break;
+            default:
+                opcaoInvalida();
+                break;
         }
-    }while (opCliente != '0');
+    } while (opCliente != '0');
 
     return opCliente;
 }
 
-
-
-void telaCadastrarCliente(void){
+void telaCadastrarCliente(void) {
     printf("dados necessários para cadastro:\n");
     printf("|ENTER| para sair\n");
-
     esperarEnter();
-
 }
 
-void telaAtualizarCliente(void){
+void telaAtualizarCliente(void) {
     printf("o que atualizar?\n");
     printf("|ENTER| para sair\n");
-
     esperarEnter();
-    
 }
 
-void telaPesquisarCliente(void){
+void telaPesquisarCliente(void) {
     printf("nome e data de nascimento para pesquisa:\n");
     printf("|ENTER| para sair\n");
-
     esperarEnter();
-    
 }
 
-void telaExcluirCliente(void){
+void telaExcluirCliente(void) {
     printf("nome e data de nascimento para pesquisa e exclusão:\n");
     printf("|ENTER| para sair\n");
-
     esperarEnter();
-    
 }
 
-void telaListarCliente(void){
+void telaListarCliente(void) {
     printf("nome e data de nascimento para pesquisa:\n");
     printf("|ENTER| para sair\n");
-
     esperarEnter();
-    
-}
-
-void atualizarCSVClientes() {
-    FILE *bin = fopen("clientes.dat", "rb");
-    FILE *csv = fopen("clientes.csv", "w");
-    if (!bin || !csv) {
-        if (bin) fclose(bin);
-        if (csv) fclose(csv);
-        return;
-    }
-
-    fprintf(csv, "ID,Nome,DataNascimento,Telefone,Status\n");
-
-    Cliente c;
-    while (fread(&c, sizeof(Cliente), 1, bin) == 1) {
-        fprintf(csv, "%s,%s,%s,%s,%d\n", c.id, c.nome, c.dataNascimento, c.telefone, c.status);
-    }
-
-    fclose(bin);
-    fclose(csv);
 }
 
 void cadastrarCliente() {
     system("clear");
     Cliente c;
     FILE *fp;
-
-    fp = fopen("clientes.dat", "rb");
 
     char *idStr = gerarIdCliente();
     strcpy(c.id, idStr);
@@ -117,7 +79,7 @@ void cadastrarCliente() {
     printf("\n=== CADASTRAR CLIENTE ===\n");
 
     printf("Nome: ");
-    setbuf(stdin, NULL); // limpa buffer
+    setbuf(stdin, NULL);
     fgets(c.nome, sizeof(c.nome), stdin);
     c.nome[strcspn(c.nome, "\n")] = '\0';
 
@@ -139,8 +101,6 @@ void cadastrarCliente() {
     }
     fwrite(&c, sizeof(Cliente), 1, fp);
     fclose(fp);
-
-    atualizarCSVClientes();
 
     printf("\nCliente cadastrado com sucesso! ID: %s\n", c.id);
     esperarEnter();
@@ -181,7 +141,6 @@ void atualizarCliente() {
     printf("Digite o ID do cliente: ");
     char *id = lerIdCliente();
 
-
     FILE *fp = fopen("clientes.dat", "r+b");
     if (!fp) {
         printf("Erro ao abrir o arquivo.\n");
@@ -193,7 +152,7 @@ void atualizarCliente() {
     int encontrado = 0;
 
     while (fread(&c, sizeof(Cliente), 1, fp) == 1) {
-        if ((strcmp(c.id , id) == 0) && c.status == 1) {
+        if ((strcmp(c.id, id) == 0) && c.status == 1) {
             printf("Novo nome: ");
             fgets(c.nome, sizeof(c.nome), stdin);
             c.nome[strcspn(c.nome, "\n")] = '\0';
@@ -209,20 +168,16 @@ void atualizarCliente() {
             fseek(fp, -sizeof(Cliente), SEEK_CUR);
             fwrite(&c, sizeof(Cliente), 1, fp);
             encontrado = 1;
-            free(id);
             break;
         }
     }
     free(id);
-
     fclose(fp);
 
-    if (encontrado) {
-        atualizarCSVClientes();
+    if (encontrado)
         printf("\nCliente atualizado com sucesso!\n");
-    } else {
+    else
         printf("\nCliente não encontrado ou inativo.\n");
-    }
 
     esperarEnter();
 }
@@ -243,7 +198,7 @@ void excluirCliente() {
     FILE *temp = fopen("temp.dat", "wb");
     if (!temp) {
         fclose(origem);
-        printf("Erro ao criar arquivo temporario.\n");
+        printf("Erro ao criar arquivo temporário.\n");
         esperarEnter();
         return;
     }
@@ -252,24 +207,23 @@ void excluirCliente() {
     int encontrado = 0;
 
     while (fread(&c, sizeof(Cliente), 1, origem) == 1) {
-        if (strcmp(c.id, id) != 0) {
+        if (strcmp(c.id, id) != 0)
             fwrite(&c, sizeof(Cliente), 1, temp);
-        } else {
+        else
             encontrado = 1;
-        }
     }
+
     free(id);
     fclose(origem);
     fclose(temp);
 
     if (!encontrado) {
-        printf("\nCliente nao encontrado.\n");
-        remove("temp.dat"); 
+        printf("\nCliente não encontrado.\n");
+        remove("temp.dat");
     } else {
-        remove("clientes.dat");         
-        rename("temp.dat", "clientes.dat"); 
-        atualizarCSVClientes();         
-        printf("\nCliente excluido com sucesso (fisicamente)!\n");
+        remove("clientes.dat");
+        rename("temp.dat", "clientes.dat");
+        printf("\nCliente excluído com sucesso!\n");
     }
 
     esperarEnter();
@@ -288,11 +242,10 @@ char menuCliente() {
     printf("Escolha uma opção: ");
     op = opcao();
     return op;
-        
 }
 
 char* gerarIdCliente(void) {
-    char *idStr = malloc(10 * sizeof(char)); // 4 dígitos + '\0'
+    char *idStr = malloc(10 * sizeof(char));
     if (!idStr) return NULL;
 
     int id;
@@ -306,50 +259,21 @@ char* gerarIdCliente(void) {
 
 int idExisteCliente(char *idStr) {
     FILE *fp = fopen("clientes.dat", "rb");
-    if (!fp) return False; // arquivo não existe ainda, ID livre
+    if (!fp) return False;
 
-    Cliente c; 
+    Cliente c;
     while (fread(&c, sizeof(Cliente), 1, fp)) {
         if (strcmp(c.id, idStr) == 0) {
             fclose(fp);
-            return True; // ID duplicado
+            return True;
         }
     }
 
     fclose(fp);
-    return False; // ID não existe
+    return False;
 }
 
-char* gerarIdCliente(void) {
-    char *idStr = malloc(10 * sizeof(char)); // 4 dígitos + '\0'
-    if (!idStr) return NULL;
-
-    int id;
-    do {
-        id = rand() % 9000 + 1000; // gera 1000–9999
-        sprintf(idStr, "%d", id);
-    } while (idExisteCliente(idStr));
-
-    return idStr;
-}
-
-int idExisteCliente(char *idStr) {
-    FILE *fp = fopen("clientes.dat", "rb");
-    if (!fp) return False; // arquivo não existe ainda, ID livre
-
-    Cliente c; 
-    while (fread(&c, sizeof(Cliente), 1, fp)) {
-        if (strcmp(c.id, idStr) == 0) {
-            fclose(fp);
-            return True; // ID duplicado
-        }
-    }
-
-    fclose(fp);
-    return False; // ID não existe
-}
-
-// int main() {
-//     menu();
+// int main(void) {
+//     modCliente();
 //     return 0;
 // }

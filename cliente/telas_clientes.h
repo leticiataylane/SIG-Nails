@@ -9,10 +9,6 @@ typedef struct Cliente {
     int status;
 } Cliente;
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 48fee429b30f026078cbcd427d933508d8c35027
 char modCliente(void);
 void atualizarCSVClientes();
 void cadastrarCliente();
@@ -29,9 +25,4 @@ void telaAtualizarCliente(void);
 void telaPesquisarCliente(void);
 void telaExcluirCliente(void);
 void telaListarCliente(void);
-<<<<<<< HEAD
-=======
-
->>>>>>> 48fee429b30f026078cbcd427d933508d8c35027
-
 #endif
