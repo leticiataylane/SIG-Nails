@@ -1,115 +1,76 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include "telas_servicos.h"
-#include "ler_dados.h"
-#include "limpeza.h"
-#include "validacoes.h"
-#include "erros.h"
+#include "../utils/ler_dados.h"
+#include "../utils/limpeza.h"
+#include "../utils/validacoes.h"
+#include "../geral/erros.h"
 
-char modServico(void){
+char modServico(void) {
     char opServico;
 
-    do{
+    do {
         opServico = menuServico();
-        switch (opServico)
-        {
-        case '1':
-            telaCadastrarServico();
-            break;
-
-        case '2':
-            telaAtualizarServico();
-            break;
-
-        case '3':
-            telaPesquisarServico();
-            break;
-
-        case '4':
-            telaExcluirServico();
-            break;
-
-        case '0':
-            break;
-
-        default:
-            opcaoInvalida();
-            break;
+        switch (opServico) {
+            case '1':
+                telaCadastrarServico();
+                break;
+            case '2':
+                telaAtualizarServico();
+                break;
+            case '3':
+                telaPesquisarServico();
+                break;
+            case '4':
+                telaExcluirServico();
+                break;
+            case '0':
+                break;
+            default:
+                opcaoInvalida();
+                break;
         }
-    }while (opServico != '0');
+    } while (opServico != '0');
 
     return opServico;
 }
 
-
-void telaCadastrarServico(void){
+void telaCadastrarServico(void) {
     printf("dados necessários para cadastro:\n");
     printf("|ENTER| para sair\n");
-
     esperarEnter();
-
 }
 
-void telaAtualizarServico(void){
+void telaAtualizarServico(void) {
     printf("o que atualizar?\n");
     printf("|ENTER| para sair\n");
-
     esperarEnter();
-    
 }
 
-void telaPesquisarServico(void){
+void telaPesquisarServico(void) {
     printf("nome e data de nascimento para pesquisa:\n");
     printf("|ENTER| para sair\n");
-
     esperarEnter();
-    
 }
-void telaListarServico(void){
-    printf("nome e data de nascimento para pesquisa:\n");
+
+void telaListarServico(void) {
+    printf("listagem de serviços:\n");
     printf("|ENTER| para sair\n");
-
     esperarEnter();
-    
 }
 
-void telaExcluirServico(void){
+void telaExcluirServico(void) {
     printf("nome e data de nascimento para pesquisa e exclusão:\n");
     printf("|ENTER| para sair\n");
-
     esperarEnter();
-    
 }
 
-
-void atualizarCSVServicos() {
-    FILE *bin = fopen("servicos.dat", "rb");
-    FILE *csv = fopen("servicos.csv", "w");
-    if (!bin || !csv) {
-        if (bin) fclose(bin);
-        if (csv) fclose(csv);
-        return;
-    }
-
-    fprintf(csv, "ID,Nome,Preco,Status\n");
-
-    Servico s;
-    while (fread(&s, sizeof(Servico), 1, bin) == 1) {
-        fprintf(csv, "%s,%s,%.2f,%d\n", s.id, s.nome, s.preco, s.status);
-    }
-
-    fclose(bin);
-    fclose(csv);
-}
-
-void cadastrarServico() {
+void cadastrarServico(void) {
     system("clear");
     Servico s;
     FILE *fp;
-
-
-    fp = fopen("servicos.dat", "rb");
 
     char *idStr = gerarIdServico();
     strcpy(s.id, idStr);
@@ -137,13 +98,11 @@ void cadastrarServico() {
     fwrite(&s, sizeof(Servico), 1, fp);
     fclose(fp);
 
-    atualizarCSVServicos();
-
     printf("\nServiço cadastrado com sucesso! ID: %s\n", s.id);
     esperarEnter();
 }
 
-void listarServicos() {
+void listarServicos(void) {
     system("clear");
     FILE *fp = fopen("servicos.dat", "rb");
     if (!fp) {
@@ -171,7 +130,7 @@ void listarServicos() {
     esperarEnter();
 }
 
-void atualizarServico() {
+void atualizarServico(void) {
     system("clear");
 
     printf("\n=== ATUALIZAR SERVIÇO ===\n");
@@ -206,20 +165,17 @@ void atualizarServico() {
         }
     }
     free(id);
-
     fclose(fp);
 
-    if (encontrado) {
-        atualizarCSVServicos();
+    if (encontrado)
         printf("\nServiço atualizado com sucesso!\n");
-    } else {
+    else
         printf("\nServiço não encontrado ou inativo.\n");
-    }
 
     esperarEnter();
 }
 
-void excluirServico() {
+void excluirServico(void) {
     system("clear");
 
     printf("\n=== EXCLUIR SERVIÇO ===\n");
@@ -246,12 +202,12 @@ void excluirServico() {
         }
     }
     free(id);
-
     fclose(fp);
 
-    if (encontrado) atualizarCSVServicos();
-    if (!encontrado) printf("Serviço não encontrado.\n");
-    else printf("\nServiço excluído com sucesso!\n");
+    if (!encontrado)
+        printf("Serviço não encontrado.\n");
+    else
+        printf("\nServiço excluído com sucesso!\n");
 
     esperarEnter();
 }
@@ -259,21 +215,20 @@ void excluirServico() {
 char menuServico(void) {
     char op;
 
-        system("clear");
-        printf("\n=== MENU SERVIÇOS ===\n");
-        printf("1 - Cadastrar serviço\n");
-        printf("2 - Listar serviços\n");
-        printf("3 - Atualizar serviço\n");
-        printf("4 - Excluir serviço\n");
-        printf("0 - Sair\n");
-        printf("Escolha uma opção: ");
-        op = opcao();
-        return op;
+    system("clear");
+    printf("\n=== MENU SERVIÇOS ===\n");
+    printf("1 - Cadastrar serviço\n");
+    printf("2 - Listar serviços\n");
+    printf("3 - Atualizar serviço\n");
+    printf("4 - Excluir serviço\n");
+    printf("0 - Sair\n");
+    printf("Escolha uma opção: ");
+    op = opcao(); // função externa (provavelmente em validacoes.h)
+    return op;
 }
 
-
 char* gerarIdServico(void) {
-    char *idStr = malloc(10 * sizeof(char)); // 4 dígitos + '\0'
+    char *idStr = malloc(10 * sizeof(char)); 
     if (!idStr) return NULL;
 
     int id;
@@ -285,24 +240,24 @@ char* gerarIdServico(void) {
     return idStr;
 }
 
-
 int idExisteServico(char *idStr) {
-    FILE *fp = fopen("Servicos.dat", "rb");
-    if (!fp) return False; // arquivo não existe ainda, ID livre
+    FILE *fp = fopen("servicos.dat", "rb"); // corrige maiúscula
+    if (!fp) return 0;
 
     Servico s; 
     while (fread(&s, sizeof(Servico), 1, fp)) {
         if (strcmp(s.id, idStr) == 0) {
             fclose(fp);
-            return True; // ID duplicado
+            return 1;
         }
     }
 
     fclose(fp);
-    return False; // ID não existe
+    return 0;
 }
 
-// int main() {
-//     menuServico();
+// int main(void) {
+//     srand(time(NULL)); // garante IDs diferentes
+//     modServico();
 //     return 0;
 // }

@@ -1,4 +1,4 @@
-#ifndef TELAS_SERVICOS_H 
+#ifndef TELAS_SERVICOS_H
 #define TELAS_SERVICOS_H
 
 typedef struct Servico {
@@ -8,11 +8,8 @@ typedef struct Servico {
     int status;
 } Servico;
 
-<<<<<<< HEAD
-
-char menuServico(void);
 char modServico(void);
-void atualizarCSVServicos(void);
+char menuServico(void);
 void cadastrarServico(void);
 void listarServicos(void);
 void atualizarServico(void);
@@ -20,30 +17,10 @@ void excluirServico(void);
 char* gerarIdServico(void);
 int idExisteServico(char *idStr);
 
-
-
 void telaCadastrarServico(void);
 void telaAtualizarServico(void);
 void telaPesquisarServico(void);
 void telaExcluirServico(void);
 void telaListarServico(void);
-=======
-char menuServico(void);
-char modServico(void);
-void atualizarCSVServicos();
-void cadastrarServico();
-void listarServicos();
-void atualizarServico();
-void excluirServico();
-char* gerarIdServico(void);
-int idExisteServico(char *idStr);
->>>>>>> 48fee429b30f026078cbcd427d933508d8c35027
 
-
-
-void telaCadastrarServico(void);
-void telaAtualizarServico(void);
-void telaPesquisarServico(void);
-void telaExcluirServico(void);
-void telaListarServico(void);
 #endif
