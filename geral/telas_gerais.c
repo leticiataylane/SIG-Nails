@@ -63,9 +63,8 @@ void telaSobre(void) {
     printf("organizar serviços de manicure e pedicure,\n");
     printf("trazendo praticidade para profissionais e clientes.\n\n");
 
-    printf("👩 Equipe responsável:" rosa negrito "Letícia Taylane\n"reset);
+    printf("👩 Equipe responsável:" rosa negrito "Letícia Taylane e Flávia Juliana\n"reset);
     printf(roxo negrito "✿ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ✿\n\n"reset);
-    printf("Pressione ENTER para voltar ao menu...\n");
     esperarEnter(); 
 }
 
@@ -79,8 +78,6 @@ void telaFinal() {
     printf(roxo negrito "★" reset rosa " Obrigada por utilizar o sistema!    "roxo negrito"★\n"reset);
     printf(roxo negrito "★" reset rosa " Cuide-se e volte sempre!            "roxo negrito"★\n");
     printf(roxo negrito"✿ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ✿\n\n"reset);
-
-    printf(ciano "Pressione ENTER para sair..."reset);
     esperarEnter(); // espera o usuário apertar enter
 }
 
@@ -101,7 +98,6 @@ void telaAjuda(void) {
     printf("- Email: suporte@signails.com\n");
     printf("- WhatsApp: (99) 99999-9999\n");
     printf("- Instagram: @sig_nails\n\n");
-    printf(rosa "Pressione ENTER para voltar ao menu...\n"reset);
     esperarEnter(); 
 }
 
