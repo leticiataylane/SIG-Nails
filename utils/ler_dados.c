@@ -199,7 +199,7 @@ float lerSalario(void){
 }
 
 float lerDinheiro(void) {
-    char *dinheiroChar = lerString("Digite o valor:\n");
+    char *dinheiroChar = lerString("Digite o valor: ");
     float dinheiro = 0.0f;
     int j = 0, temSeparador = 0;
 
