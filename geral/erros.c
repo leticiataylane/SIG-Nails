@@ -16,3 +16,7 @@ void dadosInvalidos(void){
     esperarEnter();
     return;
 }
+
+void arqInexistente(void){
+    printf("Ocorreu algun erro, o arquivo não pode ser aberto.\n");
+}
