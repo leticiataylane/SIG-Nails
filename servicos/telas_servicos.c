@@ -9,6 +9,7 @@
 #include "../utils/validacoes.h"
 #include "../geral/erros.h"
 
+// modulos
 
 char modServico(void) {
     char opServico;
@@ -23,7 +24,7 @@ char modServico(void) {
                 telaAtualizarServico();
                 break;
             case '3':
-                pesquisarServico(); 
+                telaPesquisarServico();
                 break;
             case '4':
                 telaListarServico();
@@ -42,54 +43,105 @@ char modServico(void) {
     return opServico;
 }
 
-// --- Telas ---
+// Telas
+
 char menuServico(void) {
     char op;
 
     system("clear");
-    printf("\n=== MENU SERVIÇOS ===\n");
-    printf("1 - Cadastrar serviço\n");
-    printf("2 - Listar serviços\n");
-    printf("3 - Pesquisar serviço\n");
-    printf("4 - Atualizar serviço\n");
-    printf("5 - Excluir serviço\n");
-    printf("0 - Sair\n");
-    printf("Escolha uma opção: ");
+    printf("\n★───────────────────────────────────────────────★\n");
+    printf("│                MENU DE SERVIÇOS               │\n");
+    printf("★───────────────────────────────────────────────★\n");
+    printf("│ [1] Cadastrar Serviço                         │\n");
+    printf("│ [2] Atualizar Serviço                         │\n");
+    printf("│ [3] Pesquisar Serviço                         │\n");
+    printf("│ [4] Listar Serviços                           │\n");
+    printf("│ [5] Excluir Serviço                           │\n");
+    printf("│ [0] Voltar ao Menu Principal                  │\n");
+    printf("★───────────────────────────────────────────────★\n");
     op = opcao();
     return op;
 }
 
 void telaCadastrarServico(void) {
-    printf("dados necessários para cadastro:\n");
-    printf("|ENTER| para sair\n");
+    system("clear");
+    printf("★───────────────────────────────────────────────★\n");
+    printf("│          CADASTRO DE NOVO SERVIÇO             │\n");
+    printf("★───────────────────────────────────────────────★\n");
+    printf("│  Insira as informações abaixo:                │\n");
+    printf("│  - Nome do Serviço                            │\n");
+    printf("│  - Preço                                      │\n");
+    printf("★───────────────────────────────────────────────★\n");
+    cadastrarServico();
     esperarEnter();
 }
 
 void telaAtualizarServico(void) {
-    printf("o que atualizar?\n");
-    printf("|ENTER| para sair\n");
+    system("clear");
+    printf("★───────────────────────────────────────────────★\n");
+    printf("│              ATUALIZAR SERVIÇO                │\n");
+    printf("★───────────────────────────────────────────────★\n");
+    printf("│ Informe o ID do serviço que deseja atualizar. │\n");
+    printf("│ Apenas serviços ativos podem ser alterados.   │\n");
+    printf("★───────────────────────────────────────────────★\n");
+    atualizarServico();
     esperarEnter();
 }
 
 void telaPesquisarServico(void) {
-    printf("pesquisa de serviços:\n");
-    printf("|ENTER| para sair\n");
+    system("clear");
+    printf("★───────────────────────────────────────────────★\n");
+    printf("│               PESQUISAR SERVIÇO               │\n");
+    printf("★───────────────────────────────────────────────★\n");
+    printf("│  Digite o ID do serviço para buscar seus dados│\n");
+    printf("★───────────────────────────────────────────────★\n");
+    pesquisarServico();
     esperarEnter();
 }
 
 void telaListarServico(void) {
-    printf("listagem de serviços:\n");
-    printf("|ENTER| para sair\n");
+    system("clear");
+    printf("★───────────────────────────────────────────────★\n");
+    printf("│                LISTA DE SERVIÇOS              │\n");
+    printf("★───────────────────────────────────────────────★\n");
+    listarServicos();
+    printf("★───────────────────────────────────────────────★\n");
     esperarEnter();
 }
 
 void telaExcluirServico(void) {
-    printf("exclusão de serviços:\n");
-    printf("|ENTER| para sair\n");
+    char op;
+    system("clear");
+    printf("★───────────────────────────────────────────────★\n");
+    printf("│                EXCLUIR SERVIÇO                │\n");
+    printf("★───────────────────────────────────────────────★\n");
+    printf("│ [1] Exclusão Lógica (Inativar Serviço)        │\n");
+    printf("│ [2] Exclusão Definitiva (Remover do Sistema)  │\n");
+    printf("│ [0] Voltar                                    │\n");
+    printf("★───────────────────────────────────────────────★\n");
+
+    do {
+        op = opcao();
+        switch (op) {
+            case '1':
+                excluirServico();
+                break;
+            case '2':
+                excluirServicoDefinitivo();
+                break;
+            case '0':
+                break;
+            default:
+                opcaoInvalida();
+                break;
+        }
+    } while (op != '0');
+
     esperarEnter();
 }
 
-// --- funcoes
+// funcoes
+
 void cadastrarServico(void) {
     system("clear");
     Servico s;
@@ -99,14 +151,13 @@ void cadastrarServico(void) {
     strcpy(s.id, idStr);
     free(idStr);
 
-    printf("\n=== CADASTRAR SERVIÇO ===\n");
+    printf("\n★ CADASTRAR SERVIÇO ★\n\n");
 
     printf("Nome do serviço: ");
     setbuf(stdin, NULL);
     fgets(s.nome, sizeof(s.nome), stdin);
     s.nome[strcspn(s.nome, "\n")] = '\0';
 
-    printf("Preço: ");
     s.preco = lerDinheiro();  
     setbuf(stdin, NULL);
 
@@ -121,48 +172,42 @@ void cadastrarServico(void) {
     fwrite(&s, sizeof(Servico), 1, fp);
     fclose(fp);
 
-    printf("\nServiço cadastrado com sucesso! ID: %s\n", s.id);
-    esperarEnter();
+    printf("\n★ Serviço cadastrado com sucesso! ID: %s ★\n", s.id);
 }
 
 void listarServicos(void) {
-    system("clear");
     FILE *fp = fopen("servicos.dat", "rb");
     if (!fp) {
         printf("Nenhum serviço cadastrado.\n");
-        esperarEnter();
         return;
     }
 
     Servico s;
     int encontrou = 0;
 
-    printf("\n=== LISTA DE SERVIÇOS ATIVOS ===\n");
     while (fread(&s, sizeof(Servico), 1, fp) == 1) {
         if (s.status == 1) {
-            printf("ID: %s | Nome: %s | Preço: %.2f\n", s.id, s.nome, s.preco);
+            printf("★───────────────────────────────────────────────★\n");
+            printf("│ ID: %-40s  │\n", s.id);
+            printf("│ Nome: %-38s │ \n", s.nome);
+            printf("│ Preço: R$%-37.2f  │\n", s.preco);
             encontrou = 1;
         }
     }
-
     fclose(fp);
 
     if (!encontrou)
         printf("Nenhum serviço ativo encontrado.\n");
-
-    esperarEnter();
 }
 
 void atualizarServico(void) {
-    system("clear");
-
-    printf("\n=== ATUALIZAR SERVIÇO ===\n");
-    printf("Digite o ID do serviço: ");
+    printf("\nDigite o ID do serviço a atualizar: ");
     char *id = lerIdServico();
 
     FILE *fp = fopen("servicos.dat", "r+b");
     if (!fp) {
         printf("Erro ao abrir o arquivo.\n");
+        free(id);
         esperarEnter();
         return;
     }
@@ -179,7 +224,6 @@ void atualizarServico(void) {
 
             printf("Novo preço: ");
             s.preco = lerDinheiro();
-            setbuf(stdin, NULL);
 
             fseek(fp, -sizeof(Servico), SEEK_CUR);
             fwrite(&s, sizeof(Servico), 1, fp);
@@ -191,23 +235,22 @@ void atualizarServico(void) {
     fclose(fp);
 
     if (encontrado)
-        printf("\nServiço atualizado com sucesso!\n");
+        printf("\n★ Serviço atualizado com sucesso! ★\n");
     else
         printf("\nServiço não encontrado ou inativo.\n");
 
     esperarEnter();
 }
 
+// exclusão logica
 void excluirServico(void) {
-    system("clear");
-
-    printf("\n=== EXCLUIR SERVIÇO ===\n");
-    printf("Digite o ID do serviço: ");
+    printf("Digite o ID do serviço para exclusão: ");
     char *id = lerIdServico();
 
     FILE *fp = fopen("servicos.dat", "r+b");
     if (!fp) {
         printf("Erro ao abrir o arquivo.\n");
+        free(id);
         esperarEnter();
         return;
     }
@@ -230,14 +273,62 @@ void excluirServico(void) {
     if (!encontrado)
         printf("Serviço não encontrado.\n");
     else
-        printf("\nServiço excluído com sucesso!\n");
+        printf("\n★ Serviço excluído logicamente com sucesso! ★\n");
 
     esperarEnter();
 }
 
-//funcao de pesquisar o servico com id
+// exclusão definitiva
+void excluirServicoDefinitivo(void) {
+    char *id = lerIdServico();
+
+    FILE *fp = fopen("servicos.dat", "rb");
+    if (!fp) {
+        printf("Erro ao abrir o arquivo de serviços.\n");
+        free(id);
+        esperarEnter();
+        return;
+    }
+
+    FILE *fpTemp = fopen("temp.dat", "wb");
+    if (!fpTemp) {
+        printf("Erro ao criar arquivo temporário.\n");
+        fclose(fp);
+        free(id);
+        esperarEnter();
+        return;
+    }
+
+    Servico s;
+    int encontrado = 0;
+
+    while (fread(&s, sizeof(Servico), 1, fp) == 1) {
+        if (strcmp(s.id, id) == 0) {
+            encontrado = 1;
+            printf("Serviço encontrado e removido definitivamente: %s\n", s.nome);
+            continue; 
+        }
+        fwrite(&s, sizeof(Servico), 1, fpTemp);
+    }
+
+    fclose(fp);
+    fclose(fpTemp);
+    free(id);
+
+    if (encontrado) {
+        remove("servicos.dat");
+        rename("temp.dat", "servicos.dat");
+        printf("Exclusão definitiva realizada com sucesso.\n");
+    } else {
+        remove("temp.dat");
+        printf("Nenhum serviço encontrado com esse ID.\n");
+    }
+
+    esperarEnter();
+}
+
+// Pesquisa
 void pesquisarServico(void) {
-    system("clear");
     FILE *fp = fopen("servicos.dat", "rb");
     if (!fp) {
         printf("Nenhum serviço cadastrado.\n");
@@ -249,10 +340,13 @@ void pesquisarServico(void) {
     Servico s;
     int encontrou = 0;
 
-    printf("\n=== RESULTADOS DA PESQUISA ===\n");
     while (fread(&s, sizeof(Servico), 1, fp) == 1) {
         if (s.status == 1 && strcmp(s.id, idBusca) == 0) {
-            printf("ID: %s | Nome: %s | Preço: %.2f\n", s.id, s.nome, s.preco);
+            printf("★───────────────────────────────────────────────★\n");
+            printf("│ ID: %-40s │\n", s.id);
+            printf("│ Nome: %-38s │\n", s.nome);
+            printf("│ Preço: %-37.2f │\n", s.preco);
+            printf("★───────────────────────────────────────────────★\n");
             encontrou = 1;
         }
     }
@@ -264,15 +358,15 @@ void pesquisarServico(void) {
     fclose(fp);
     esperarEnter();
 }
-// --- IDs ---
 
+// IDs
 char* gerarIdServico(void) {
     char *idStr = malloc(10 * sizeof(char)); 
     if (!idStr) return NULL;
 
     int id;
     do {
-        id = rand() % 9000 + 1000; // gera 1000–9999
+        id = rand() % 9000 + 1000;
         sprintf(idStr, "%d", id);
     } while (idExisteServico(idStr));
 
