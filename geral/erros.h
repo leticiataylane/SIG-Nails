@@ -4,5 +4,6 @@
 
 void opcaoInvalida(void);
 void dadosInvalidos(void);
+void arqInexistente(void);
 
 #endif
