@@ -170,19 +170,19 @@ char* lerEmail(void){
     return email;
 }
 
-float lerDinheiro(void){
-    char *dinheiroChar = NULL;
-    float dinheiro = 0;
-    int j = 0;
+// float lerDinheiro(void){
+//     char *dinheiroChar = NULL;
+//     float dinheiro = 0;
+//     int j = 0;
     
-    dinheiroChar = lerString("Digite o valor:\n");
-    limpaNum(dinheiroChar);
-    dinheiroChar[j] = '\0';
+//     dinheiroChar = lerString("Digite o valor:\n");
+//     limpaNum(dinheiroChar);
+//     dinheiroChar[j] = '\0';
 
-    dinheiro = atof(dinheiroChar);
-    free(dinheiroChar);
-    return dinheiro;
-}
+//     dinheiro = atof(dinheiroChar);
+//     free(dinheiroChar);
+//     return dinheiro;
+// }
 
 float lerSalario(void){
     float salario = 0;
@@ -197,6 +197,47 @@ float lerSalario(void){
     }while(!salarioValido);
     return salario;  
 }
+
+float lerDinheiro(void) {
+    char *dinheiroChar = lerString("Digite o valor:\n");
+    float dinheiro = 0.0f;
+    int j = 0, temSeparador = 0;
+
+    for (int i = 0; dinheiroChar[i] != '\0'; i++) {
+        unsigned char ch = (unsigned char) dinheiroChar[i];
+
+        if (isdigit(ch)) {
+            dinheiroChar[j++] = ch;
+        } 
+        else if ((ch == '.' || ch == ',') && !temSeparador) {
+            dinheiroChar[j++] = '.';
+            temSeparador = 1;
+        }
+    }
+    dinheiroChar[j] = '\0';
+
+    dinheiro = atof(dinheiroChar);
+    free(dinheiroChar);
+
+    return dinheiro;
+}
+
+float lerPrecoServico(void) {
+    float preco = 0;
+    int precoValido = False;
+
+    do {
+        preco = lerDinheiro();
+        if (preco >= 50.0 && preco <= 300.0) {
+            precoValido = True;
+        } else {
+            printf("Valor inválido. O preço deve estar entre R$50,00 e R$300,00.\n");
+        }
+    } while (!precoValido);
+
+    return preco;
+}
+
 
 char* lerIdAgendamento(void){
     char* idChar = NULL;

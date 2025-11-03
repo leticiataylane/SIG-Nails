@@ -19,6 +19,7 @@ char* lerEmail(void);
 
 float lerDinheiro(void);
 float lerSalario(void);
+float lerPrecoServico(void);
 
 char* lerIdAgendamento(void);
 char* lerIdServico(void);
