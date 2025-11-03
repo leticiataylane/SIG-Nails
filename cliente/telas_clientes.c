@@ -9,8 +9,7 @@
 #include "../geral/erros.h"
 #include "../geral/cores.h"
 
-
-// --- funcao principal
+//  módulo principal 
 char modCliente(void) {
     char opCliente;
 
@@ -24,10 +23,10 @@ char modCliente(void) {
                 telaAtualizarCliente();
                 break;
             case '3':
-                telaListarCliente();
+                telaPesquisarCliente();
                 break;
             case '4':
-                telaPesquisarCliente();
+                telaListarCliente();
                 break;
             case '5':
                 telaExcluirCliente();
@@ -43,33 +42,85 @@ char modCliente(void) {
     return opCliente;
 }
 
-// --- telas (ainda a atualizar)
+//  Telas 
+char menuCliente(void) {
+    char opC;
+
+    system("clear");
+    printf(roxo negrito"\n★───────────────────────────────────────────────★\n"reset);
+    printf(roxo negrito"│                 MENU DE CLIENTES              │\n"reset);
+    printf(roxo negrito"★───────────────────────────────────────────────★\n"reset);
+    printf(roxo negrito"│"ciano negrito" [1] Cadastrar Novo Cliente                    "reset roxo negrito"│\n"reset);
+    printf(roxo negrito"│"ciano negrito" [2] Atualizar Cliente                         "reset roxo negrito"│\n"reset);
+    printf(roxo negrito"│"ciano negrito" [3] Pesquisar Cliente                         "reset roxo negrito"│\n"reset);
+    printf(roxo negrito"│"ciano negrito" [4] Listar Clientes                           "reset roxo negrito"│\n"reset);
+    printf(roxo negrito"│"ciano negrito" [5] Excluir Cliente                           "reset roxo negrito"│\n"reset);
+    printf(roxo negrito"│"ciano negrito" [0] Voltar ao Menu Principal                  "reset roxo negrito"│\n"reset);
+    printf(roxo negrito"★───────────────────────────────────────────────★\n"reset);
+
+    opC = opcao();
+    return opC;
+}
+
 void telaCadastrarCliente(void) {
-    printf("=== CADASTRO DE CLIENTE ===\n");
+    system("clear");
+    printf(roxo negrito"★───────────────────────────────────────────────★\n"reset);
+    printf(roxo negrito"│            CADASTRO DE NOVO CLIENTE           │\n"reset);
+    printf(roxo negrito"★───────────────────────────────────────────────★\n"reset);
+    printf(roxo negrito"│"ciano negrito" Insira as informações abaixo:                "reset roxo negrito"│\n"reset);
+    printf(roxo negrito"│"ciano negrito" - Nome                                         "reset roxo negrito"│\n"reset);
+    printf(roxo negrito"│"ciano negrito" - Data de Nascimento                            "reset roxo negrito"│\n"reset);
+    printf(roxo negrito"│"ciano negrito" - Telefone                                     "reset roxo negrito"│\n"reset);
+    printf(roxo negrito"★───────────────────────────────────────────────★\n"reset);
     cadastrarCliente();
+    esperarEnter();
 }
 
 void telaAtualizarCliente(void) {
-    printf("=== ATUALIZAR CLIENTE ===\n");
+    system("clear");
+    printf(roxo negrito"★───────────────────────────────────────────────★\n"reset);
+    printf(roxo negrito"│               ATUALIZAR CLIENTE               │\n"reset);
+    printf(roxo negrito"★───────────────────────────────────────────────★\n"reset);
+    printf(roxo negrito"│"ciano negrito" Informe o ID do cliente a atualizar.          "reset roxo negrito"│\n"reset);
+    printf(roxo negrito"│"ciano negrito" Somente clientes ativos podem ser alterados.  "reset roxo negrito"│\n"reset);
+    printf(roxo negrito"★───────────────────────────────────────────────★\n"reset);
     atualizarCliente();
-}
-
-void telaListarCliente(void) {
-    printf("=== LISTAR CLIENTES ===\n");
-    listarClientes();
+    esperarEnter();
 }
 
 void telaPesquisarCliente(void) {
-    printf("=== PESQUISAR CLIENTE ===\n");
+    system("clear");
+    printf(roxo negrito"★────────────────────────────────────────────────★\n"reset);
+    printf(roxo negrito"│               PESQUISAR CLIENTE                │\n"reset);
+    printf(roxo negrito"★────────────────────────────────────────────────★\n"reset);
+    printf(roxo negrito"│"ciano negrito" Digite o ID do cliente para buscar seus dados.│\n"reset);
+    printf(roxo negrito"★────────────────────────────────────────────────★\n"reset);
     pesquisarCliente();
+    esperarEnter();
+}
+
+void telaListarCliente(void) {
+    system("clear");
+    printf(roxo negrito"★───────────────────────────────────────────────★\n"reset);
+    printf(roxo negrito"│                LISTA DE CLIENTES              │\n"reset);
+    listarClientes();
+    printf(roxo negrito"★───────────────────────────────────────────────★\n"reset);
+    esperarEnter();
 }
 
 void telaExcluirCliente(void) {
-    printf("=== EXCLUIR CLIENTE ===\n");
+    system("clear");
+    printf(roxo negrito"★───────────────────────────────────────────────★\n"reset);
+    printf(roxo negrito"│                EXCLUIR CLIENTE                │\n"reset);
+    printf(roxo negrito"★───────────────────────────────────────────────★\n"reset);
+    printf(roxo negrito"│"ciano negrito" A exclusão será definitiva.                   "reset roxo negrito"│\n"reset);
+    printf(roxo negrito"│"ciano negrito" Deseja continuar? (S/N)                      "reset roxo negrito"│\n"reset);
+    printf(roxo negrito"★───────────────────────────────────────────────★\n"reset);
     excluirCliente();
+    esperarEnter();
 }
 
-// --- operaçoes
+//  Operações 
 void cadastrarCliente(void) {
     system("clear");
     Cliente c;
@@ -108,43 +159,37 @@ void cadastrarCliente(void) {
 }
 
 void listarClientes(void) {
-    system("clear");
     FILE *fp = fopen("clientes.dat", "rb");
     if (!fp) {
         printf("Nenhum cliente cadastrado.\n");
-        esperarEnter();
         return;
     }
 
     Cliente c;
     int encontrou = 0;
 
-    printf("\n=== LISTA DE CLIENTES ATIVOS ===\n");
     while (fread(&c, sizeof(Cliente), 1, fp) == 1) {
         if (c.status == 1) {
-            printf("ID: %s | Nome: %s | Nascimento: %s | Telefone: %s\n",
-                   c.id, c.nome, c.dataNascimento, c.telefone);
+            printf(roxo negrito"★───────────────────────────────────────────────★\n"reset);
+            printf(roxo negrito"│"ciano negrito" ID: %-40s \n"reset, c.id);
+            printf(roxo negrito"│"ciano negrito" Nome: %-38s \n"reset, c.nome);
+            printf(roxo negrito"│"ciano negrito" Nascimento: %-32s \n"reset, c.dataNascimento);
+            printf(roxo negrito"│"ciano negrito" Telefone: %-35s \n"reset, c.telefone);
             encontrou = 1;
         }
     }
 
     fclose(fp);
-
     if (!encontrou)
         printf("Nenhum cliente ativo encontrado.\n");
-
-    esperarEnter();
 }
 
 void atualizarCliente(void) {
-    system("clear");
-    printf("\n=== ATUALIZAR CLIENTE ===\n");
-
     char *id = lerIdCliente();
-
     FILE *fp = fopen("clientes.dat", "r+b");
     if (!fp) {
         printf("Erro ao abrir o arquivo.\n");
+        free(id);
         esperarEnter();
         return;
     }
@@ -154,15 +199,17 @@ void atualizarCliente(void) {
 
     while (fread(&c, sizeof(Cliente), 1, fp) == 1) {
         if ((strcmp(c.id, id) == 0) && c.status == 1) {
-
+            printf(ciano negrito"Novo nome: "reset);
             char *nome = lerNome();
             strcpy(c.nome, nome);
             free(nome);
 
+            printf(ciano negrito"Nova data de nascimento: "reset);
             char *nasc = lerNascimento();
             strcpy(c.dataNascimento, nasc);
             free(nasc);
 
+            printf(ciano negrito"Novo telefone: "reset);
             char *tel = lerTelefone();
             strcpy(c.telefone, tel);
             free(tel);
@@ -181,19 +228,14 @@ void atualizarCliente(void) {
         printf("\nCliente atualizado com sucesso!\n");
     else
         printf("\nCliente não encontrado ou inativo.\n");
-
-    esperarEnter();
 }
 
 void excluirCliente(void) {
-    system("clear");
-    printf("\n=== EXCLUIR CLIENTE ===\n");
-
     char *id = lerIdCliente();
-
     FILE *origem = fopen("clientes.dat", "rb");
     if (!origem) {
         printf("Erro ao abrir o arquivo ou nenhum cliente existente.\n");
+        free(id);
         esperarEnter();
         return;
     }
@@ -202,6 +244,7 @@ void excluirCliente(void) {
     if (!temp) {
         fclose(origem);
         printf("Erro ao criar arquivo temporário.\n");
+        free(id);
         esperarEnter();
         return;
     }
@@ -216,9 +259,9 @@ void excluirCliente(void) {
             encontrado = 1;
     }
 
-    free(id);
     fclose(origem);
     fclose(temp);
+    free(id);
 
     if (!encontrado) {
         printf("\nCliente não encontrado.\n");
@@ -228,12 +271,9 @@ void excluirCliente(void) {
         rename("temp.dat", "clientes.dat");
         printf("\nCliente excluído com sucesso!\n");
     }
-
-    esperarEnter();
 }
 
 void pesquisarCliente(void) {
-    system("clear");
     FILE *fp = fopen("clientes.dat", "rb");
     if (!fp) {
         printf("Nenhum cliente cadastrado.\n");
@@ -245,38 +285,25 @@ void pesquisarCliente(void) {
     Cliente c;
     int encontrou = 0;
 
-    printf("\n=== RESULTADOS DA PESQUISA ===\n");
     while (fread(&c, sizeof(Cliente), 1, fp) == 1) {
         if (c.status == 1 && strcmp(c.id, idBusca) == 0) {
-            printf("ID: %s | Nome: %s | Nascimento: %s | Telefone: %s\n",
-                   c.id, c.nome, c.dataNascimento, c.telefone);
+            printf(roxo negrito"★───────────────────────────────────────────────★\n"reset);
+            printf(roxo negrito"│"ciano negrito" ID: %-40s "roxo negrito"│\n"reset, c.id);
+            printf(roxo negrito"│"ciano negrito" Nome: %-38s "roxo negrito"│\n"reset, c.nome);
+            printf(roxo negrito"│"ciano negrito" Nascimento: %-32s "roxo negrito"│\n"reset, c.dataNascimento);
+            printf(roxo negrito"│"ciano negrito" Telefone: %-35s "roxo negrito"│\n"reset, c.telefone);
+            printf(roxo negrito"★───────────────────────────────────────────────★\n"reset);
             encontrou = 1;
         }
     }
 
+    fclose(fp);
+    free(idBusca);
     if (!encontrou)
         printf("Nenhum cliente encontrado com esse ID.\n");
-
-    free(idBusca);
-    fclose(fp);
-    esperarEnter();
 }
 
-// --- menu e IDs
-char menuCliente(void) {
-    char op;
-
-    system("clear");
-    printf("\n=== MENU CLIENTES ===\n");
-    printf("1 - Cadastrar cliente\n");
-    printf("2 - Listar clientes\n");
-    printf("3 - Pesquisar cliente\n");
-    printf("4 - Excluir cliente\n");
-    printf("0 - Sair\n");
-    op = opcao();
-    return op;
-}
-
+//  IDs 
 char* gerarIdCliente(void) {
     char *idStr = malloc(10 * sizeof(char));
     if (!idStr) return NULL;
