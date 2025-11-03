@@ -47,7 +47,7 @@ char* lerNome(void){
     char *nome = NULL;
     int valido = 0;
     do{
-        nome = lerString("Digite o nome:\n");
+        nome = lerString("Digite o nome (no mínimo 5 caracteres):\n");
         limpaNome(nome);
         valido = validaNome(nome);
         if(!valido){
@@ -223,16 +223,20 @@ float lerDinheiro(void) {
 }
 
 float lerPrecoServico(void) {
-    float preco = 0;
+    float preco = 0.0f;
     int precoValido = False;
 
     do {
         preco = lerDinheiro();
-        if (preco >= 50.0 && preco <= 300.0) {
-            precoValido = True;
+
+        if (preco < 50.0f) {
+            printf("Valor inválido. O preço mínimo é R$50,00.\n");
+        } else if (preco > 300.0f) {
+            printf("Valor inválido. O preço máximo é R$300,00.\n");
         } else {
-            printf("Valor inválido. O preço deve estar entre R$50,00 e R$300,00.\n");
+            precoValido = True;
         }
+
     } while (!precoValido);
 
     return preco;
