@@ -11,6 +11,7 @@ typedef struct Servico {
 char modServico(void);
 char menuServico(void);
 void cadastrarServico(void);
+void pesquisarServico(void);
 void listarServicos(void);
 void atualizarServico(void);
 void excluirServico(void);
