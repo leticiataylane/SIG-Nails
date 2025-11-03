@@ -10,7 +10,7 @@ typedef struct Cliente {
 } Cliente;
 
 char modCliente(void);
-void atualizarCSVClientes();
+void pesquisarCliente(void);
 void cadastrarCliente();
 void listarClientes();
 void atualizarCliente();

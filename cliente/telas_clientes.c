@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <strings.h>
+#include <time.h>
 #include "telas_clientes.h"
 #include "../utils/validacoes.h"
 #include "../utils/ler_dados.h"
@@ -8,6 +10,7 @@
 #include "../geral/cores.h"
 
 
+// --- funcao principal
 char modCliente(void) {
     char opCliente;
 
@@ -21,9 +24,12 @@ char modCliente(void) {
                 telaAtualizarCliente();
                 break;
             case '3':
-                telaPesquisarCliente();
+                telaListarCliente();
                 break;
             case '4':
+                telaPesquisarCliente();
+                break;
+            case '5':
                 telaExcluirCliente();
                 break;
             case '0':
@@ -37,37 +43,34 @@ char modCliente(void) {
     return opCliente;
 }
 
+// --- telas (ainda a atualizar)
 void telaCadastrarCliente(void) {
-    printf("dados necessários para cadastro:\n");
-    printf("|ENTER| para sair\n");
-    esperarEnter();
+    printf("=== CADASTRO DE CLIENTE ===\n");
+    cadastrarCliente();
 }
 
 void telaAtualizarCliente(void) {
-    printf("o que atualizar?\n");
-    printf("|ENTER| para sair\n");
-    esperarEnter();
-}
-
-void telaPesquisarCliente(void) {
-    printf("nome e data de nascimento para pesquisa:\n");
-    printf("|ENTER| para sair\n");
-    esperarEnter();
-}
-
-void telaExcluirCliente(void) {
-    printf("nome e data de nascimento para pesquisa e exclusão:\n");
-    printf("|ENTER| para sair\n");
-    esperarEnter();
+    printf("=== ATUALIZAR CLIENTE ===\n");
+    atualizarCliente();
 }
 
 void telaListarCliente(void) {
-    printf("nome e data de nascimento para pesquisa:\n");
-    printf("|ENTER| para sair\n");
-    esperarEnter();
+    printf("=== LISTAR CLIENTES ===\n");
+    listarClientes();
 }
 
-void cadastrarCliente() {
+void telaPesquisarCliente(void) {
+    printf("=== PESQUISAR CLIENTE ===\n");
+    pesquisarCliente();
+}
+
+void telaExcluirCliente(void) {
+    printf("=== EXCLUIR CLIENTE ===\n");
+    excluirCliente();
+}
+
+// --- operaçoes
+void cadastrarCliente(void) {
     system("clear");
     Cliente c;
     FILE *fp;
@@ -76,20 +79,17 @@ void cadastrarCliente() {
     strcpy(c.id, idStr);
     free(idStr);
 
-    printf("\n=== CADASTRAR CLIENTE ===\n");
+    char *nome = lerNome();
+    strcpy(c.nome, nome);
+    free(nome);
 
-    printf("Nome: ");
-    setbuf(stdin, NULL);
-    fgets(c.nome, sizeof(c.nome), stdin);
-    c.nome[strcspn(c.nome, "\n")] = '\0';
+    char *nascimento = lerNascimento();
+    strcpy(c.dataNascimento, nascimento);
+    free(nascimento);
 
-    printf("Data de nascimento (dd/mm/aaaa): ");
-    fgets(c.dataNascimento, sizeof(c.dataNascimento), stdin);
-    c.dataNascimento[strcspn(c.dataNascimento, "\n")] = '\0';
-
-    printf("Telefone: ");
-    fgets(c.telefone, sizeof(c.telefone), stdin);
-    c.telefone[strcspn(c.telefone, "\n")] = '\0';
+    char *telefone = lerTelefone();
+    strcpy(c.telefone, telefone);
+    free(telefone);
 
     c.status = 1;
 
@@ -99,6 +99,7 @@ void cadastrarCliente() {
         esperarEnter();
         return;
     }
+
     fwrite(&c, sizeof(Cliente), 1, fp);
     fclose(fp);
 
@@ -106,7 +107,7 @@ void cadastrarCliente() {
     esperarEnter();
 }
 
-void listarClientes() {
+void listarClientes(void) {
     system("clear");
     FILE *fp = fopen("clientes.dat", "rb");
     if (!fp) {
@@ -135,10 +136,10 @@ void listarClientes() {
     esperarEnter();
 }
 
-void atualizarCliente() {
+void atualizarCliente(void) {
     system("clear");
     printf("\n=== ATUALIZAR CLIENTE ===\n");
-    printf("Digite o ID do cliente: ");
+
     char *id = lerIdCliente();
 
     FILE *fp = fopen("clientes.dat", "r+b");
@@ -153,17 +154,18 @@ void atualizarCliente() {
 
     while (fread(&c, sizeof(Cliente), 1, fp) == 1) {
         if ((strcmp(c.id, id) == 0) && c.status == 1) {
-            printf("Novo nome: ");
-            fgets(c.nome, sizeof(c.nome), stdin);
-            c.nome[strcspn(c.nome, "\n")] = '\0';
 
-            printf("Nova data de nascimento: ");
-            fgets(c.dataNascimento, sizeof(c.dataNascimento), stdin);
-            c.dataNascimento[strcspn(c.dataNascimento, "\n")] = '\0';
+            char *nome = lerNome();
+            strcpy(c.nome, nome);
+            free(nome);
 
-            printf("Novo telefone: ");
-            fgets(c.telefone, sizeof(c.telefone), stdin);
-            c.telefone[strcspn(c.telefone, "\n")] = '\0';
+            char *nasc = lerNascimento();
+            strcpy(c.dataNascimento, nasc);
+            free(nasc);
+
+            char *tel = lerTelefone();
+            strcpy(c.telefone, tel);
+            free(tel);
 
             fseek(fp, -sizeof(Cliente), SEEK_CUR);
             fwrite(&c, sizeof(Cliente), 1, fp);
@@ -171,6 +173,7 @@ void atualizarCliente() {
             break;
         }
     }
+
     free(id);
     fclose(fp);
 
@@ -182,10 +185,10 @@ void atualizarCliente() {
     esperarEnter();
 }
 
-void excluirCliente() {
+void excluirCliente(void) {
     system("clear");
-    printf("\n=== EXCLUIR CLIENTE (FISICAMENTE) ===\n");
-    printf("Digite o ID do cliente: ");
+    printf("\n=== EXCLUIR CLIENTE ===\n");
+
     char *id = lerIdCliente();
 
     FILE *origem = fopen("clientes.dat", "rb");
@@ -229,17 +232,47 @@ void excluirCliente() {
     esperarEnter();
 }
 
-char menuCliente() {
+void pesquisarCliente(void) {
+    system("clear");
+    FILE *fp = fopen("clientes.dat", "rb");
+    if (!fp) {
+        printf("Nenhum cliente cadastrado.\n");
+        esperarEnter();
+        return;
+    }
+
+    char *idBusca = lerIdCliente();
+    Cliente c;
+    int encontrou = 0;
+
+    printf("\n=== RESULTADOS DA PESQUISA ===\n");
+    while (fread(&c, sizeof(Cliente), 1, fp) == 1) {
+        if (c.status == 1 && strcmp(c.id, idBusca) == 0) {
+            printf("ID: %s | Nome: %s | Nascimento: %s | Telefone: %s\n",
+                   c.id, c.nome, c.dataNascimento, c.telefone);
+            encontrou = 1;
+        }
+    }
+
+    if (!encontrou)
+        printf("Nenhum cliente encontrado com esse ID.\n");
+
+    free(idBusca);
+    fclose(fp);
+    esperarEnter();
+}
+
+// --- menu e IDs
+char menuCliente(void) {
     char op;
 
     system("clear");
     printf("\n=== MENU CLIENTES ===\n");
     printf("1 - Cadastrar cliente\n");
     printf("2 - Listar clientes\n");
-    printf("3 - Atualizar cliente\n");
+    printf("3 - Pesquisar cliente\n");
     printf("4 - Excluir cliente\n");
     printf("0 - Sair\n");
-    printf("Escolha uma opção: ");
     op = opcao();
     return op;
 }
@@ -250,7 +283,7 @@ char* gerarIdCliente(void) {
 
     int id;
     do {
-        id = rand() % 9000 + 1000; // gera 1000–9999
+        id = rand() % 9000 + 1000;
         sprintf(idStr, "%d", id);
     } while (idExisteCliente(idStr));
 
@@ -259,21 +292,16 @@ char* gerarIdCliente(void) {
 
 int idExisteCliente(char *idStr) {
     FILE *fp = fopen("clientes.dat", "rb");
-    if (!fp) return False;
+    if (!fp) return 0;
 
     Cliente c;
-    while (fread(&c, sizeof(Cliente), 1, fp)) {
+    while (fread(&c, sizeof(Cliente), 1, fp) == 1) {
         if (strcmp(c.id, idStr) == 0) {
             fclose(fp);
-            return True;
+            return 1;
         }
     }
 
     fclose(fp);
-    return False;
+    return 0;
 }
-
-// int main(void) {
-//     modCliente();
-//     return 0;
-// }
