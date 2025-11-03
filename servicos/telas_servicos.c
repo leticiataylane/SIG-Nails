@@ -158,7 +158,7 @@ void cadastrarServico(void) {
     fgets(s.nome, sizeof(s.nome), stdin);
     s.nome[strcspn(s.nome, "\n")] = '\0';
 
-    s.preco = lerDinheiro();  
+    s.preco = lerPrecoServico();  
     setbuf(stdin, NULL);
 
     s.status = 1;
