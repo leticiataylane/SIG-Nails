@@ -191,51 +191,68 @@ char telaOqAlterar(void){
     op = opcao();
     return op;
 }
+
+
+void printAgendamento(Agendamento *a){
+    char *nomeServ;
+    char *nomeCli;
+
+    printf("╭──────────────────────────────────────────────╮\n");
+    printf("│              AGENDAMENTO: %s               │\n", a->agenId);
+    printf("├──────────────────────────────────────────────┤\n");
+    nomeCli = getNomeCli(a->clienteId);
+    printf("│ Nome Cliente: %-30s │\n", nomeCli);
+    free(nomeCli);
+    nomeServ = getNomeServ(a->servicoId);
+    printf("│ Nome Serviço: %-30s │\n", nomeServ);
+    free(nomeServ);
+    printf("│ Data: %.2s/%.2s/%.4s                             │\n", a->data, a->data + 2, a->data + 4);
+    printf("│ Horário: %.2sh%.2sm                              │\n", a->horario, a->horario + 2);
+    printf("│ Preço: R$ %.2f                              │\n", a->preco);
+    printf("│ Situação: %-34s │\n", a->situacao);
+    printf("╰──────────────────────────────────────────────╯\n");
+}
 ///////////////////////////////////////////////////////////OPERACOES////////////////////////////////////////////////////////////////////////////////
 
 int cadastrarAgendamento(void){
+    int cont = 0;
     int encontrado = False;
     Agendamento* a;
     a = (Agendamento*) malloc(sizeof(Agendamento));
-    FILE *cli = fopen("clientes.dat", "rb");
-    if (cli == NULL) {
-        printf("Erro: arquivo de clientes não encontrado!\n");
+
+    cont = contaClientesAtivos();
+
+    if(cont < 1){
+        free(a);
+        return 1;
+    }
+
+    cont = 0;
+    cont = contaServicosAtivos();
+
+    if(cont < 1){
         free(a);
         return 1;
     }
     
-    FILE *serv = fopen("Servicos.dat", "rb");
-    if (serv == NULL) {
-        printf("Erro: arquivo de serviços não encontrado!\n");
-        free(a);
-        return 1;
-    }
+
     system("clear");
-    listarClientes();
+    telaListarCliente();
     char *idCliente = lerIdCliente();
     strcpy(a->clienteId, idCliente);
     free(idCliente);
 
-    Cliente c; 
-    while ((fread(&c, sizeof(Cliente), 1, cli)) && (!encontrado)) {
-        if (strcmp(c.id, a->clienteId) == 0) {
-            strcpy(a->clienteNome, c.nome);
-            encontrado = True;
-        }
-    }
-    fclose(cli);
-    encontrado = False;
-    system("clear");
-    listarServicos();
+
+    telaListarServico();
     char *idServico = lerIdServico();
     strcpy(a->servicoId, idServico);
     free(idServico);
 
+    FILE *serv = fopen("servicos.dat", "rb");
     Servico s; 
     while ((fread(&s, sizeof(Servico), 1, serv)) && (!encontrado)) {
         if (strcmp(s.id, a->servicoId) == 0) {
             a->preco = s.preco;
-            strcpy(a->servicoNome, s.nome);
             encontrado = True;
         }
     }
@@ -301,8 +318,14 @@ int atualizarAgendamento(void) {
 
                 switch (oqAlterar) {
                     case '1': { // alterar serviço
+                        int cont = 0;
+                        cont = contaServicosAtivos();
+                        if(cont < 1){
+                            oqAlterar = '0';
+                            break;
+                        }
                         system("clear");
-                        listarServicos();
+                        telaListarServico();
                         char *idServico = lerIdServico();
                         strcpy(a->servicoId, idServico);
                         free(idServico);
@@ -310,16 +333,15 @@ int atualizarAgendamento(void) {
                         FILE *serv = fopen("Servicos.dat", "rb");
                         if (serv == NULL) {
                             perror("Erro ao abrir Servicos.dat");
+                            oqAlterar = '0';
                             break;
                         }
-
                         Servico s;
                         int encontradoServico = False;
 
                         while ((fread(&s, sizeof(Servico), 1, serv)) && (!encontradoServico)) {
                             if (strcmp(s.id, a->servicoId) == 0) {
                                 a->preco = s.preco;
-                                strcpy(a->servicoNome, s.nome);
                                 encontradoServico = True;
                             }
                         }
@@ -402,18 +424,7 @@ int pesquisarAgendamento(void){
 
     while((fread(a, sizeof(Agendamento), 1, agen)) && (!encontrado)){//quando pesquisar, mostrar nome e data de nascimento do cliente e o valor do serviço
         if((strcmp(qual, a->agenId) == 0) && (a->status)){
-            printf("╭──────────────────────────────────────────────╮\n");
-            printf("│              AGENDAMENTO: %s               │\n", a->agenId);
-            printf("├──────────────────────────────────────────────┤\n");
-            printf("│ ID Cliente: %-32s │\n", a->clienteId);
-            printf("│ Nome Cliente: %-30s │\n", a->clienteNome);
-            printf("│ ID Serviço: %s                             │\n", a->servicoId);
-            printf("│ Nome Serviço: %-30s │\n", a->servicoNome);
-            printf("│ Data: %.2s/%.2s/%.4s                             │\n", a->data, a->data + 2, a->data + 4);
-            printf("│ Horário: %.2sh%.2sm                              │\n", a->horario, a->horario + 2);
-            printf("│ Preço: R$ %.2f                              │\n", a->preco);
-            printf("│ Situação: %-34s │\n", a->situacao);
-            printf("╰──────────────────────────────────────────────╯\n");
+            printAgendamento(a);
             encontrado = True;
         } else if((qual == a->agenId) && (!a->status)){
             printf("AGENDAMENTO excluido\n");
@@ -433,6 +444,8 @@ int pesquisarAgendamento(void){
 
 
 int listarAgendamentos(void){
+    char *nomeCli;
+    char *nomeServ;
     int cont = 0;
     Agendamento* a;
     a = (Agendamento*) malloc(sizeof(Agendamento));
@@ -450,9 +463,12 @@ int listarAgendamentos(void){
         if(a->status){
             printf("├──────────────────────────────────────────────┤\n");
             printf("│ ID Agendamento: %-28s │\n", a->agenId);
-            printf("│ ID Cliente: %-32s │\n", a->clienteId);
-            printf("│ ID Serviço: %-32s │\n", a->servicoId);
-            printf("│ Nome Serviço: %-30s │\n", a->servicoNome);
+            nomeCli = getNomeCli(a->clienteId);
+            printf("│ Nome Cliente: %-30s │\n", nomeCli);
+            free(nomeCli);
+            nomeServ = getNomeServ(a->servicoId);
+            printf("│ Nome Serviço: %-30s │\n", nomeServ);
+            free(nomeServ);
             printf("│ Situação: %-34s │\n", a->situacao);
             cont += 1;
         }
@@ -479,18 +495,6 @@ int excluirAgendamento(void){
 
     while (fread(&a, sizeof(Agendamento), 1, agen) == 1 && !encontrado) {
         if ((strcmp(qual, a.agenId) == 0) && a.status && strcmp(a.situacao, "Pendente") != 0) {
-            printf("╭──────────────────────────────────────────────╮\n");
-            printf("│              AGENDAMENTO: %s               │\n", a.agenId);
-            printf("├──────────────────────────────────────────────┤\n");
-            printf("│ ID Cliente: %-32s │\n", a.clienteId);
-            printf("│ Nome Cliente: %-30s │\n", a.clienteNome);
-            printf("│ ID Serviço: %s                             │\n", a.servicoId);
-            printf("│ Nome Serviço: %-30s │\n", a.servicoNome);
-            printf("│ Data: %.2s/%.2s/%.4s                             │\n", a.data, a.data + 2, a.data + 4);
-            printf("│ Horário: %.2sh%.2sm                              │\n", a.horario, a.horario + 2);
-            printf("│ Preço: R$ %.2f                              │\n", a.preco);
-            printf("│ Situação: %-34s │\n", a.situacao);
-            printf("╰──────────────────────────────────────────────╯\n");
             a.status = False;
             fseek(agen, -sizeof(Agendamento), SEEK_CUR);
             fwrite(&a, sizeof(Agendamento), 1, agen);
@@ -602,4 +606,98 @@ char* gerarIdAgendamento(void) {
     } while (idExisteCliente(idStr));
 
     return idStr;
+}
+
+
+
+int contaClientesAtivos(void){
+    int cont = 0;
+    FILE *cli = fopen("clientes.dat", "rb");
+    if (cli == NULL) {
+        arqInexistente();
+        return cont;
+    }
+    Cliente c; 
+    while (fread(&c, sizeof(Cliente), 1, cli)) {
+        if (c.status){
+            cont += 1;
+        }
+    }
+    fclose(cli);
+    return cont;
+
+}
+
+
+int contaServicosAtivos(void){
+    int cont = 0;
+    FILE *serv = fopen("servicos.dat", "rb");
+    if (serv == NULL) {
+        arqInexistente();
+        return cont;
+    }
+    Servico s; 
+    while (fread(&s, sizeof(Servico), 1, serv)) {
+        if (s.status){
+            cont += 1;
+        }
+    }
+    fclose(serv);
+    return cont;
+
+}
+
+
+char* getNomeServ(char* id) {
+    char *nomeServ = NULL;
+    int encontrado = False;
+    FILE *serv = fopen("servicos.dat", "rb");
+    if (serv == NULL) {
+        arqInexistente();
+        return NULL;
+    }
+
+    Servico s;
+    while ((fread(&s, sizeof(Servico), 1, serv)) && (!encontrado)) {
+        if (strcmp(s.id, id) == 0) {
+            nomeServ = malloc(strlen(s.nome) + 1);
+            if (nomeServ == NULL) {
+                perror("Erro de alocação");
+                fclose(serv);
+                return NULL;
+            }
+            strcpy(nomeServ, s.nome);
+            encontrado = True;
+        }
+    }
+
+    fclose(serv);
+    return nomeServ; // deve ser liberado com free() pelo chamador
+}
+
+char* getNomeCli(char* id) {
+    char *nomeCli = NULL;
+    int encontrado = False;
+    FILE *cli = fopen("clientes.dat", "rb");
+    if (cli == NULL) {
+        arqInexistente();
+        return NULL;
+    }
+
+    Cliente c;
+    while ((fread(&c, sizeof(Cliente), 1, cli)) && (!encontrado)) {
+        if (strcmp(c.id, id) == 0) {
+            nomeCli = malloc(strlen(c.nome) + 1); // aloca o espaço exato
+            if (nomeCli == NULL) {
+                perror("Erro de alocação");
+                fclose(cli);
+                return NULL;
+            }
+            strcpy(nomeCli, c.nome);
+            encontrado = True;
+        }
+    }
+
+    fclose(cli);
+    return nomeCli; // deve ser liberado com free() por quem chama
 }

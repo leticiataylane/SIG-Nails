@@ -9,9 +9,7 @@
 typedef struct {
     char agenId[10];
     char clienteId[10];
-    char clienteNome[50];
     char servicoId[10];
-    char servicoNome[50];
     char data[15];
     char horario[10];
     // char funcionario[20];
@@ -39,9 +37,15 @@ void telaPesquisarAgendamento(void);
 void telaListarAgendamentos(void);
 void telaExcluirAgendamento(void);
 
+void printAgendamento(Agendamento *a);
+
 char telaSituacao(void);
 
 char* gerarIdAgendamento(void);
 int idExisteAgendamento(char *idStr);
+char* getNomeCli(char *id);
+char* getNomeServ(char *id);
+int contaServicosAtivos(void);
+int contaClientesAtivos(void);
 
 #endif
