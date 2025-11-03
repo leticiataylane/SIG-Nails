@@ -22,9 +22,9 @@ void telaInicial(void) {
         system("clear");
 
         printf(roxo negrito "╭─────────────────────────────────────────────────╮\n" reset);
-        printf(roxo negrito "│ ✿ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ✿ │\n" reset);
-        printf(roxo negrito "│ ★"rosa negrito "        BEM-VINDO AO SISTEMA SIG-NAILS       "roxo negrito "★ │\n" reset);
-        printf(roxo negrito "│ ✿ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ✿ │\n" reset);
+        printf(roxo negrito "│ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ │\n" reset);
+        printf(roxo negrito "│ ★"ciano negrito "        BEM-VINDO AO SISTEMA SIG-NAILS       "roxo negrito "★ │\n" reset);
+        printf(roxo negrito "│ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ │\n" reset);
         printf(roxo negrito "╰─────────────────────────────────────────────────╯\n" reset);
         sleep(3);
 }
