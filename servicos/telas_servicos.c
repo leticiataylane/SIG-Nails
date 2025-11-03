@@ -153,10 +153,9 @@ void cadastrarServico(void) {
 
     printf(roxo negrito"\n★ CADASTRAR SERVIÇO ★\n\n" reset);
 
-    printf("Nome do serviço: ");
-    setbuf(stdin, NULL);
-    fgets(s.nome, sizeof(s.nome), stdin);
-    s.nome[strcspn(s.nome, "\n")] = '\0';
+    char *nome = lerNomeCurto("Nome do serviço: ");
+    strcpy(s.nome, nome);
+    free(nome);
 
     s.preco = lerPrecoServico();  
     setbuf(stdin, NULL);
@@ -243,7 +242,6 @@ void atualizarServico(void) {
 
 // exclusão logica
 void excluirServico(void) {
-    printf(ciano negrito "Digite o ID do serviço para exclusão: " reset);
     char *id = lerIdServico();
 
     FILE *fp = fopen("servicos.dat", "r+b");
