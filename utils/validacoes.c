@@ -328,6 +328,19 @@ int validaNome(char *nome){
     return True;
 }
 
+int validaNomeCurto(char *str) {
+    if (str == NULL || strlen(str) < 2) {
+        return 0;
+    }
+
+    for (int i = 0; str[i] != '\0'; i++) {
+        if (!isalpha(str[i]) && str[i] != ' ') {
+            return 0;
+        }
+    }
+
+    return 1;
+}
 
 
 int validaTelefone(char *telefone){
