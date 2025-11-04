@@ -39,3 +39,17 @@ void limpaNum(char *num){
     }
     num[j] = '\0';
 }
+
+void limpaEspacos(char *str) {
+    int i = 0;
+    while (str[i] == ' ') i++;
+
+    if (i > 0) {
+        memmove(str, str + i, strlen(str + i) + 1);
+    }
+    int len = strlen(str);
+    while (len > 0 && str[len - 1] == ' ') {
+        str[len - 1] = '\0';
+        len--;
+    }
+}
