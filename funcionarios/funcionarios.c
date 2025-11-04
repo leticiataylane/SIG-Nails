@@ -361,7 +361,7 @@ int listarFuncionarios(void){
     fun = fopen("funcionarios.dat","rb");
     if(fun == NULL){
         printf("├──────────────────────────────────────────────┤\n");
-        printf("│           Erro ao abrir o arquivo.           │");
+        printf("│           Erro ao abrir o arquivo.           │\n");
         free(f);
         return False;
     }
