@@ -6,6 +6,7 @@ void esperarEnter();
 char* lerString(const char* msg);
 
 char* lerNome(void);
+char* lerNomeCurto(const char *mensagem);
 char* lerCPF(void);
 
 char* lerNascimento(void);

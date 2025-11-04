@@ -47,7 +47,7 @@ char* lerNome(void){
     char *nome = NULL;
     int valido = 0;
     do{
-        nome = lerString("Digite o nome (no mínimo 5 caracteres):\n");
+        nome = lerString("Digite o nome completo:\n");
         limpaNome(nome);
         valido = validaNome(nome);
         if(!valido){
@@ -55,6 +55,25 @@ char* lerNome(void){
             free(nome);
         }
     }while(!valido);
+
+    return nome;
+}
+
+char* lerNomeCurto(const char *mensagem) {
+    char *nome = NULL;
+    int valido = 0;
+
+    do {
+        nome = lerString(mensagem);
+        limpaEspacos(nome);
+        valido = validaNomeCurto(nome);
+
+        if (!valido) {
+            dadosInvalidos();
+            free(nome);
+        }
+
+    } while (!valido);
 
     return nome;
 }
