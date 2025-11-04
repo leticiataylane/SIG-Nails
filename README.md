@@ -70,74 +70,162 @@ SEMANA 5:
 
 - Adição do Makefile
 
+
 # ★ Pré-requisitos:
 
 Antes de compilar, verifique se você tem instalado:
 
 GCC (compilador C)
 
+Make (para usar o Makefile)
+
 Git (opcional, para clonar o repositório)
 
-- No Linux, você pode instalar com:
+No Linux, você pode instalar com:
 
 sudo apt update
-
 sudo apt install build-essential
 
+
 # ★ Como compilar
-**LINUX (UBUNTU/DEBIAN):**
-1. Clone o repositório (ou baixe os arquivos)
-   
+LINUX (Ubuntu/Debian):
+
+Clone o repositório (ou baixe os arquivos):
+
 git clone https://github.com/SEU-USUARIO/sig-nails.git
+cd sig-nails
 
-cd SIG-Nails
 
-3. Compile o projeto
-
-- Se estiver usando o Makefile:
+Compile o projeto (usando o Makefile):
 
 make
 
 
-Isso vai gerar o executável sig_nails.
+Isso vai gerar o executável:
 
-- Se preferir compilar manualmente:
+./sig-nails
 
-gcc main.c tela_inicial.c tela_final.c tela_sobre.c tela_ajuda.c \
-tela_edição_remoção.c tela_cores.c tela_atendentes.c \
--Iinclude -o sig_nails
 
-3. Execute o programa
-./sig_nails
+Execute o programa:
 
-**WINDOWS (MinGW):**
+./sig-nails
 
-1. Instale o compilador MinGW
 
-- Baixe em: MinGW
+Para limpar arquivos compilados:
 
-- Durante a instalação, selecione o pacote mingw32-gcc-g++.
+make clean
 
-2. Adicione o caminho do bin do MinGW à variável de ambiente PATH.
+# ★ Executar no Windows (usando WSL)
 
-- Abra o terminal do MinGW (ou CMD/PowerShell configurado)
+O SIG-Nails foi desenvolvido para Linux, e não funciona nativamente no Windows.
+Para executar no Windows, use o WSL (Windows Subsystem for Linux).
 
-3. Compile o projeto
+1. Instalar o WSL
 
-gcc main.c tela_inicial.c tela_final.c tela_sobre.c tela_ajuda.c ^
-tela_edição_remoção.c tela_cores.c tela_atendentes.c ^
--Iinclude -o sig_nails.exe
+Abra o PowerShell como Administrador e execute:
 
-**OBS.:** No Windows, as quebras de linha no terminal usam ^ (não \).
+wsl --install
 
-4. Execute o programa
 
-sig_nails.exe
+Isso instala o WSL 2 e o Ubuntu automaticamente.
+
+Reinicie o computador quando solicitado.
+
+Quando o Ubuntu abrir pela primeira vez, crie um usuário e senha.
+
+2. Atualizar e preparar o ambiente Linux dentro do WSL
+
+Abra o Ubuntu (pelo menu Iniciar) e execute:
+
+sudo apt update && sudo apt upgrade -y
+sudo apt install build-essential git -y
+
+3. Mover o código para o WSL
+
+Você pode:
+
+Clonar o repositório diretamente dentro do WSL:
+
+git clone https://github.com/SEU-USUARIO/sig-nails.git
+cd sig-nails
+
+
+Ou acessar a pasta do Windows dentro do WSL:
+
+cd /mnt/c/Users/SEU_USUARIO/Documents/sig-nails
+
+4. Compilar e executar no WSL
+
+Dentro do terminal Ubuntu (WSL):
+
+make
+./sig-nails
+
+# ★ Estrutura do Projeto:
+SIG-Nails/
+│
+├── Agendamento/
+│   ├── agendamentos.c
+│   └── agendamentos.h
+│
+├── cliente/
+│   ├── clientes.c
+│   └── clientes.h
+│
+├── funcionarios/
+│   ├── funcionarios.c
+│   └── funcionarios.h
+│
+├── geral/
+│   ├── cores.h
+│   ├── erros.c
+│   ├── erros.h
+│   ├── telas_gerais.c
+│   └── telas_gerais.h
+│
+├── servicos/
+│   ├── servicos.c
+│   └── servicos.h
+│
+├── utils/
+│   ├── ler_dados.c
+│   ├── ler_dados.h
+│   ├── limpeza.c
+│   ├── limpeza.h
+│   ├── validacoes.c
+│   └── validacoes.h
+│
+├── main.c
+├── Makefile
+├── README.md
+├── clientes.dat
+├── servicos.dat
+└── .gitignore
+
+# ★ Dicas Extras
+
+Se quiser usar o VS Code no Windows com o WSL:
+
+Instale a extensão Remote - WSL
+
+Abra o terminal Ubuntu dentro do VS Code
+
+Compile e execute com:
+
+make
+./sig-nails
+
+
+Para limpar os arquivos compilados:
+
+make clean
 
 # ★ Observações
 
-- Todos os arquivos .h estão na pasta include.
+O projeto deve ser executado em Linux ou WSL (Windows Subsystem for Linux).
 
-- Se ocorrer erro com acentos no nome do arquivo (tela_edicao_remoção.c), verifique se o seu sistema suporta UTF-8 corretamente.
+Todos os dados são fictícios e usados apenas para fins educacionais.
 
+O executável padrão gerado é ./sig-nails.
 
+O Makefile gerencia automaticamente a compilação de todos os módulos do sistema.
