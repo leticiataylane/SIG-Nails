@@ -146,7 +146,7 @@ Você pode:
 
 Clonar o repositório diretamente dentro do WSL:
 
-git clone https://github.com/SEU-USUARIO/sig-nails.git
+git clone https://github.com/leticiataylane/SIG-Nails.git
 cd sig-nails
 
 
