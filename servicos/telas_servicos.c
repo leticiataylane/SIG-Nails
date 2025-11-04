@@ -116,7 +116,6 @@ void telaExcluirServico(void) {
     printf(roxo negrito"│                EXCLUIR SERVIÇO                │\n" reset);
     printf(roxo negrito"★───────────────────────────────────────────────★\n" reset);
     printf(roxo negrito"│" ciano negrito" [1] Exclusão Lógica (Inativar Serviço)        │\n" reset);
-    printf(roxo negrito"│" ciano negrito" [2] Exclusão Definitiva (Remover do Sistema)  │\n" reset);
     printf(roxo negrito"│" ciano negrito" [0] Voltar                                    │\n" reset);
     printf(roxo negrito"★───────────────────────────────────────────────★\n" reset);
 
@@ -125,9 +124,6 @@ void telaExcluirServico(void) {
         switch (op) {
             case '1':
                 excluirServico();
-                break;
-            case '2':
-                excluirServicoDefinitivo();
                 break;
             case '0':
                 break;
@@ -271,55 +267,6 @@ void excluirServico(void) {
         printf("Serviço não encontrado.\n");
     else
         printf("\n★ Serviço excluído logicamente com sucesso! ★\n");
-
-    esperarEnter();
-}
-
-// exclusão definitiva
-void excluirServicoDefinitivo(void) {
-    char *id = lerIdServico();
-
-    FILE *fp = fopen("servicos.dat", "rb");
-    if (!fp) {
-        printf("Erro ao abrir o arquivo de serviços.\n");
-        free(id);
-        esperarEnter();
-        return;
-    }
-
-    FILE *fpTemp = fopen("temp.dat", "wb");
-    if (!fpTemp) {
-        printf("Erro ao criar arquivo temporário.\n");
-        fclose(fp);
-        free(id);
-        esperarEnter();
-        return;
-    }
-
-    Servico s;
-    int encontrado = 0;
-
-    while (fread(&s, sizeof(Servico), 1, fp) == 1) {
-        if (strcmp(s.id, id) == 0) {
-            encontrado = 1;
-            printf("Serviço encontrado e removido definitivamente: %s\n", s.nome);
-            continue; 
-        }
-        fwrite(&s, sizeof(Servico), 1, fpTemp);
-    }
-
-    fclose(fp);
-    fclose(fpTemp);
-    free(id);
-
-    if (encontrado) {
-        remove("servicos.dat");
-        rename("temp.dat", "servicos.dat");
-        printf("Exclusão definitiva realizada com sucesso.\n");
-    } else {
-        remove("temp.dat");
-        printf("Nenhum serviço encontrado com esse ID.\n");
-    }
 
     esperarEnter();
 }

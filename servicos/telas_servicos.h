@@ -15,7 +15,6 @@ void pesquisarServico(void);
 void listarServicos(void);
 void atualizarServico(void);
 void excluirServico(void);
-void excluirServicoDefinitivo(void);
 char* gerarIdServico(void);
 int idExisteServico(char *idStr);
 
