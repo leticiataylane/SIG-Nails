@@ -92,7 +92,7 @@ LINUX (Ubuntu/Debian):
 
 Clone o repositório (ou baixe os arquivos):
 
-git clone https://github.com/SEU-USUARIO/sig-nails.git
+git clone https://github.com/leticiataylane/SIG-Nails.git
 cd sig-nails
 
 
