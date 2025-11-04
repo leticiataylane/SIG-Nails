@@ -8,8 +8,8 @@
 #include "limpeza.h"
 #include "validacoes.h"
 #include "ler_dados.h"
-#include "telas_clientes.h"
-#include "telas_servicos.h"
+#include "clientes.h"
+#include "servicos.h"
 #include "erros.h"
 
 
@@ -223,6 +223,7 @@ int cadastrarAgendamento(void){
     cont = contaClientesAtivos();
 
     if(cont < 1){
+        arqInexistente();
         free(a);
         return 1;
     }
@@ -231,6 +232,7 @@ int cadastrarAgendamento(void){
     cont = contaServicosAtivos();
 
     if(cont < 1){
+        arqInexistente();
         free(a);
         return 1;
     }
@@ -633,7 +635,6 @@ int contaServicosAtivos(void){
     int cont = 0;
     FILE *serv = fopen("servicos.dat", "rb");
     if (serv == NULL) {
-        arqInexistente();
         return cont;
     }
     Servico s; 

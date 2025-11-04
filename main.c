@@ -4,8 +4,8 @@
 #include <ctype.h> 
 #include "cores.h"
 #include "telas_gerais.h"
-#include "telas_clientes.h"
-#include "telas_servicos.h"
+#include "clientes.h"
+#include "servicos.h"
 #include "agendamentos.h"
 #include "funcionarios.h"
 #include "erros.h"

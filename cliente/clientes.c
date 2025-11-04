@@ -3,11 +3,11 @@
 #include <string.h>
 #include <strings.h>
 #include <time.h>
-#include "telas_clientes.h"
-#include "../utils/validacoes.h"
-#include "../utils/ler_dados.h"
-#include "../geral/erros.h"
-#include "../geral/cores.h"
+#include "clientes.h"
+#include "validacoes.h"
+#include "ler_dados.h"
+#include "erros.h"
+#include "cores.h"
 
 //  módulo principal 
 char modCliente(void) {

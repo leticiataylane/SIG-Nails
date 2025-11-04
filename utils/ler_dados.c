@@ -8,8 +8,8 @@
 #include "validacoes.h"
 #include "erros.h"
 #include "agendamentos.h"
-#include "telas_servicos.h"
-#include "telas_clientes.h"
+#include "servicos.h"
+#include "clientes.h"
 
 
 void esperarEnter() {

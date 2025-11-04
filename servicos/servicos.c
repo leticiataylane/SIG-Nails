@@ -3,12 +3,12 @@
 #include <string.h>
 #include <strings.h>
 #include <time.h>
-#include "telas_servicos.h"
-#include "../utils/ler_dados.h"
-#include "../utils/limpeza.h"
-#include "../utils/validacoes.h"
-#include "../geral/erros.h"
-#include "../geral/cores.h"
+#include "servicos.h"
+#include "ler_dados.h"
+#include "limpeza.h"
+#include "validacoes.h"
+#include "erros.h"
+#include "cores.h"
 
 // modulos
 
