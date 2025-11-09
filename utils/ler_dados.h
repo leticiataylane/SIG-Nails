@@ -2,7 +2,7 @@
 #define LER_DADOS_H
 
 char opcao(void);
-void esperarEnter();
+void esperarEnter(void);
 char* lerString(const char* msg);
 
 char* lerNome(void);

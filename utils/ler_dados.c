@@ -12,7 +12,7 @@
 #include "clientes.h"
 
 
-void esperarEnter() {
+void esperarEnter(void) {
     printf("\nPressione ENTER para continuar...");
     while (getchar() != '\n'); // espera apenas o ENTER
 }
