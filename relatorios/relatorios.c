@@ -1,11 +1,16 @@
 #include <stdio.h>
 #include <string.h>
+#include <unistd.h>
+#include <stdlib.h> 
+#include <ctype.h> 
 #include "clientes.h"
 #include "servicos.h"
 #include "agendamentos.h"
 #include "funcionarios.h"
 #include "ler_dados.h"
 #include "relatorios.h"
+#include "erros.h"
+#include "cores.h"
 
 
 char modRelatorios(void){
@@ -26,7 +31,6 @@ char modRelatorios(void){
                 modRelatorioFuncionario();
                 break;
             case '0':
-                telaFinal();
                 break;
             default:
                 opcaoInvalida();
@@ -36,6 +40,25 @@ char modRelatorios(void){
 
     return op;
 
+}
+
+char menuRelatorios(void) {
+    char op;
+
+    system("clear");
+    printf("\n");
+    printf(roxo negrito "★────────────────────────────────────────────★\n" reset);
+    printf(ciano negrito "                     RELATÓRIOS               \n" reset);
+    printf(roxo negrito "★────────────────────────────────────────────★\n" reset);
+    printf(ciano "1. Agendamentos\n" reset);
+    printf(ciano "2. Serviços\n" reset);
+    printf(ciano "3. Clientes\n" reset);
+    printf(ciano "4. Funcionários\n" reset);
+    printf(ciano "0. Sair\n" reset);
+    printf(roxo negrito "★────────────────────────────────────────────★\n" reset);
+
+    op = opcao();
+    return op;
 }
 
 ///////////////////////////////////////////////////////////AGENDAMENTOS////////////////////////////////////////////////////////////////////////
@@ -164,8 +187,10 @@ void relatorioAgendamento(const char op){
     if(agen == NULL){
         printf("├──────────────────────────────────────────────┤\n");
         printf("│    Não existem agendamentos cadastrados.     │\n");
+        printf("╰──────────────────────────────────────────────╯\n");
+        esperarEnter();
         free(a);
-        return cont;
+        return;
     }
 
     while (fread(a, sizeof(Agendamento), 1, agen)) {
@@ -275,9 +300,9 @@ char menuRelatorioServico(void){
 
 void printRelatServico(Servico *s){
     printf("├──────────────────────────────────────────────┤\n");
-    printf("│ ID: %-40s  │\n", s->id);
+    printf("│ ID: %-39s  │\n", s->id);
     printf("│ Nome: %-38s │ \n", s->nome);
-    printf("│ Preço: R$%-37.2f  │\n", s->preco);
+    printf("│ Preço: R$%-34.2f  │\n", s->preco);
 }
 
 
@@ -305,6 +330,8 @@ void cabecarioRelatorioServico(const char op){
 
 }
 
+
+
 void relatorioServico(const char op){
     int cont = 0;
     Servico *s;
@@ -316,8 +343,10 @@ void relatorioServico(const char op){
     if(serv == NULL){
         printf("├──────────────────────────────────────────────┤\n");
         printf("│      Não existem serviços cadastrados.       │\n");
+        printf("╰──────────────────────────────────────────────╯\n");
+        esperarEnter();
         free(s);
-        return cont;
+        return;
     }
 
     while (fread(s, sizeof(Servico), 1, serv)) {
@@ -453,8 +482,10 @@ void relatorioCliente(const char op){
     if(cli == NULL){
         printf("├──────────────────────────────────────────────┤\n");
         printf("│      Não existem clientes cadastrados.       │\n");
+        printf("╰──────────────────────────────────────────────╯\n");
+        esperarEnter();
         free(c);
-        return cont;
+        return;
     }
 
     while (fread(c, sizeof(Cliente), 1, cli)) {
@@ -592,8 +623,10 @@ void relatorioFuncionario(const char op){
     if(fun == NULL){
         printf("├──────────────────────────────────────────────┤\n");
         printf("│    Não existem funcionários cadastrados.     │\n");
+        printf("╰──────────────────────────────────────────────╯\n");
+        esperarEnter();
         free(f);
-        return cont;
+        return;
     }
 
     while (fread(f, sizeof(Funcionario), 1, fun)) {
