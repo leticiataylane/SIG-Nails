@@ -26,7 +26,7 @@ void telaInicial(void) {
         printf(roxo negrito "│ ★"ciano negrito "        BEM-VINDO AO SISTEMA SIG-NAILS       "roxo negrito "★ │\n" reset);
         printf(roxo negrito "│ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ │\n" reset);
         printf(roxo negrito "╰─────────────────────────────────────────────────╯\n" reset);
-        sleep(3);
+        sleep(2);
 }
 
 

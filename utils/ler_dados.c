@@ -314,7 +314,7 @@ char* lerIdCliente(void){
 
 
 char* lerSituacao(const char* horario, const char* data, const char* situacao){
-    char *novaSituacao = NULL;
+    char *novaSituacao = (char*) malloc(20 * sizeof(char));
     char op;
     int valido = 0; 
     do{
@@ -331,6 +331,8 @@ char* lerSituacao(const char* horario, const char* data, const char* situacao){
                 strcpy(novaSituacao, "Cancelado");
                 break;
             case '0':
+                free(novaSituacao);
+                return NULL;
                 break;
             default:
                 opcaoInvalida();
