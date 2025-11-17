@@ -8,6 +8,7 @@
 #include "servicos.h"
 #include "agendamentos.h"
 #include "funcionarios.h"
+#include "relatorios.h"
 #include "erros.h"
  
 int main(void) {
@@ -33,6 +34,8 @@ int main(void) {
                 telaSobre();
                 telaAjuda();
                 break;
+            case '6':
+                modRelatorios();
             case '0':
                 telaFinal();
                 break;
