@@ -12,7 +12,6 @@
 #include "erros.h"
 #include "cores.h"
 
-
 char modRelatorios(void){
     char op;
     do {
@@ -36,10 +35,8 @@ char modRelatorios(void){
                 opcaoInvalida();
                 break;
         }
-    } while(op != '0'); // continua até o usuário escolher sair
-
+    } while(op != '0');
     return op;
-
 }
 
 char menuRelatorios(void) {
@@ -61,7 +58,7 @@ char menuRelatorios(void) {
     return op;
 }
 
-///////////////////////////////////////////////////////////AGENDAMENTOS////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////// AGENDAMENTOS ///////////////////////////////////////////
 char modRelatorioAgendamento(void){
     char op;
     do {
@@ -97,10 +94,9 @@ char modRelatorioAgendamento(void){
                 opcaoInvalida();
                 break;
         }
-    } while(op != '0'); // continua até o usuário escolher sair
+    } while(op != '0');
 
     return op;
-
 }
 
 char menuRelatorioAgendamento(void){
@@ -123,137 +119,61 @@ char menuRelatorioAgendamento(void){
 void printRelatAgendamento(Agendamento *a){
     char *nomeCli;
     char *nomeServ;
-    printf("├──────────────────────────────────────────────┤\n");
-    printf("│ ID Agendamento: %-28s │\n", a->agenId);
+    printf("├───────────────┬────────────────────────────────────┬────────────┬───────────────┤\n");
+    printf("│ ID: %-12s │ ", a->agenId);
     nomeCli = getNomeCli(a->clienteId);
-    printf("│ Nome Cliente: %-30s │\n", nomeCli);
+    printf("%-34s │ ", nomeCli);
     free(nomeCli);
     nomeServ = getNomeServ(a->servicoId);
-    printf("│ Nome Serviço: %-30s │\n", nomeServ);
+    printf("%-10s │ %-13s │\n", nomeServ, a->situacao);
     free(nomeServ);
-    printf("│ Situação: %-34s │\n", a->situacao);
+    printf("├───────────────┴────────────────────────────────────┴────────────┴───────────────┤\n");
 }
-
 
 void cabecarioRelatorioAgendamento(const char op){
     switch(op) {
-            case '1': // PENDENTES
-                printf("╭──────────────────────────────────────────────╮\n");
-                printf("│          RELATÓRIO DOS AGENDAMENTOS          │\n");
-                printf("│                   PENDENTES                  │\n");
-                break;
-
-            case '2': // CONCLUÍDOS
-                printf("╭──────────────────────────────────────────────╮\n");
-                printf("│          RELATÓRIO DOS AGENDAMENTOS          │\n");
-                printf("│                   CONCLUÍDOS                 │\n");             
-                break;
-
-            case '3': // CANCELADOS
-                printf("╭──────────────────────────────────────────────╮\n");
-                printf("│          RELATÓRIO DOS AGENDAMENTOS          │\n");
-                printf("│                   CANCELADOS                 │\n"); 
-                break;
-
-            case '4': // TODOS
-                printf("╭──────────────────────────────────────────────╮\n");
-                printf("│            RELATÓRIO DE TODOS OS             │\n");
-                printf("│                 AGENDAMENTOS                 │\n");
-                break;
-
-            case '5': // ATIVOS
-                printf("╭──────────────────────────────────────────────╮\n");
-                printf("│          RELATÓRIO DOS AGENDAMENTOS          │\n");
-                printf("│                    ATIVOS                    │\n");     
-                break;
-
-            case '6': // EXCLUÍDOS
-                printf("╭──────────────────────────────────────────────╮\n");
-                printf("│          RELATÓRIO DOS AGENDAMENTOS          │\n");
-                printf("│                   EXCLUÍDOS                  │\n");
-                break;
-        }
-
+        case '1': printf("╭──────────────────────────────────────────────╮\n│          RELATÓRIO DOS AGENDAMENTOS          │\n│                   PENDENTES                  │\n"); break;
+        case '2': printf("╭──────────────────────────────────────────────╮\n│          RELATÓRIO DOS AGENDAMENTOS          │\n│                   CONCLUÍDOS                 │\n"); break;
+        case '3': printf("╭──────────────────────────────────────────────╮\n│          RELATÓRIO DOS AGENDAMENTOS          │\n│                   CANCELADOS                 │\n"); break;
+        case '4': printf("╭──────────────────────────────────────────────╮\n│            RELATÓRIO DE TODOS OS             │\n│                 AGENDAMENTOS                 │\n"); break;
+        case '5': printf("╭──────────────────────────────────────────────╮\n│          RELATÓRIO DOS AGENDAMENTOS          │\n│                    ATIVOS                    │\n"); break;
+        case '6': printf("╭──────────────────────────────────────────────╮\n│          RELATÓRIO DOS AGENDAMENTOS          │\n│                   EXCLUÍDOS                  │\n"); break;
+    }
 }
 
 void relatorioAgendamento(const char op){
     int cont = 0;
-    Agendamento* a;
-    a = (Agendamento*) malloc(sizeof(Agendamento));
-    FILE *agen;
-    
-
-    agen = fopen("agendamentos.dat","rb");
-    if(agen == NULL){
-        printf("├──────────────────────────────────────────────┤\n");
-        printf("│    Não existem agendamentos cadastrados.     │\n");
-        printf("╰──────────────────────────────────────────────╯\n");
+    Agendamento* a = (Agendamento*) malloc(sizeof(Agendamento));
+    FILE *agen = fopen("agendamentos.dat","rb");
+    if(!agen){
+        printf("├──────────────────────────────────────────────┤\n│    Não existem agendamentos cadastrados.     │\n╰──────────────────────────────────────────────╯\n");
         esperarEnter();
         free(a);
         return;
     }
-
-    while (fread(a, sizeof(Agendamento), 1, agen)) {
-        int deveImprimir = 0; // controle de filtragem
-
-        switch(op) {
-            case '1': // PENDENTES
-                if (strcmp(a->situacao, "Pendente") == 0){
-                    deveImprimir = 1;
-                }
-                break;
-
-            case '2': // CONCLUÍDOS
-                if (strcmp(a->situacao, "Concluído") == 0){
-                    deveImprimir = 1;
-                }
-                break;
-
-            case '3': // CANCELADOS
-                if (strcmp(a->situacao, "Cancelado") == 0){
-                    deveImprimir = 1;
-                }
-                break;
-
-            case '4': // TODOS
-                deveImprimir = 1;
-                break;
-
-            case '5': // ATIVOS
-                if (a->status == True){
-                    deveImprimir = 1;
-                }
-                break;
-
-            case '6': // EXCLUÍDOS
-                if (a->status == False){
-                    deveImprimir = 1;
-                }
-                break;
+    while(fread(a,sizeof(Agendamento),1,agen)){
+        int deveImprimir = 0;
+        switch(op){
+            case '1': if(strcmp(a->situacao,"Pendente")==0) deveImprimir=1; break;
+            case '2': if(strcmp(a->situacao,"Concluído")==0) deveImprimir=1; break;
+            case '3': if(strcmp(a->situacao,"Cancelado")==0) deveImprimir=1; break;
+            case '4': deveImprimir=1; break;
+            case '5': if(a->status==True) deveImprimir=1; break;
+            case '6': if(a->status==False) deveImprimir=1; break;
         }
-
-        if (deveImprimir) {
-            printRelatAgendamento(a);
-            cont +=1;
-        }
+        if(deveImprimir){ printRelatAgendamento(a); cont++; }
     }
     fclose(agen);
     free(a);
 
-    if(cont < 1){
-        printf("├──────────────────────────────────────────────┤\n");
-        printf("│    Não existem agendamentos com o filtro     │\n");
-        printf("│                  escolhido.                  │\n");
-        
+    if(cont<1){
+        printf("├──────────────────────────────────────────────┤\n│    Não existem agendamentos com o filtro     │\n│                  escolhido.                  │\n");
     }
-
     printf("╰──────────────────────────────────────────────╯\n");
-
     esperarEnter();
-
 }
 
-/////////////////////////////////////////////////////SERVICOS/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////// SERVIÇOS ///////////////////////////////////////////
 
 char modRelatorioServico(void){
     char op;
@@ -278,395 +198,158 @@ char modRelatorioServico(void){
                 opcaoInvalida();
                 break;
         }
-    } while(op != '0'); // continua até o usuário escolher sair
-
+    } while(op != '0');
     return op;
-
 }
 
 char menuRelatorioServico(void){
     char op;
-    printf("╭──────────────────────────────────────────────╮\n");
-    printf("│            RELATÓRIOS DOS SERVIÇOS           │\n");
-    printf("├──────────────────────────────────────────────┤\n");
-    printf("│  [1] TODOS                                   │\n");
-    printf("│  [2] ATIVOS                                  │\n");
-    printf("│  [3] EXCLUÍDOS                               │\n"); 
-    printf("│  [0] SAIR                                    │\n");
-    printf("╰──────────────────────────────────────────────╯\n");
+    printf("╭──────────────────────────────────────────────╮\n│            RELATÓRIOS DOS SERVIÇOS           │\n├──────────────────────────────────────────────┤\n│  [1] TODOS\n│  [2] ATIVOS\n│  [3] EXCLUÍDOS\n│  [0] SAIR\n╰──────────────────────────────────────────────╯\n");
     op = opcao();
     return op;
 }
 
-void printRelatServico(Servico *s){
-    printf("├──────────────────────────────────────────────┤\n");
-    printf("│ ID: %-39s  │\n", s->id);
-    printf("│ Nome: %-38s │ \n", s->nome);
-    printf("│ Preço: R$%-34.2f  │\n", s->preco);
-}
-
-
 void cabecarioRelatorioServico(const char op){
     switch(op) {
-
-            case '1': // TODOS
-                printf("╭──────────────────────────────────────────────╮\n");
-                printf("│            RELATÓRIO DE TODOS OS             │\n");
-                printf("│                   SERVIÇOS                   │\n");
-                break;
-
-            case '2': // ATIVOS
-                printf("╭──────────────────────────────────────────────╮\n");
-                printf("│            RELATÓRIO DOS SERVIÇOS            │\n");
-                printf("│                    ATIVOS                    │\n");     
-                break;
-
-            case '3': // EXCLUÍDOS
-                printf("╭──────────────────────────────────────────────╮\n");
-                printf("│            RELATÓRIO DOS SERVIÇOS            │\n");
-                printf("│                   EXCLUÍDOS                  │\n");
-                break;
-        }
-
+        case '1': printf("╭──────────────────────────────────────────────╮\n│            RELATÓRIO DE TODOS OS             │\n│                   SERVIÇOS                   │\n"); break;
+        case '2': printf("╭──────────────────────────────────────────────╮\n│            RELATÓRIO DOS SERVIÇOS            │\n│                    ATIVOS                    │\n"); break;
+        case '3': printf("╭──────────────────────────────────────────────╮\n│            RELATÓRIO DOS SERVIÇOS            │\n│                   EXCLUÍDOS                  │\n"); break;
+    }
 }
 
-
+void printRelatServico(Servico *s){
+    printf("├─────┬────────────────────────────────────┬────────────┤\n");
+    printf("│ ID: %-6s │ Nome: %-30s │ R$%-8.2f │\n", s->id, s->nome, s->preco);
+    printf("├─────┴────────────────────────────────────┴────────────┤\n");
+}
 
 void relatorioServico(const char op){
-    int cont = 0;
-    Servico *s;
-    s = (Servico*) malloc(sizeof(Servico));
-    FILE *serv;
-    
-
-    serv = fopen("servicos.dat","rb");
-    if(serv == NULL){
-        printf("├──────────────────────────────────────────────┤\n");
-        printf("│      Não existem serviços cadastrados.       │\n");
-        printf("╰──────────────────────────────────────────────╯\n");
-        esperarEnter();
-        free(s);
-        return;
-    }
-
-    while (fread(s, sizeof(Servico), 1, serv)) {
-        int deveImprimir = 0; // controle de filtragem
-
-        switch(op) {
-            case '1': // TODOS
-                deveImprimir = 1;
-                break;
-
-            case '2': // ATIVOS
-                if (s->status == True){
-                    deveImprimir = 1;
-                }
-                break;
-
-            case '3': // EXCLUIDOS
-                if (s->status == False){
-                    deveImprimir = 1;
-                }
-                break;
+    int cont=0;
+    Servico *s=(Servico*) malloc(sizeof(Servico));
+    FILE *serv=fopen("servicos.dat","rb");
+    if(!serv){ printf("├──────────────────────────────────────────────┤\n│      Não existem serviços cadastrados.       │\n╰──────────────────────────────────────────────╯\n"); esperarEnter(); free(s); return;}
+    while(fread(s,sizeof(Servico),1,serv)){
+        int deveImprimir=0;
+        switch(op){
+            case '1': deveImprimir=1; break;
+            case '2': if(s->status==True) deveImprimir=1; break;
+            case '3': if(s->status==False) deveImprimir=1; break;
         }
-
-        if (deveImprimir) {
-            printRelatServico(s);
-            cont +=1;
-        }
+        if(deveImprimir){ printRelatServico(s); cont++; }
     }
     fclose(serv);
     free(s);
-
-    if(cont < 1){
-        printf("├──────────────────────────────────────────────┤\n");
-        printf("│      Não existem serviços com o filtro       │\n");
-        printf("│                  escolhido.                  │\n");
-        
-    }
-
+    if(cont<1){ printf("├──────────────────────────────────────────────┤\n│      Não existem serviços com o filtro       │\n│                  escolhido.                  │\n"); }
     printf("╰──────────────────────────────────────────────╯\n");
-
     esperarEnter();
-
 }
 
-
-////////////////////////////////////////////////////////////////////CLIENTES////////////////////////////////////////////////////////////////////////////
-
+/////////////////////////////////////////////////////////// CLIENTES ///////////////////////////////////////////
 
 char modRelatorioCliente(void){
     char op;
     do {
         op = menuRelatorioCliente();
-        switch(op) {
-            case '1':
+        switch(op){
+            case '1': case '2': case '3':
                 cabecarioRelatorioCliente(op);
                 relatorioCliente(op);
                 break;
-            case '2':
-                cabecarioRelatorioCliente(op);
-                relatorioCliente(op);
-                break;
-            case '3':
-                cabecarioRelatorioCliente(op);
-                relatorioCliente(op);
-                break;
-            case '0':
-                break;
-            default:
-                opcaoInvalida();
-                break;
+            case '0': break;
+            default: opcaoInvalida(); break;
         }
-    } while(op != '0'); // continua até o usuário escolher sair
-
+    } while(op!='0');
     return op;
-
 }
 
 char menuRelatorioCliente(void){
     char op;
-    printf("╭──────────────────────────────────────────────╮\n");
-    printf("│            RELATÓRIOS DOS CLIENTES           │\n");
-    printf("├──────────────────────────────────────────────┤\n");
-    printf("│  [1] TODOS                                   │\n");
-    printf("│  [2] ATIVOS                                  │\n");
-    printf("│  [3] EXCLUÍDOS                               │\n"); 
-    printf("│  [0] SAIR                                    │\n");
-    printf("╰──────────────────────────────────────────────╯\n");
+    printf("╭──────────────────────────────────────────────╮\n│            RELATÓRIOS DOS CLIENTES           │\n├──────────────────────────────────────────────┤\n│  [1] TODOS\n│  [2] ATIVOS\n│  [3] EXCLUÍDOS\n│  [0] SAIR\n╰──────────────────────────────────────────────╯\n");
     op = opcao();
     return op;
 }
 
-void printRelatCliente(Cliente *c){
-    printf("★───────────────────────────────────────────────★\n");
-    printf("│ ID: %-40s \n", c->id);
-    printf("│ Nome: %-38s \n", c->nome);
-    printf("│ Nascimento: %-32s \n", c->dataNascimento);
-    printf("│ Telefone: %-35s \n", c->telefone);
+void cabecarioRelatorioCliente(const char op){
+    switch(op){
+        case '1': printf("╭───────────────────────── RELATÓRIO DE TODOS OS CLIENTES ─────────────────────────╮\n│ ID    │ Nome                          │ Nascimento │ Telefone       │\n├───────┼───────────────────────────────┼────────────┼───────────────┤\n"); break;
+        case '2': printf("╭────────────────────────── RELATÓRIO DE CLIENTES ATIVOS ─────────────────────────╮\n│ ID    │ Nome                          │ Nascimento │ Telefone       │\n├───────┼───────────────────────────────┼────────────┼───────────────┤\n"); break;
+        case '3': printf("╭──────────────────────── RELATÓRIO DE CLIENTES EXCLUÍDOS ────────────────────────╮\n│ ID    │ Nome                          │ Nascimento │ Telefone       │\n├───────┼───────────────────────────────┼────────────┼───────────────┤\n"); break;
+    }
 }
 
-
-void cabecarioRelatorioCliente(const char op){
-    switch(op) {
-
-            case '1': // TODOS
-                printf("╭──────────────────────────────────────────────╮\n");
-                printf("│            RELATÓRIO DE TODOS OS             │\n");
-                printf("│                   CLIENTES                   │\n");
-                break;
-
-            case '2': // ATIVOS
-                printf("╭──────────────────────────────────────────────╮\n");
-                printf("│            RELATÓRIO DOS CLIENTES            │\n");
-                printf("│                    ATIVOS                    │\n");     
-                break;
-
-            case '3': // EXCLUÍDOS
-                printf("╭──────────────────────────────────────────────╮\n");
-                printf("│            RELATÓRIO DOS CLIENTES            │\n");
-                printf("│                   EXCLUÍDOS                  │\n");
-                break;
-        }
-
+void printRelatCliente(Cliente *c){
+    printf("│ %-6s │ %-29s │ %-10s │ %-13s │\n", c->id, c->nome, c->dataNascimento, c->telefone);
 }
 
 void relatorioCliente(const char op){
     int cont = 0;
-    Cliente *c;
-    c = (Cliente*) malloc(sizeof(Cliente));
-    FILE *cli;
-    
-
-    cli = fopen("clientes.dat","rb");
-    if(cli == NULL){
-        printf("├──────────────────────────────────────────────┤\n");
-        printf("│      Não existem clientes cadastrados.       │\n");
-        printf("╰──────────────────────────────────────────────╯\n");
-        esperarEnter();
-        free(c);
-        return;
-    }
-
-    while (fread(c, sizeof(Cliente), 1, cli)) {
-        int deveImprimir = 0; // controle de filtragem
-
-        switch(op) {
-            case '1': // TODOS
-                deveImprimir = 1;
-                break;
-
-            case '2': // ATIVOS
-                if (c->status == True){
-                    deveImprimir = 1;
-                }
-                break;
-
-            case '3': // EXCLUIDOS
-                if (c->status == False){
-                    deveImprimir = 1;
-                }
-                break;
-        }
-
-        if (deveImprimir) {
-            printRelatCliente(c);
-            cont +=1;
-        }
+    Cliente *c = (Cliente*) malloc(sizeof(Cliente));
+    FILE *cli = fopen("clientes.dat","rb");
+    if(!cli){ printf("├──────────────────────────────────────────────┤\n│      Não existem clientes cadastrados.       │\n╰──────────────────────────────────────────────╯\n"); esperarEnter(); free(c); return; }
+    while(fread(c,sizeof(Cliente),1,cli)){
+        int deveImprimir=0;
+        switch(op){ case '1': deveImprimir=1; break; case '2': if(c->status==True) deveImprimir=1; break; case '3': if(c->status==False) deveImprimir=1; break; }
+        if(deveImprimir){ printRelatCliente(c); cont++; }
     }
     fclose(cli);
     free(c);
-
-    if(cont < 1){
-        printf("├──────────────────────────────────────────────┤\n");
-        printf("│      Não existem clientes com o filtro       │\n");
-        printf("│                  escolhido.                  │\n");
-        
-    }
-
+    if(cont<1){ printf("├──────────────────────────────────────────────┤\n│      Não existem clientes com o filtro       │\n│                  escolhido.                  │\n"); }
     printf("╰──────────────────────────────────────────────╯\n");
-
     esperarEnter();
-
 }
 
-
-////////////////////////////////////////////////////////////////FUNCIONARIOS////////////////////////////////////////////////////////////////////////////
-
+/////////////////////////////////////////////////////////// FUNCIONÁRIOS ///////////////////////////////////////////
 
 char modRelatorioFuncionario(void){
     char op;
-    do {
+    do{
         op = menuRelatorioFuncionario();
-        switch(op) {
-            case '1':
+        switch(op){
+            case '1': case '2': case '3':
                 cabecarioRelatorioFuncionario(op);
                 relatorioFuncionario(op);
                 break;
-            case '2':
-                cabecarioRelatorioFuncionario(op);
-                relatorioFuncionario(op);
-                break;
-            case '3':
-                cabecarioRelatorioFuncionario(op);
-                relatorioFuncionario(op);
-                break;
-            case '0':
-                break;
-            default:
-                opcaoInvalida();
-                break;
+            case '0': break;
+            default: opcaoInvalida(); break;
         }
-    } while(op != '0'); // continua até o usuário escolher sair
-
+    } while(op!='0');
     return op;
-
 }
 
 char menuRelatorioFuncionario(void){
     char op;
-    printf("╭──────────────────────────────────────────────╮\n");
-    printf("│          RELATÓRIOS DOS FUNCIONARIOS         │\n");
-    printf("├──────────────────────────────────────────────┤\n");
-    printf("│  [1] TODOS                                   │\n");
-    printf("│  [2] ATIVOS                                  │\n");
-    printf("│  [3] EXCLUÍDOS                               │\n"); 
-    printf("│  [0] SAIR                                    │\n");
-    printf("╰──────────────────────────────────────────────╯\n");
+    printf("╭──────────────────────────────────────────────╮\n│          RELATÓRIOS DOS FUNCIONÁRIOS         │\n├──────────────────────────────────────────────┤\n│  [1] TODOS\n│  [2] ATIVOS\n│  [3] EXCLUÍDOS\n│  [0] SAIR\n╰──────────────────────────────────────────────╯\n");
     op = opcao();
     return op;
 }
 
-void printRelatFuncionario(Funcionario *f){
-    printf("├──────────────────────────────────────────────┤\n");
-    printf("│ Nome: %-38s │\n", f->nome);
-    printf("│ CPF: %-39s │\n", f->cpf);
-    printf("│ Data: %.2s/%.2s/%.4s                             │\n", f->nascimento, f->nascimento + 2, f->nascimento + 4);
-    printf("│ Telefone: (%.2s) %.1s %.4s-%.4s                   │\n",  f->telefone, f->telefone + 2,  f->telefone + 3, f->telefone + 7);
-    printf("│ E-mail: %-36s │\n", f->email);
-    printf("│ Salário: R$%-33.2f │\n", f->salario);
+void cabecarioRelatorioFuncionario(const char op){
+    switch(op){
+        case '1': printf("╭───────────────────────── RELATÓRIO DE TODOS OS FUNCIONÁRIOS ───────────────────────╮\n│ Nome                        │ CPF             │ Nascimento │ Telefone         │ E-mail                    │ Salário     │\n├─────────────────────────────┼─────────────────┼────────────┼─────────────────┼───────────────────────────┼─────────────┤\n"); break;
+        case '2': printf("╭────────────────────────── RELATÓRIO DE FUNCIONÁRIOS ATIVOS ────────────────────────╮\n│ Nome                        │ CPF             │ Nascimento │ Telefone         │ E-mail                    │ Salário     │\n├─────────────────────────────┼─────────────────┼────────────┼─────────────────┼───────────────────────────┼─────────────┤\n"); break;
+        case '3': printf("╭───────────────────────── RELATÓRIO DE FUNCIONÁRIOS EXCLUÍDOS ──────────────────────╮\n│ Nome                        │ CPF             │ Nascimento │ Telefone         │ E-mail                    │ Salário     │\n├─────────────────────────────┼─────────────────┼────────────┼─────────────────┼───────────────────────────┼─────────────┤\n"); break;
+    }
 }
 
-
-void cabecarioRelatorioFuncionario(const char op){
-    switch(op) {
-
-            case '1': // TODOS
-                printf("╭──────────────────────────────────────────────╮\n");
-                printf("│            RELATÓRIO DE TODOS OS             │\n");
-                printf("│                 FUNCIONÁRIOS                 │\n");
-                break;
-
-            case '2': // ATIVOS
-                printf("╭──────────────────────────────────────────────╮\n");
-                printf("│          RELATÓRIO DOS FUNCIONÁRIOS          │\n");
-                printf("│                    ATIVOS                    │\n");     
-                break;
-
-            case '3': // EXCLUÍDOS
-                printf("╭──────────────────────────────────────────────╮\n");
-                printf("│          RELATÓRIO DOS FUNCIONÁRIOS          │\n");
-                printf("│                   EXCLUÍDOS                  │\n");
-                break;
-        }
-
+void printRelatFuncionario(Funcionario *f){
+    printf("│ %-27s │ %-15s │ %.2s/%.2s/%.4s │ (%.2s) %.1s %.4s-%.4s │ %-25s │ R$%-8.2f │\n",
+           f->nome, f->cpf, f->nascimento, f->nascimento+2, f->nascimento+4,
+           f->telefone, f->telefone+2, f->telefone+3, f->telefone+7, f->email, f->salario);
 }
 
 void relatorioFuncionario(const char op){
-    int cont = 0;
-    Funcionario *f;
-    f = (Funcionario*) malloc(sizeof(Funcionario));
-    FILE *fun;
-    
-
-    fun = fopen("FUNCIONARIOS.dat","rb");
-    if(fun == NULL){
-        printf("├──────────────────────────────────────────────┤\n");
-        printf("│    Não existem funcionários cadastrados.     │\n");
-        printf("╰──────────────────────────────────────────────╯\n");
-        esperarEnter();
-        free(f);
-        return;
-    }
-
-    while (fread(f, sizeof(Funcionario), 1, fun)) {
-        int deveImprimir = 0; // controle de filtragem
-
-        switch(op) {
-            case '1': // TODOS
-                deveImprimir = 1;
-                break;
-
-            case '2': // ATIVOS
-                if (f->status == True){
-                    deveImprimir = 1;
-                }
-                break;
-
-            case '3': // EXCLUIDOS
-                if (f->status == False){
-                    deveImprimir = 1;
-                }
-                break;
-        }
-
-        if (deveImprimir) {
-            printRelatFuncionario(f);
-            cont +=1;
-        }
+    int cont=0;
+    Funcionario *f=(Funcionario*) malloc(sizeof(Funcionario));
+    FILE *fun=fopen("FUNCIONARIOS.dat","rb");
+    if(!fun){ printf("├──────────────────────────────────────────────┤\n│    Não existem funcionários cadastrados.     │\n╰──────────────────────────────────────────────╯\n"); esperarEnter(); free(f); return;}
+    while(fread(f,sizeof(Funcionario),1,fun)){
+        int deveImprimir=0;
+        switch(op){ case '1': deveImprimir=1; break; case '2': if(f->status==True) deveImprimir=1; break; case '3': if(f->status==False) deveImprimir=1; break; }
+        if(deveImprimir){ printRelatFuncionario(f); cont++; }
     }
     fclose(fun);
     free(f);
-
-    if(cont < 1){
-        printf("├──────────────────────────────────────────────┤\n");
-        printf("│    Não existem funcionários com o filtro     │\n");
-        printf("│                  escolhido.                  │\n");
-        
-    }
-
+    if(cont<1){ printf("├──────────────────────────────────────────────┤\n│    Não existem funcionários com o filtro     │\n│                  escolhido.                  │\n"); }
     printf("╰──────────────────────────────────────────────╯\n");
-
     esperarEnter();
-
 }
