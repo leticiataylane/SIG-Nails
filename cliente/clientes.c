@@ -155,7 +155,6 @@ void cadastrarCliente(void) {
     fclose(fp);
 
     printf("\nCliente cadastrado com sucesso! ID: %s\n", c.id);
-    esperarEnter();
 }
 
 void listarClientes(void) {
