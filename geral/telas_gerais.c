@@ -44,6 +44,7 @@ char menuPrincipal(void) {
     printf(ciano "3. Clientes\n" reset);
     printf(ciano "4. Funcionários\n" reset);
     printf(ciano "5. Informações\n" reset);
+    printf(ciano "6. Relatórios\n" reset);
     printf(ciano "0. Sair\n" reset);
     printf(roxo negrito "★────────────────────────────────────────────★\n" reset);
 
