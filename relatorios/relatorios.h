@@ -25,6 +25,7 @@ char menuRelatorioCliente(void);
 void printRelatCliente(Cliente *c);
 void cabecarioRelatorioCliente(const char op);
 void relatorioCliente(const char op);
+void relatorioClientesInativos(void);
 ////////////////////////////////////////////////////////////////FUNCIONARIOS////////////////////////////////////////////////////////////////////////////
 
 
