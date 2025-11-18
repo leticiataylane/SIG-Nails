@@ -133,12 +133,36 @@ void printRelatAgendamento(Agendamento *a){
 
 void cabecarioRelatorioAgendamento(const char op){
     switch(op) {
-        case '1': printf("╭──────────────────────────────────────────────╮\n│          RELATÓRIO DOS AGENDAMENTOS          │\n│                   PENDENTES                  │\n"); break;
-        case '2': printf("╭──────────────────────────────────────────────╮\n│          RELATÓRIO DOS AGENDAMENTOS          │\n│                   CONCLUÍDOS                 │\n"); break;
-        case '3': printf("╭──────────────────────────────────────────────╮\n│          RELATÓRIO DOS AGENDAMENTOS          │\n│                   CANCELADOS                 │\n"); break;
-        case '4': printf("╭──────────────────────────────────────────────╮\n│            RELATÓRIO DE TODOS OS             │\n│                 AGENDAMENTOS                 │\n"); break;
-        case '5': printf("╭──────────────────────────────────────────────╮\n│          RELATÓRIO DOS AGENDAMENTOS          │\n│                    ATIVOS                    │\n"); break;
-        case '6': printf("╭──────────────────────────────────────────────╮\n│          RELATÓRIO DOS AGENDAMENTOS          │\n│                   EXCLUÍDOS                  │\n"); break;
+        case '1':
+        printf("╭──────────────────────────────────────────────╮\n"); 
+        printf("│          RELATÓRIO DOS AGENDAMENTOS          │\n"); 
+        printf("│                   PENDENTES                  │\n"); 
+        break;
+        case '2':
+            printf("╭──────────────────────────────────────────────╮\n"); 
+            printf("│          RELATÓRIO DOS AGENDAMENTOS          │\n");
+            printf("│                   CONCLUÍDOS                 │\n"); 
+            break;
+        case '3':
+            printf("╭──────────────────────────────────────────────╮\n"); 
+            printf("│          RELATÓRIO DOS AGENDAMENTOS          │\n"); 
+            printf("│                   CANCELADOS                 │\n"); 
+            break;
+        case '4':
+            printf("╭──────────────────────────────────────────────╮\n"); 
+            printf("│            RELATÓRIO DE TODOS OS             │\n"); 
+            printf("│                 AGENDAMENTOS                 │\n"); 
+            break;
+        case '5':
+            printf("╭──────────────────────────────────────────────╮\n"); 
+            printf("│          RELATÓRIO DOS AGENDAMENTOS          │\n"); 
+            printf("│                    ATIVOS                    │\n"); 
+            break;
+        case '6':
+            printf("╭──────────────────────────────────────────────╮\n"); 
+            printf("│          RELATÓRIO DOS AGENDAMENTOS          │\n"); 
+            printf("│                   EXCLUÍDOS                  │\n"); 
+            break;
     }
 }
 
@@ -147,7 +171,9 @@ void relatorioAgendamento(const char op){
     Agendamento* a = (Agendamento*) malloc(sizeof(Agendamento));
     FILE *agen = fopen("agendamentos.dat","rb");
     if(!agen){
-        printf("├──────────────────────────────────────────────┤\n│    Não existem agendamentos cadastrados.     │\n╰──────────────────────────────────────────────╯\n");
+        printf("├──────────────────────────────────────────────┤\n");
+        printf("│    Não existem agendamentos cadastrados.     │\n");
+        printf("╰──────────────────────────────────────────────╯\n");
         esperarEnter();
         free(a);
         return;
@@ -168,7 +194,9 @@ void relatorioAgendamento(const char op){
     free(a);
 
     if(cont<1){
-        printf("├──────────────────────────────────────────────┤\n│    Não existem agendamentos com o filtro     │\n│                  escolhido.                  │\n");
+        printf("├──────────────────────────────────────────────┤\n");
+        printf("│    Não existem agendamentos com o filtro     │\n");
+        printf("│                  escolhido.                  │\n");
     }
     printf("╰──────────────────────────────────────────────╯\n");
     esperarEnter();
@@ -205,16 +233,35 @@ char modRelatorioServico(void){
 
 char menuRelatorioServico(void){
     char op;
-    printf("╭──────────────────────────────────────────────╮\n│            RELATÓRIOS DOS SERVIÇOS           │\n├──────────────────────────────────────────────┤\n│  [1] TODOS\n│  [2] ATIVOS\n│  [3] EXCLUÍDOS\n│  [0] SAIR\n╰──────────────────────────────────────────────╯\n");
+    printf("╭──────────────────────────────────────────────╮\n");
+    printf("│            RELATÓRIOS DOS SERVIÇOS           │\n");
+    printf("├──────────────────────────────────────────────┤\n");
+    printf("│  [1] TODOS                                   |\n");
+    printf("│  [2] ATIVOS                                  |\n");
+    printf("│  [3] EXCLUÍDOS                               |\n");
+    printf("│  [0] SAIR                                    |\n");
+    printf("╰──────────────────────────────────────────────╯\n");
     op = opcao();
     return op;
 }
 
 void cabecarioRelatorioServico(const char op){
     switch(op) {
-        case '1': printf("╭──────────────────────────────────────────────╮\n│            RELATÓRIO DE TODOS OS             │\n│                   SERVIÇOS                   │\n"); break;
-        case '2': printf("╭──────────────────────────────────────────────╮\n│            RELATÓRIO DOS SERVIÇOS            │\n│                    ATIVOS                    │\n"); break;
-        case '3': printf("╭──────────────────────────────────────────────╮\n│            RELATÓRIO DOS SERVIÇOS            │\n│                   EXCLUÍDOS                  │\n"); break;
+        case '1':
+            printf("╭──────────────────────────────────────────────╮\n");
+            printf("│            RELATÓRIO DE TODOS OS             │\n");
+            printf("│                   SERVIÇOS                   │\n");
+            break;
+        case '2':
+            printf("╭──────────────────────────────────────────────╮\n");
+            printf("│            RELATÓRIO DOS SERVIÇOS            │\n");
+            printf("│                    ATIVOS                    │\n");
+                break;
+        case '3':
+            printf("╭──────────────────────────────────────────────╮\n");
+            printf("│            RELATÓRIO DOS SERVIÇOS            │\n");
+            printf("│                   EXCLUÍDOS                  │\n");
+            break;
     }
 }
 
@@ -228,7 +275,14 @@ void relatorioServico(const char op){
     int cont=0;
     Servico *s=(Servico*) malloc(sizeof(Servico));
     FILE *serv=fopen("servicos.dat","rb");
-    if(!serv){ printf("├──────────────────────────────────────────────┤\n│      Não existem serviços cadastrados.       │\n╰──────────────────────────────────────────────╯\n"); esperarEnter(); free(s); return;}
+    if(!serv){
+        printf("├──────────────────────────────────────────────┤\n");
+        printf("│      Não existem serviços cadastrados.       │\n");
+        printf("╰──────────────────────────────────────────────╯\n");
+        esperarEnter();
+        free(s);
+        return;
+            }
     while(fread(s,sizeof(Servico),1,serv)){
         int deveImprimir=0;
         switch(op){
@@ -240,24 +294,33 @@ void relatorioServico(const char op){
     }
     fclose(serv);
     free(s);
-    if(cont<1){ printf("├──────────────────────────────────────────────┤\n│      Não existem serviços com o filtro       │\n│                  escolhido.                  │\n"); }
-    printf("╰──────────────────────────────────────────────╯\n");
-    esperarEnter();
+    if(cont<1){
+        printf("├──────────────────────────────────────────────┤\n");
+        printf("│      Não existem serviços com o filtro       │\n");
+        printf("│                  escolhido.                  │\n");
+        printf("╰──────────────────────────────────────────────╯\n");
+        esperarEnter();
+    }
 }
 
 /////////////////////////////////////////////////////////// CLIENTES ///////////////////////////////////////////
 
-char modRelatorioCliente(void){
+char modRelatorioCliente(void) {
     char op;
     do {
         op = menuRelatorioCliente();
         switch(op){
-            case '1': case '2': case '3':
+            case '1':
+            case '2':
+            case '3':
                 cabecarioRelatorioCliente(op);
                 relatorioCliente(op);
                 break;
-            case '0': break;
-            default: opcaoInvalida(); break;
+            case '0':
+                break;
+            default:
+                opcaoInvalida();
+                break;
         }
     } while(op!='0');
     return op;
@@ -304,9 +367,9 @@ void cabecarioRelatorioCliente(const char op){
             break;
         case '0': 
             opcaoInvalida();
-            break;
-    }
+            break;}
 }
+
 
 void printRelatCliente(Cliente *c){
     printf("│ %-6s │ %-29s │ %-10s │ %-13s │\n", c->id, c->nome, c->dataNascimento, c->telefone);
