@@ -36,6 +36,7 @@ int main(void) {
                 break;
             case '6':
                 modRelatorios();
+                break;
             case '0':
                 telaFinal();
                 break;
