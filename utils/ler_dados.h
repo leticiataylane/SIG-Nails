@@ -25,6 +25,7 @@ float lerPrecoServico(void);
 char* lerIdAgendamento(void);
 char* lerIdServico(void);
 char* lerIdCliente(void);
+char* lerIdFuncionario(char funcionariosDisp[10][5], int cont);
 
 char* lerSituacao(const char* horario, const char* data, const char* situacao);
 
