@@ -9,6 +9,7 @@
 #include "validacoes.h"
 #include "ler_dados.h"
 #include "clientes.h"
+#include "funcionarios.h"
 #include "servicos.h"
 #include "erros.h"
 
@@ -178,6 +179,21 @@ char telaSituacao(void){
     return op;
 }
 
+char telaHorario(void){
+    char op;
+    printf("╭──────────────────────────────────────────────╮\n");
+    printf("│             HORÁRIO DO AGENDAMENTO           │\n");
+    printf("├──────────────────────────────────────────────┤\n");
+    printf("│  [1] 08:00                                   │\n");
+    printf("│  [2] 10:00                                   │\n");
+    printf("│  [3] 14:00                                   │\n");
+    printf("│  [4] 16:00                                   │\n");
+    printf("╰──────────────────────────────────────────────╯\n");
+    op = opcao();
+    return op;
+
+}
+
 char telaOqAlterar(void){
     char op;
     printf("╭──────────────────────────────────────────────╮\n");
@@ -215,6 +231,7 @@ void printAgendamento(Agendamento *a){
 ///////////////////////////////////////////////////////////OPERACOES////////////////////////////////////////////////////////////////////////////////
 
 int cadastrarAgendamento(void){
+    char funcionariosDisp[10][5] = {0};
     int cont = 0;
     int encontrado = False;
     Agendamento* a;
@@ -259,8 +276,8 @@ int cadastrarAgendamento(void){
         }
     }
     fclose(serv);
-
-
+    
+    
     system("clear");
     char *data = lerData();
     strcpy(a->data, data);
@@ -269,6 +286,16 @@ int cadastrarAgendamento(void){
     char *horario = lerHorario();
     strcpy(a->horario, horario);
     free(horario);
+    
+    cont = 0;
+    cont = telaFuncionariosDisponiveis(funcionariosDisp, a->data, a->horario);
+    if(cont == 0){
+        printf("Não existem funcionários disponíveis.\n");
+        return 1;
+    }
+    char *idFuncionario = lerIdFuncionario(funcionariosDisp, cont);
+    strcpy(a->funcionario, idFuncionario);
+    free(idFuncionario);
 
     char *idStr = gerarIdAgendamento();
     strcpy(a->agenId, idStr);
