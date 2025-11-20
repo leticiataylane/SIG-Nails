@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <stdlib.h> 
 #include <ctype.h> 
+#include "funcionarios.h"
 #include "ler_dados.h"
 #include "limpeza.h"
 #include "validacoes.h"
@@ -145,14 +146,34 @@ char* lerData(void){
 }
 
 char* lerHorario(void){
-    char *horario = NULL;
+    char op;
+    char *horario = (char*) malloc(6 * sizeof(char));
     int valido = 0;
     do{
-        horario = lerString("Digite o horário:");
-        valido = validaHorario(horario);
-        if(!valido){
-            dadosInvalidos();
-            free(horario);
+        op = telaHorario();
+        switch (op)
+        {
+        case '1':
+            strcpy(horario, "0800");
+            valido = True;
+            break;
+
+        case '2':
+            strcpy(horario, "1000");
+            valido = True;
+            break;
+
+        case '3':
+            strcpy(horario, "1400");
+            valido = True;
+            break;
+        case '4':
+            strcpy(horario, "1600");
+            valido = True;
+            break;
+        default:
+            opcaoInvalida();
+            break;
         }
     }while(!valido);
 
@@ -314,7 +335,7 @@ char* lerIdCliente(void){
 
 
 char* lerSituacao(const char* horario, const char* data, const char* situacao){
-    char *novaSituacao = (char*) malloc(20 * sizeof(char));
+    char *novaSituacao = (char*) malloc(15 * sizeof(char));
     char op;
     int valido = 0; 
     do{
@@ -342,5 +363,24 @@ char* lerSituacao(const char* horario, const char* data, const char* situacao){
     }while((op != '0') && (!valido));
 
     return novaSituacao;
+}
+
+char* lerIdFuncionario(char funcionariosDisp[10][5], int cont){
+    char* idChar = NULL;
+    int valido = 0;
+    do{
+        idChar = lerString("Digite o número do ID:");
+        limpaNum(idChar);
+        if(cont == 11){
+            valido = idExisteFuncionario(idChar);
+        } else {
+            valido = idFuncionarioDisp(funcionariosDisp, idChar);
+        }
+        if(!valido){
+            dadosInvalidos();
+            free(idChar);
+        }
+    }while(!valido);
+    return idChar;
 }
 
