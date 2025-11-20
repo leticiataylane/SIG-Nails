@@ -2,7 +2,7 @@
 #define TELAS_CLIENTES_H
 
 typedef struct Cliente {
-    char id[10];
+    char id[6];
     char nome[80];
     char dataNascimento[11];
     char telefone[20];
