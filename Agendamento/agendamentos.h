@@ -12,7 +12,7 @@ typedef struct {
     char servicoId[10];
     char data[15];
     char horario[10];
-    // char funcionario[20];
+    char funcionario[6];
     float preco;
     char situacao[15];
     int status;
@@ -36,6 +36,7 @@ void telaAtualizarAgendamento(void);
 void telaPesquisarAgendamento(void);
 void telaListarAgendamentos(void);
 void telaExcluirAgendamento(void);
+char telaHorario(void);
 
 void printAgendamento(Agendamento *a);
 
