@@ -5,6 +5,7 @@
 
 typedef struct {
     char cpf[20];
+    char id[6];
     char nome[60];
     char nascimento[15];
     char telefone[20];
@@ -31,5 +32,10 @@ int pesquisarFuncionario(void);
 int listarFuncionarios(void);
 int excluirFuncionario(void);
 int excluirFuncionarioDefinitivo(void);
+
+int telaFuncionariosDisponiveis(char funcionariosDisp[10][5], char *data, char *horario);
+char* gerarIdFuncionario(void);
+int idExisteFuncionario(char *idStr);
+int idFuncionarioDisp(char funcionariosDisp[10][5], const char *idChar);
 
 #endif
