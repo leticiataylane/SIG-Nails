@@ -6,6 +6,7 @@
 #include "cores.h"
 #include "limpeza.h"
 #include "validacoes.h"
+#include "agendamentos.h"
 #include "funcionarios.h"
 #include "ler_dados.h"
 #include "erros.h"
@@ -174,6 +175,61 @@ char telaOqueAtualizar(void){
 
 }
 
+int telaFuncionariosDisponiveis(char funcionariosDisp[10][5], char *data, char *horario){
+    int i = 0;
+    FILE* func;
+    FILE* agen;
+    Funcionario f;
+    Agendamento a;
+    int cont = 0;
+
+    func = fopen("funcionarios.dat", "rb");
+    if(!func){
+        arqInexistente();
+        return cont;
+    }
+
+    printf("╭─────────────────┬──────────────────────────────────────────╮\n");
+    printf("│  ID             │  NOME                                    │\n");
+    while(fread(&f, sizeof(Funcionario), 1, func)){
+        if(f.status == True){
+            int ocupado = False;
+            agen = fopen("agendamentos.dat", "rb");
+            if(!agen){
+                fclose(func);
+                telaListarFuncionarios();
+                return cont += 11;
+            }
+            while(fread(&a, sizeof(Agendamento), 1, agen)){
+                if((a.status == True) && (strcmp(a.funcionario, f.id) == 0) && (strcmp(a.data, data) == 0) && (strcmp(a.horario, horario) == 0) && (strcmp(a.situacao, "Cancelado") != 0)){
+                    ocupado = True;
+                    break;
+                }
+            }
+            fclose(agen);
+
+            if(!ocupado){
+                printf("├─────────────────┼──────────────────────────────────────────┤\n");
+                printf("│  %-13s  │  %-38s  │\n", f.id, f.nome);
+                cont += 1;
+                strcpy(funcionariosDisp[i], f.id);
+                i+=1;
+
+            }
+        }
+    }
+    fclose(func);
+    if(cont == 0 ){
+        printf("├─────────────────┴──────────────────────────────────────────┤\n");
+        printf("│               Nenhum funcionário disponível.               │\n");
+        printf("╰────────────────────────────────────────────────────────────╯\n");
+        return cont;
+    }
+    printf("╰─────────────────┴──────────────────────────────────────────╯\n");
+    return cont;
+
+}
+
 
 ///////////////////////////////////////////////////////////OPERACOES////////////////////////////////////////////////////////////////////////////////
 
@@ -183,6 +239,10 @@ int cadastrarFuncionario(void){
     FILE *fun;
     Funcionario* f;
     f = (Funcionario*) malloc(sizeof(Funcionario));
+
+    char *idStr = gerarIdFuncionario();
+    strcpy(f->id, idStr);
+    free(idStr);
 
     char *nome = lerNome();
     strcpy(f->nome, nome);
@@ -211,6 +271,7 @@ int cadastrarFuncionario(void){
     printf("╭──────────────────────────────────────────────╮\n");
     printf("│                  FUNCIONÁRIO                 │\n");
     printf("├──────────────────────────────────────────────┤\n");
+    printf("│ ID: %s                                     │\n", f->id);
     printf("│ Nome: %-38s │\n", f->nome);
     printf("│ CPF: %-39s │\n", f->cpf);
     printf("│ Data: %.2s/%.2s/%.4s                             │\n", f->nascimento, f->nascimento + 2, f->nascimento + 4);
@@ -369,6 +430,7 @@ int listarFuncionarios(void){
     while(fread(f, sizeof(Funcionario), 1, fun)){
         if(f->status){
             printf("├──────────────────────────────────────────────┤\n");
+            printf("│ ID: %s                                     │\n", f->id);
             printf("│ Nome: %-38s │\n", f->nome);
             printf("│ CPF: %-39s │\n", f->cpf);
             printf("│ Data: %.2s/%.2s/%.4s                             │\n", f->nascimento, f->nascimento + 2, f->nascimento + 4);
@@ -470,4 +532,46 @@ int excluirFuncionarioDefinitivo(void) {
     free(cpf);
 
     return 0;
+}
+
+
+char* gerarIdFuncionario(void) {
+    char *idStr = malloc(10 * sizeof(char));
+    if (!idStr) return NULL;
+
+    int id;
+    do {
+        id = rand() % 9000 + 1000;
+        sprintf(idStr, "%d", id);
+    } while (idExisteFuncionario(idStr));
+
+    return idStr;
+}
+
+int idExisteFuncionario(char *idStr) {
+    FILE *fp = fopen("funcionarios.dat", "rb");
+    if (!fp) return 0;
+
+    Funcionario f;
+    while (fread(&f, sizeof(Funcionario), 1, fp) == 1) {
+        if ((strcmp(f.id, idStr) == 0) && (f.status)) {
+            fclose(fp);
+            return 1;
+        }
+    }
+
+    fclose(fp);
+    return 0;
+}
+
+int idFuncionarioDisp(char funcionariosDisp[10][5], const char *idChar){
+    for(int i = 0; i < 10; i+=1){
+        if(strcmp(funcionariosDisp[i], "\0") == 0){
+            continue;
+        }
+        if(strcmp(funcionariosDisp[i], idChar) == 0){
+            return True;
+        }
+    }
+    return False;
 }
