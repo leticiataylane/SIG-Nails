@@ -19,7 +19,7 @@ int validaDataInserida(char *dataInserida){
   
     int anoA = dataAtual->tm_year + 1900;
 
-    int tam = strlen(dataInserida);
+    size_t tam = strlen(dataInserida);
     if(tam != 8){
         //mensagem de data de dataInserida incompleta, pedir para o usáario colocar no modelo 00/00/0000
         return False;
@@ -75,7 +75,7 @@ int validaHorario(char *horario) {
     char minChar[3];   // 2 dígitos + '\0'
     int h = 0;
     int m = 0;
-    int tam = strlen(horario);
+    size_t tam = strlen(horario);
 
     if(tam != 4) return False;
 
@@ -109,7 +109,7 @@ int validaNascimento(char *nascimento){
 
     int anoA = dataAtual->tm_year + 1900;
 
-    int tam = strlen(nascimento);
+    size_t tam = strlen(nascimento);
     if(tam != 8){
         //mensagem de data de nascimento incompleta, pedir para o usáario colocar no modelo 00/00/0000
         return False;
@@ -175,7 +175,7 @@ int validaIdade(char *nascimento){
 
 
 int validaCPF(char *cpf) {//código de validação feito por Flávia Carvalho
-    int tam;
+    size_t tam;
     int cont = 0;
     int soma = 0;
     int resto = 0;
@@ -237,7 +237,7 @@ int validaCPF(char *cpf) {//código de validação feito por Flávia Carvalho
 int validaEmail(char *email){//validação feita por Flávia Carvalho
     int cont = 0;
     int cont2 = 0;
-    int tam = 0;
+    size_t tam = 0;
     char letra;
     for(int i = 0; email[i] != '\0'; i += 1){
         if(email[i] == '@'){
@@ -278,7 +278,7 @@ int validaEmail(char *email){//validação feita por Flávia Carvalho
     if(!isalnum(email[0])){//se o primeiro caracter não for letra ou número, invalido
         return False;
     }
-    for(int j = tam-1; email[j] != '.'; j -= 1){//enquanto o caracter do email na posição j não for um . conta quantos caracteres tem
+    for(size_t j = tam-1; j > 0 && email[j] != '.'; j -= 1){//enquanto o caracter do email na posição j não for um . conta quantos caracteres tem
         cont +=1;
     }
     if(cont < 2){ //se for menor que 2, não aceita
@@ -299,7 +299,7 @@ return True;
 int validaNome(char *nome){
     const char *acentos = "áàâãéêíóôõúüçÁÀÂÃÉÊÍÓÔÕÚÜÇ";
     int cont = 0;
-    int tam = strlen(nome);
+    size_t tam = strlen(nome);
     if(tam < 5){
         return False;
     }
@@ -346,7 +346,7 @@ int validaNomeCurto(char *str) {
 int validaTelefone(char *telefone){
     limpaNum(telefone);
 
-    int tam;
+    size_t tam;
     int d1;
     tam = strlen(telefone);
     d1 = (telefone[0] - '0');
