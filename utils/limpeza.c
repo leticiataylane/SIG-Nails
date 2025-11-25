@@ -6,7 +6,7 @@
 
 
 void limpaNome(char *nome){
-    int tam;
+    size_t tam;
     int inicio = 0;
     for(int i = 0; nome[i] ==' '; i +=1){
         inicio += 1;
@@ -18,14 +18,14 @@ void limpaNome(char *nome){
         }
     }
     tam = strlen(nome);
-    for(int k = tam-1; nome[k] == ' '; k -= 1){
+    for(size_t k = tam-1; nome[k] == ' '; k -= 1){
         nome[k] = '\0';
     }
 
 }
 
 void limpaFgets(char *str){
-    int tam = strlen(str);
+    size_t tam = strlen(str);
     str[tam-1] = '\0';
 }
 
@@ -47,9 +47,9 @@ void limpaEspacos(char *str) {
     if (i > 0) {
         memmove(str, str + i, strlen(str + i) + 1);
     }
-    int len = strlen(str);
-    while (len > 0 && str[len - 1] == ' ') {
-        str[len - 1] = '\0';
-        len--;
+    size_t tam = strlen(str);
+    while (tam > 0 && str[tam - 1] == ' ') {
+        str[tam - 1] = '\0';
+        tam--;
     }
 }
