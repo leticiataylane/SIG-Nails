@@ -28,7 +28,7 @@ char opcao(void){
 char* lerString(const char* msg){
     char linha[256] = "";
     char *str;
-    int tam = 0;
+    size_t tam = 0;
 
     printf("%s", msg);
     fgets(linha, 256, stdin);
@@ -224,8 +224,8 @@ char* lerEmail(void){
 //     return dinheiro;
 // }
 
-float lerSalario(void){
-    float salario = 0;
+double lerSalario(void){
+    double salario = 0;
     int salarioValido = False;
     do{
         salario = lerDinheiro();
@@ -238,22 +238,24 @@ float lerSalario(void){
     return salario;  
 }
 
-float lerDinheiro(void) {
+double lerDinheiro(void) {
     char *dinheiroChar = lerString("Digite o valor: ");
-    float dinheiro = 0.0f;
-    int j = 0, temSeparador = 0;
+    double dinheiro = 0.0;
+    size_t j = 0;
+    int temSeparador = 0;
 
-    for (int i = 0; dinheiroChar[i] != '\0'; i++) {
+    for (size_t i = 0; dinheiroChar[i] != '\0'; i++) {
         unsigned char ch = (unsigned char) dinheiroChar[i];
 
         if (isdigit(ch)) {
-            dinheiroChar[j++] = ch;
+            dinheiroChar[j++] = (char)ch;
         } 
         else if ((ch == '.' || ch == ',') && !temSeparador) {
             dinheiroChar[j++] = '.';
             temSeparador = 1;
         }
     }
+
     dinheiroChar[j] = '\0';
 
     dinheiro = atof(dinheiroChar);
@@ -262,8 +264,8 @@ float lerDinheiro(void) {
     return dinheiro;
 }
 
-float lerPrecoServico(void) {
-    float preco = 0.0f;
+double lerPrecoServico(void) {
+    double preco = 0.0f;
     int precoValido = False;
 
     do {

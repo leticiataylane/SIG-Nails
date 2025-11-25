@@ -18,9 +18,9 @@ char* lerHorario(void);
 char* lerTelefone(void);
 char* lerEmail(void);
 
-float lerDinheiro(void);
-float lerSalario(void);
-float lerPrecoServico(void);
+double lerDinheiro(void);
+double lerSalario(void);
+double lerPrecoServico(void);
 
 char* lerIdAgendamento(void);
 char* lerIdServico(void);
