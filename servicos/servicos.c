@@ -219,7 +219,7 @@ void atualizarServico(void) {
             printf(ciano negrito "Novo preço: " reset);
             s.preco = lerDinheiro();
 
-            fseek(fp, -sizeof(Servico), SEEK_CUR);
+            fseek(fp, - (long) sizeof(Servico), SEEK_CUR);
             fwrite(&s, sizeof(Servico), 1, fp);
             encontrado = 1;
             break;
@@ -254,7 +254,7 @@ void excluirServico(void) {
     while (fread(&s, sizeof(Servico), 1, fp) == 1) {
         if ((strcmp(s.id, id) == 0) && s.status == 1) {
             s.status = 0;
-            fseek(fp, -sizeof(Servico), SEEK_CUR);
+            fseek(fp, - (long) sizeof(Servico), SEEK_CUR);
             fwrite(&s, sizeof(Servico), 1, fp);
             encontrado = 1;
             break;

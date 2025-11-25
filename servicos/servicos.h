@@ -4,7 +4,7 @@
 typedef struct Servico {
     char id[10];
     char nome[50];
-    float preco;
+    double preco;
     int status;
 } Servico;
 
