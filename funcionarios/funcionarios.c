@@ -352,7 +352,7 @@ int atualizarFuncionario(void){
             } while (oqAtualizar != '1' && oqAtualizar != '2' &&
                      oqAtualizar != '3' && oqAtualizar != '4' && oqAtualizar != '0');
 
-            fseek(fun, -sizeof(Funcionario), SEEK_CUR);
+            fseek(fun, - (long) sizeof(Funcionario), SEEK_CUR);
             fwrite(f, sizeof(Funcionario), 1, fun);
             encontrado = True;
             if(oqAtualizar != '0'){
@@ -465,8 +465,8 @@ int excluirFuncionario(void){
         if((strcmp(cpf, f->cpf) == 0) && (f->status)){
             printf("Funcionário: %s excluído\n", f->nome);
             f->status = False;
-            fseek(fun, (-1)*sizeof(Funcionario), SEEK_CUR);
-            fwrite(f, sizeof(Funcionario), 1, fun);;
+            fseek(fun, - (long) sizeof(Funcionario), SEEK_CUR);
+            fwrite(f, sizeof(Funcionario), 1, fun);
             encontrado = True;
         } else if((strcmp(cpf, f->cpf) == 0) && (!f->status)){
             printf("Não encontrado");
