@@ -13,7 +13,7 @@ typedef struct {
     char data[15];
     char horario[10];
     char funcionario[6];
-    float preco;
+    double preco;
     char situacao[15];
     int status;
 } Agendamento;
@@ -46,6 +46,7 @@ char* gerarIdAgendamento(void);
 int idExisteAgendamento(char *idStr);
 char* getNomeCli(char *id);
 char* getNomeServ(char *id);
+char* getNomeFunc(char* id);
 int contaServicosAtivos(void);
 int contaClientesAtivos(void);
 

@@ -413,7 +413,7 @@ int atualizarAgendamento(void) {
 
             } while (oqAlterar != '0');
 
-            fseek(agen, (-1) * sizeof(Agendamento), SEEK_CUR);
+            fseek(agen, - (long) sizeof(Agendamento), SEEK_CUR);
             fwrite(a, sizeof(Agendamento), 1, agen);
             encontrado = True;
 
@@ -525,7 +525,7 @@ int excluirAgendamento(void){
     while (fread(&a, sizeof(Agendamento), 1, agen) == 1 && !encontrado) {
         if ((strcmp(qual, a.agenId) == 0) && a.status && strcmp(a.situacao, "Pendente") != 0) {
             a.status = False;
-            fseek(agen, -sizeof(Agendamento), SEEK_CUR);
+            fseek(agen, - (long) sizeof(Agendamento), SEEK_CUR);
             fwrite(&a, sizeof(Agendamento), 1, agen);
             encontrado = True;
             printf("Agendamento excluído com sucesso.\n");
@@ -728,4 +728,32 @@ char* getNomeCli(char* id) {
 
     fclose(cli);
     return nomeCli; // deve ser liberado com free() por quem chama
+}
+
+
+char* getNomeFunc(char* id) {
+    char *nomeFunc = NULL;
+    int encontrado = False;
+    FILE *Func = fopen("funcionarios.dat", "rb");
+    if (Func == NULL) {
+        arqInexistente();
+        return NULL;
+    }
+
+    Funcionario f;
+    while ((fread(&f, sizeof(Funcionario), 1, Func)) && (!encontrado)) {
+        if (strcmp(f.id, id) == 0) {
+            nomeFunc = malloc(strlen(f.nome) + 1);
+            if (nomeFunc == NULL) {
+                perror("Erro de alocação");
+                fclose(Func);
+                return NULL;
+            }
+            strcpy(nomeFunc, f.nome);
+            encontrado = True;
+        }
+    }
+
+    fclose(Func);
+    return nomeFunc; // deve ser liberado com free() pelo chamador
 }
