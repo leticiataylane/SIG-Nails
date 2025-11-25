@@ -5,5 +5,7 @@
 void opcaoInvalida(void);
 void dadosInvalidos(void);
 void arqInexistente(void);
+void semResulFiltro(void);
+void naoHaCadastro(void);
 
 #endif
