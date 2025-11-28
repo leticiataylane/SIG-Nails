@@ -14,6 +14,11 @@ typedef struct {
     int status;
 } Funcionario;
 
+typedef struct listaFunc {
+    Funcionario dados;
+    struct listaFunc* prox;
+} listaFunc;
+
 char modFuncionario(void);
 char menuFuncionario(void);
 void telaCadastrarFuncionario(void);
@@ -22,6 +27,8 @@ void telaPesquisarFuncionario(void);
 void telaListarFuncionarios(void);
 void telaExcluirFuncionario(void);
 char telaOqueAtualizar(void);
+
+void printFuncionario(Funcionario *f);
 ///////////////////////////////////////////////////////////OPERACOES////////////////////////////////////////////////////////////////////////////////
 
 
@@ -37,5 +44,6 @@ int telaFuncionariosDisponiveis(char funcionariosDisp[10][5], char *data, char *
 char* gerarIdFuncionario(void);
 int idExisteFuncionario(char *idStr);
 int idFuncionarioDisp(char funcionariosDisp[10][5], const char *idChar);
+int contaFuncionariosAtivos(void);
 
 #endif
