@@ -3,6 +3,7 @@
 #include <ctype.h>
 #include <time.h>
 #include <stdlib.h>  
+#include "agendamentos.h"
 #include "validacoes.h"
 #include "limpeza.h"
 #include "erros.h"
@@ -10,6 +11,50 @@
 #define True 1
 #define False 0
 
+int validaDiaDoMes(char* dataInserida){
+    limpaNum(dataInserida);
+    time_t tempoAtual = time(NULL);        
+    struct tm *dataAtual = localtime(&tempoAtual); 
+  
+    int anoA = dataAtual->tm_year + 1900;
+
+    size_t tam = strlen(dataInserida);
+    if(tam != 8){
+        //mensagem de data de dataInserida incompleta, pedir para o usáario colocar no modelo 00/00/0000
+        return False;
+    }
+    int diaI = ((dataInserida[0] - '0')*10 + (dataInserida[1] - '0'));
+    int mesI = ((dataInserida[2] - '0')*10 + (dataInserida[3] - '0'));
+    int anoI = ((dataInserida[4] - '0')*1000 + (dataInserida[5] - '0')*100 + (dataInserida[6] - '0')*10 + (dataInserida[7] - '0'));
+
+    if(diaI > 31 || diaI < 1){
+        return False;
+    }
+    if(mesI > 12 || mesI < 1){
+        return False;
+    }
+    if(anoI < anoA || anoI > anoA + 2){
+        return False;
+    }
+    
+    if(mesI ==  4 || mesI == 6 || mesI == 9 || mesI == 11){
+        if(diaI > 30){
+            return False;
+        }
+    }
+    if(mesI == 2){
+        if(diaI > 29){
+            return False;
+        }
+        if(diaI == 29){
+            if(!((anoI % 4 == 0 && anoI %100 != 0) || (anoI % 400 == 0))){
+                return False;
+            }
+        }
+    }
+
+    return True;
+}
 
 int validaDataInserida(char *dataInserida){
     limpaNum(dataInserida);
@@ -372,23 +417,23 @@ int validaTelefone(char *telefone){
 }
 
 
-int validaSituacao(const char* horario, const char* data, const char* situacao, const char op){
-    time_t agora;
-    struct tm *tempo;
-    int horaAtual, minutoAtual, diaAtual, mesAtual, anoAtual;
+int validaSituacao(const char* horario, const char* data, int situacao, const char op){
+    // só permite atualizar se estiver pendente
+    if (situacao != PENDENTE) {
+        printf("Este agendamento já foi concluído ou cancelado.\n");
+        return False;
+    }
+
     int dia, mes, ano, h, m;
     char horaChar[3], minChar[3], diaChar[3], mesChar[3], anoChar[5];
 
-
-    strncpy(horaChar, horario, 2);
-    horaChar[2] = '\0'; 
+    // pega hora
+    strncpy(horaChar, horario, 2); horaChar[2] = '\0';
+    strncpy(minChar, horario + 2, 2); minChar[2] = '\0';
     h = atoi(horaChar);
-
-    strncpy(minChar, horario + 2, 2);
-    minChar[2] = '\0';
     m = atoi(minChar);
 
-
+    // pega data
     strncpy(diaChar, data, 2); diaChar[2] = '\0';
     strncpy(mesChar, data + 2, 2); mesChar[2] = '\0';
     strncpy(anoChar, data + 4, 4); anoChar[4] = '\0';
@@ -396,48 +441,41 @@ int validaSituacao(const char* horario, const char* data, const char* situacao, 
     mes = atoi(mesChar);
     ano = atoi(anoChar);
 
-    time(&agora);                 // obtém o tempo atual
-    tempo = localtime(&agora); // converte para o horário local
+    // data/hora atual
+    time_t agora = time(NULL);
+    struct tm* tempo = localtime(&agora);
 
-    diaAtual = tempo->tm_mday;
-    mesAtual = tempo->tm_mon + 1;    // tm_mon vai de 0 a 11
-    anoAtual = tempo->tm_year + 1900; // tm_year é contado desde 1900
-    horaAtual = tempo->tm_hour;   // pega a hora (0–23)
-    minutoAtual = tempo->tm_min;
+    int diaAtual = tempo->tm_mday;
+    int mesAtual = tempo->tm_mon + 1;
+    int anoAtual = tempo->tm_year + 1900;
+    int horaAtual = tempo->tm_hour;
+    int minutoAtual = tempo->tm_min;
 
-    int dataAgen = ano * 10000 + mes * 100 + dia; 
-    int dataAtual = anoAtual * 10000 + mesAtual * 100 + diaAtual;
-    int minutosAgen = h * 60 + m;
-    int minutosAtuais = horaAtual * 60 + minutoAtual;
+    // transforma em números comparáveis
+    int dataAgen  = ano * 10000 + mes * 100 + dia;
+    int dataHoje  = anoAtual * 10000 + mesAtual * 100 + diaAtual;
 
-    if(strcmp(situacao, "Pendente") != 0) return False;
-    if(op == '1'){
-        if (dataAgen > dataAtual){
-            printf("Impossível marcar como concluído no momento, tente novamente 2h após a conclusão do serviço.\n");//print temporario
+    int minAgen   = h * 60 + m;
+    int minAgora  = horaAtual * 60 + minutoAtual;
+
+    if (op == '1') {
+
+        if (dataAgen > dataHoje) {
+            printf("Não pode concluir antes da data do agendamento.\n");
             return False;
         }
-        // se é o mesmo dia, precisa ter passado pelo menos 2h
-        if (dataAgen == dataAtual) {
-            if ((minutosAtuais - minutosAgen) < 120){
-                printf("Impossível marcar como concluído no momento, tente novamente 2h após a conclusão do serviço.\n");//print temporario
-                return False;
-            }
+
+        if (dataAgen == dataHoje && (minAgora - minAgen) < 120) {
+            printf("Só pode concluir 2h após o horário do agendamento.\n");
+            return False;
         }
+
         return True;
-        
-    } else if (op == '2') {
-        if (dataAtual < dataAgen) {
-            return True;
-        }
-        if (dataAtual == dataAgen) {
-            if ((minutosAgen - minutosAtuais) >= 120){
-                return True;
-            }else{
-                printf("Impossível marcar como cancelado, cancelamento com mínimo de 2h de antecedência\n");//print temporario
-                return False;
-            }
-        }
-        return False;
     }
+
+
+    if (op == '2')
+        return True;
+
     return False;
 }
