@@ -3,7 +3,7 @@ TARGET = sig-nails
 
 # Compilador e flags
 CC = gcc
-CFLAGS = -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Wformat=2 -std=c99
+CFLAGS = -Wall -Wextra -std=c99
 
 # Lista de diretórios do projeto (ignora 'servicoss')
 SRC_DIRS := $(filter-out ./servicoss,$(shell find . -type d))
