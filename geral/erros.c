@@ -8,15 +8,28 @@
 void opcaoInvalida(void){
     printf("Opção inválida! Tente novamente.\n");
     esperarEnter();
-    return;
 }
 
 void dadosInvalidos(void){
     printf("Dado inválido! Tente novamente.\n");
     esperarEnter();
-    return;
 }
 
 void arqInexistente(void){
     printf("Ocorreu algun erro, o arquivo não pode ser aberto.\n");
+}
+
+void semResulFiltro(void){
+    printf("╭──────────────────────────────────────────────╮\n");
+    printf("│     Não existem resultados no filtro         │\n");
+    printf("│                  escolhido.                  │\n");
+    printf("╰──────────────────────────────────────────────╯\n");
+    esperarEnter();
+}
+
+void naoHaCadastro(void){
+    printf("╭──────────────────────────────────────────────╮\n");
+    printf("│       Não existem dados cadastrados.         │\n");
+    printf("╰──────────────────────────────────────────────╯\n");
+    esperarEnter();
 }
