@@ -31,8 +31,18 @@ void relatorioClientesInativos(void);
 
 char modRelatorioFuncionario(void);
 char menuRelatorioFuncionario(void);
-void printRelatFuncionario(Funcionario *f);
+void printRelatFuncionario(listaFunc* lista);
 void cabecarioRelatorioFuncionario(const char op);
 void relatorioFuncionario(const char op);
+listaFunc* listaInvertidaFuncionario(Funcionario f, listaFunc* lista);
+void liberaListaFunc(listaFunc* lista);
+listaFunc* listaAlfabeticaFuncionario(Funcionario f, listaFunc* lista);
+
+
+void liberarListaAgen(listaAgen* lista);
+void printRelatAgendamentoListas(listaAgen* lista);
+listaAgen* listaDataAgendamento(Agendamento a, listaAgen* lista);
+
+
 
 #endif
