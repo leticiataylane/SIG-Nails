@@ -3,7 +3,7 @@
 
 #define True 1
 #define False 0
-
+int validaDiaDoMes(char* dataInserida);
 int validaDataInserida(char *dataInserida);
 int validaHorario(char *horario);
 int validaNascimento(char *nascimento);
@@ -13,6 +13,6 @@ int validaEmail(char *email);
 int validaNome(char *nome);
 int validaNomeCurto(char *str);
 int validaTelefone(char *telefone);
-int validaSituacao(const char* horario, const char* data, const char* situacao, const char op);
+int validaSituacao(const char* horario, const char* data, int situacao, const char op);
 
 #endif
