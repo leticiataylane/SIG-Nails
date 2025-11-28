@@ -4,6 +4,11 @@
 #define True 1
 #define False 0
 
+typedef enum {
+    PENDENTE = 0,
+    CONCLUIDO = 1,
+    CANCELADO = 2
+} Situacao;
 
 
 typedef struct {
@@ -14,9 +19,14 @@ typedef struct {
     char horario[10];
     char funcionario[6];
     double preco;
-    char situacao[15];
+    Situacao situacao;
     int status;
 } Agendamento;
+
+typedef struct listaAgen {
+    Agendamento dados;
+    struct listaAgen* prox;
+} listaAgen;
 
 
 char modAgendamento(void);
@@ -47,7 +57,9 @@ int idExisteAgendamento(char *idStr);
 char* getNomeCli(char *id);
 char* getNomeServ(char *id);
 char* getNomeFunc(char* id);
+const char* getSituacaoStr(Situacao s);
 int contaServicosAtivos(void);
 int contaClientesAtivos(void);
+int contaAgenPendente(void);
 
 #endif
