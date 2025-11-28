@@ -10,6 +10,9 @@
 #include "funcionarios.h"
 #include "ler_dados.h"
 #include "erros.h"
+#include "clientes.h"
+#include "servicos.h"
+#include "relatorios.h"
 //
 
 char modFuncionario(void){
@@ -113,10 +116,12 @@ void telaPesquisarFuncionario(void){
 }
 
 void telaListarFuncionarios(void){
-    printf("╭──────────────────────────────────────────────╮\n");
-    printf("│             LISTA DE FUNCIONÁRIOS            │\n");
+    printf("╭────────────────────────────────────────────────────────────╮\n");
+    printf("│                    LISTA DE FUNCIONÁRIOS                   │\n");
+    printf("├─────────────────┬──────────────────────────────────────────┤\n");
+    printf("│  ID             │  NOME                                    │\n");
     listarFuncionarios();
-    printf("╰──────────────────────────────────────────────╯\n");
+    printf("╰────────────────────────────────────────────────────────────╯\n");
     
 
     esperarEnter();
@@ -201,7 +206,7 @@ int telaFuncionariosDisponiveis(char funcionariosDisp[10][5], char *data, char *
                 return cont += 11;
             }
             while(fread(&a, sizeof(Agendamento), 1, agen)){
-                if((a.status == True) && (strcmp(a.funcionario, f.id) == 0) && (strcmp(a.data, data) == 0) && (strcmp(a.horario, horario) == 0) && (strcmp(a.situacao, "Cancelado") != 0)){
+                if((a.status == True) && (strcmp(a.funcionario, f.id) == 0) && (strcmp(a.data, data) == 0) && (strcmp(a.horario, horario) == 0) && (a.situacao != CANCELADO)){
                     ocupado = True;
                     break;
                 }
@@ -228,6 +233,19 @@ int telaFuncionariosDisponiveis(char funcionariosDisp[10][5], char *data, char *
     printf("╰─────────────────┴──────────────────────────────────────────╯\n");
     return cont;
 
+}
+void printFuncionario(Funcionario *f){
+    printf("╭──────────────────────────────────────────────╮\n");
+    printf("│                  FUNCIONÁRIO                 │\n");
+    printf("├──────────────────────────────────────────────┤\n");
+    printf("│ ID: %s                                     │\n", f->id);
+    printf("│ Nome: %-38s │\n", f->nome);
+    printf("│ CPF: %-39s │\n", f->cpf);
+    printf("│ Data: %.2s/%.2s/%.4s                             │\n", f->nascimento, f->nascimento + 2, f->nascimento + 4);
+    printf("│ Telefone: (%.2s) %.1s %.4s-%.4s                   │\n",  f->telefone, f->telefone + 2,  f->telefone + 3, f->telefone + 7);
+    printf("│ E-mail: %-36s │\n", f->email);
+    printf("│ Salário: R$%-33.2f │\n", f->salario);
+    printf("╰──────────────────────────────────────────────╯\n");
 }
 
 
@@ -268,17 +286,7 @@ int cadastrarFuncionario(void){
 
     f->status = True;
 
-    printf("╭──────────────────────────────────────────────╮\n");
-    printf("│                  FUNCIONÁRIO                 │\n");
-    printf("├──────────────────────────────────────────────┤\n");
-    printf("│ ID: %s                                     │\n", f->id);
-    printf("│ Nome: %-38s │\n", f->nome);
-    printf("│ CPF: %-39s │\n", f->cpf);
-    printf("│ Data: %.2s/%.2s/%.4s                             │\n", f->nascimento, f->nascimento + 2, f->nascimento + 4);
-    printf("│ Telefone: (%.2s) %.1s %.4s-%.4s                   │\n",  f->telefone, f->telefone + 2,  f->telefone + 3, f->telefone + 7);
-    printf("│ E-mail: %-36s │\n", f->email);
-    printf("│ Salário: R$%-33.2f │\n", f->salario);
-    printf("╰──────────────────────────────────────────────╯\n");
+    printFuncionario(f);
 
     fun = fopen("funcionarios.dat", "ab");
     if (fun == NULL) {
@@ -296,13 +304,22 @@ int cadastrarFuncionario(void){
 
 
 int atualizarFuncionario(void){
+    char op;
     FILE *fun;
     Funcionario* f = (Funcionario*) malloc(sizeof(Funcionario));
     int encontrado = False;
-    char quemAtualizar[20];
+    char quemAtualizar[10];
     char oqAtualizar;
-
-    strcpy(quemAtualizar, lerCPF());
+    int cont = 0;
+    cont = contaFuncionariosAtivos();
+    if(cont < 0 ){
+        printf("Não é possível continuar.");
+        free(f);
+        return 1;
+    }
+    op = '2';
+    relatorioFuncionario(op);
+    strcpy(quemAtualizar, lerIdFuncionarioRelat());
 
     fun = fopen("funcionarios.dat", "r+b");
     if (fun == NULL) {
@@ -312,7 +329,7 @@ int atualizarFuncionario(void){
     }
 
     while (fread(f, sizeof(Funcionario), 1, fun) == 1) {
-        if (strcmp(quemAtualizar, f->cpf) == 0) {
+        if (strcmp(quemAtualizar, f->id) == 0) {
             if (!f->status) {
                 printf("Não é possível atualizar dados (funcionário inativo).\n");
                 encontrado = True;
@@ -377,7 +394,14 @@ int pesquisarFuncionario(void){
     FILE *fun;
 
     int encontrado = False;
-    char *cpf = lerCPF();
+    int cont = contaFuncionariosAtivos();
+    if(cont < 1){
+        printf("Impossível prosseguir.\n");
+        free(f);
+        return 1;
+    }
+    telaListarFuncionarios();
+    char *id = lerIdFuncionarioRelat();
 
     fun = fopen("funcionarios.dat","rb");
     if (fun == NULL) {
@@ -387,25 +411,17 @@ int pesquisarFuncionario(void){
     }
 
     while((fread(f, sizeof(Funcionario), 1, fun)) && (!encontrado)){
-        if((strcmp(cpf, f->cpf) == 0) && (f->status)){
-            printf("╭──────────────────────────────────────────────╮\n");
-            printf("│                  FUNCIONÁRIO                 │\n");
-            printf("├──────────────────────────────────────────────┤\n");
-            printf("│ Nome: %-38s │\n", f->nome);
-            printf("│ CPF: %-39s │\n", f->cpf);
-            printf("│ Data: %.2s/%.2s/%.4s                             │\n", f->nascimento, f->nascimento + 2, f->nascimento + 4);
-            printf("│ Telefone: (%.2s) %.1s %.4s-%.4s                   │\n",  f->telefone, f->telefone + 2,  f->telefone + 3, f->telefone + 7);
-            printf("│ E-mail: %-36s │\n", f->email);
-            printf("│ Salário: R$%-33.2f │\n", f->salario);
-            printf("╰──────────────────────────────────────────────╯\n");
+        if((strcmp(id, f->id) == 0) && (f->status)){
+            printFuncionario(f);
             encontrado = True;
-        } else if((strcmp(cpf, f->cpf) == 0) && (!f->status)){
+        } else if((strcmp(id, f->id) == 0) && (!f->status)){
             printf("Vinculo inativo, funcionario excluido\n");
             encontrado = True;
         }
     }
     fclose(fun);
     free(f);
+    free(id);
     if(!encontrado){
         printf("Não encontrado");
         return False;
@@ -421,22 +437,16 @@ int listarFuncionarios(void){
 
     fun = fopen("funcionarios.dat","rb");
     if(fun == NULL){
-        printf("├──────────────────────────────────────────────┤\n");
-        printf("│           Erro ao abrir o arquivo.           │\n");
+        printf("├─────────────────┴──────────────────────────────────────────┤\n");
+        printf("│                  Erro ao abrir o arquivo.                  │\n");
         free(f);
         return False;
     }
 
     while(fread(f, sizeof(Funcionario), 1, fun)){
         if(f->status){
-            printf("├──────────────────────────────────────────────┤\n");
-            printf("│ ID: %s                                     │\n", f->id);
-            printf("│ Nome: %-38s │\n", f->nome);
-            printf("│ CPF: %-39s │\n", f->cpf);
-            printf("│ Data: %.2s/%.2s/%.4s                             │\n", f->nascimento, f->nascimento + 2, f->nascimento + 4);
-            printf("│ Telefone: (%.2s) %.1s %.4s-%.4s                   │\n",  f->telefone, f->telefone + 2,  f->telefone + 3, f->telefone + 7);
-            printf("│ E-mail: %-36s │\n", f->email);
-            printf("│ Salário: R$%-33.2f │\n", f->salario);
+            printf("├─────────────────┼──────────────────────────────────────────┤\n");
+            printf("│  %-13s  │  %-38s  │\n", f->id, f->nome);
         }
     }
     fclose(fun);
@@ -454,7 +464,14 @@ int excluirFuncionario(void){
     FILE *fun;
 
     int encontrado = False;
-    char *cpf = lerCPF();
+    int cont = contaFuncionariosAtivos();
+    if(cont < 1){
+        printf("Impossível prosseguir.\n");
+        free(f);
+        return 1;
+    }
+    telaListarFuncionarios();
+    char *id = lerIdFuncionarioRelat();
 
     fun = fopen("funcionarios.dat","r+b");
     if(fun == NULL){
@@ -462,19 +479,20 @@ int excluirFuncionario(void){
     }
 
     while((fread(f, sizeof(Funcionario), 1, fun)) && (!encontrado)){
-        if((strcmp(cpf, f->cpf) == 0) && (f->status)){
+        if((strcmp(id, f->id) == 0) && (f->status)){
             printf("Funcionário: %s excluído\n", f->nome);
             f->status = False;
             fseek(fun, - (long) sizeof(Funcionario), SEEK_CUR);
             fwrite(f, sizeof(Funcionario), 1, fun);
             encontrado = True;
-        } else if((strcmp(cpf, f->cpf) == 0) && (!f->status)){
+        } else if((strcmp(id, f->id) == 0) && (!f->status)){
             printf("Não encontrado");
             encontrado = True;
         }
     }
     fclose(fun);
     free(f);
+    free(id);
     if(!encontrado){
         printf("Não encontrado");
     }
@@ -574,4 +592,21 @@ int idFuncionarioDisp(char funcionariosDisp[10][5], const char *idChar){
         }
     }
     return False;
+}
+
+int contaFuncionariosAtivos(void){
+    int cont = 0;
+    FILE *func = fopen("funcionarios.dat", "rb");
+    if (func == NULL) {
+        return cont;
+    }
+    Funcionario f; 
+    while (fread(&f, sizeof(Funcionario), 1, func)) {
+        if (f.status){
+            cont += 1;
+        }
+    }
+    fclose(func);
+    return cont;
+
 }
