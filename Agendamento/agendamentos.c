@@ -12,6 +12,7 @@
 #include "funcionarios.h"
 #include "servicos.h"
 #include "erros.h"
+#include "relatorios.h"
 
 
 char modAgendamento(void){
@@ -158,10 +159,12 @@ void telaExcluirAgendamento(void){
 }
 
 void telaListarAgendamentos(void){
-    printf("╭──────────────────────────────────────────────╮\n");
-    printf("│             LISTA DE AGENDAMENTOS            │\n");
+    printf("╭───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮\n");
+    printf("│                                                                             LISTA DE AGENDAMENTOS                                                                             │\n");
+    printf("├────────────┬─────────────────────────────────────────┬─────────────────────────────────────────┬──────────────────────────┬──────────────────┬─────────────────┼──────────────┤\n");
+    printf("│     ID:    │                 Cliente:                │               Funcionario:              │         servico:         │       Data:      │     Horário:    │   Situação:  │\n");
     listarAgendamentos();
-    printf("╰──────────────────────────────────────────────╯\n");
+    printf("╰───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯\n");
     esperarEnter();
 
 }
@@ -202,6 +205,7 @@ char telaOqAlterar(void){
     printf("│  [1] SERVIÇO                                 │\n" );
     printf("│  [2] DATA E HORÁRIO                          │\n");
     printf("│  [3] SITUAÇÃO                                │\n");
+    printf("│  [4] FUNCIONÁRIO                                │\n");
     printf("│  [0] Sair                                    │\n");
     printf("╰──────────────────────────────────────────────╯\n");
     op = opcao();
@@ -212,21 +216,23 @@ char telaOqAlterar(void){
 void printAgendamento(Agendamento *a){
     char *nomeServ;
     char *nomeCli;
+    char situacao[15];
 
+    strcpy(situacao, getSituacaoStr(a->situacao));
+    nomeCli = getNomeCli(a->clienteId);
+    nomeServ = getNomeServ(a->servicoId);
     printf("╭──────────────────────────────────────────────╮\n");
     printf("│              AGENDAMENTO: %s               │\n", a->agenId);
     printf("├──────────────────────────────────────────────┤\n");
-    nomeCli = getNomeCli(a->clienteId);
     printf("│ Nome Cliente: %-30s │\n", nomeCli);
-    free(nomeCli);
-    nomeServ = getNomeServ(a->servicoId);
     printf("│ Nome Serviço: %-30s │\n", nomeServ);
-    free(nomeServ);
     printf("│ Data: %.2s/%.2s/%.4s                             │\n", a->data, a->data + 2, a->data + 4);
     printf("│ Horário: %.2sh%.2sm                              │\n", a->horario, a->horario + 2);
     printf("│ Preço: R$ %.2f                              │\n", a->preco);
-    printf("│ Situação: %-34s │\n", a->situacao);
+    printf("│ Situação: %-34s │\n", situacao);
     printf("╰──────────────────────────────────────────────╯\n");
+    free(nomeServ);
+    free(nomeCli);
 }
 ///////////////////////////////////////////////////////////OPERACOES////////////////////////////////////////////////////////////////////////////////
 
@@ -301,7 +307,7 @@ int cadastrarAgendamento(void){
     strcpy(a->agenId, idStr);
     free(idStr);
 
-    strcpy(a->situacao, "Pendente");
+    a->situacao = PENDENTE;
 
     a->status = True;
 
@@ -320,6 +326,8 @@ int cadastrarAgendamento(void){
 }
 
 int atualizarAgendamento(void) {
+    char op;
+    int contA = 0;
     Agendamento* a = malloc(sizeof(Agendamento));
     if (a == NULL) {
         perror("Erro ao alocar memória para Agendamento");
@@ -334,13 +342,21 @@ int atualizarAgendamento(void) {
         free(a);
         return 1;
     }
-    telaListarAgendamentos();
+    contA = contaAgenPendente();
+    if(contA < 1){
+        printf("Impossível prosseguir, não existem agendamentos PENDENTES.");
+        free(a);
+        return 1;
+    }
+    
+    op = '1';
+    relatorioAgendamento(op);
 
     char *qualAgendamento = lerIdAgendamento();
 
 
     while ((fread(a, sizeof(Agendamento), 1, agen)) && (!encontrado)) {
-        if ((strcmp(qualAgendamento, a->agenId) == 0) && (a->status) && (strcmp(a->situacao, "Pendente") == 0)) {
+        if ((strcmp(qualAgendamento, a->agenId) == 0) && (a->status) && (a->situacao == PENDENTE)) {
 
             do {
                 oqAlterar = telaOqAlterar();
@@ -359,7 +375,7 @@ int atualizarAgendamento(void) {
                         strcpy(a->servicoId, idServico);
                         free(idServico);
 
-                        FILE *serv = fopen("Servicos.dat", "rb");
+                        FILE *serv = fopen("servicos.dat", "rb");
                         if (serv == NULL) {
                             perror("Erro ao abrir Servicos.dat");
                             oqAlterar = '0';
@@ -393,11 +409,32 @@ int atualizarAgendamento(void) {
                     }
 
                     case '3': { // alterar situação
-                        char *situacao = lerSituacao(a->horario, a->data, a->situacao);
-                        if (situacao != NULL) {
-                            strncpy(a->situacao, situacao, sizeof(a->situacao));
-                            a->situacao[sizeof(a->situacao) - 1] = '\0';
-                            free(situacao);
+                        char *dataFormatada = malloc(9 * sizeof(char)); // 8 chars + '\0'
+                        if (!dataFormatada) {
+                            oqAlterar = '0';
+                            break; // falha na alocação
+                        }
+                        sprintf(dataFormatada, "%.2s%.2s%.4s", a->data + 6, a->data + 4, a->data);
+                        int situacao = lerSituacao(a->horario, dataFormatada, a->situacao);
+                        if (situacao != -1) {
+                            a->situacao = situacao;
+                        }
+                        oqAlterar = '0';
+                        break;
+                    }
+                    case '4': { // funcionario
+                        char funcionariosDisp[10][5] = {0};
+                        int cont = 0;
+                        cont = telaFuncionariosDisponiveis(funcionariosDisp, a->data, a->horario);
+                        if(cont == 0){
+                            printf("Não existem funcionários disponíveis.\n");
+                            oqAlterar = '0';
+                            break;
+                        }
+                        char *idFuncionario = lerIdFuncionario(funcionariosDisp, cont);
+                        if (idFuncionario != NULL) {
+                            strcpy(a->funcionario, idFuncionario);
+                            free(idFuncionario);
                         }
                         oqAlterar = '0';
                         break;
@@ -475,6 +512,8 @@ int pesquisarAgendamento(void){
 int listarAgendamentos(void){
     char *nomeCli;
     char *nomeServ;
+    char *nomeFunc;
+    char situacao[15];
     int cont = 0;
     Agendamento* a;
     a = (Agendamento*) malloc(sizeof(Agendamento));
@@ -482,24 +521,24 @@ int listarAgendamentos(void){
 
     agen = fopen("agendamentos.dat","rb");
     if(agen == NULL){
-        printf("├──────────────────────────────────────────────┤\n");
-        printf("│    Não existem agendamentos cadastrados.     │\n");
+        printf("├───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┤\n");
+        printf("│                                                                     Não existem agendamentos cadastrados.                                                                     │\n");
         free(a);
         return cont;
     }
 
     while(fread(a, sizeof(Agendamento), 1, agen)){
         if(a->status){
-            printf("├──────────────────────────────────────────────┤\n");
-            printf("│ ID Agendamento: %-28s │\n", a->agenId);
             nomeCli = getNomeCli(a->clienteId);
-            printf("│ Nome Cliente: %-30s │\n", nomeCli);
-            free(nomeCli);
             nomeServ = getNomeServ(a->servicoId);
-            printf("│ Nome Serviço: %-30s │\n", nomeServ);
-            free(nomeServ);
-            printf("│ Situação: %-34s │\n", a->situacao);
+            nomeFunc = getNomeFunc(a->funcionario);
+            strcpy(situacao, getSituacaoStr(a->situacao));
+            printf("├────────────┼─────────────────────────────────────────┼─────────────────────────────────────────┼──────────────────────────┼──────────────────┼─────────────────┼──────────────┤\n");
+            printf("│    %s    │      %-30s     │       %-27s       │     %-16s     │    %.2s/%.2s/%.4s    │      %.2sh%.2sm     │  %-10s  │\n", a->agenId, nomeCli, nomeFunc, nomeServ, a->data + 6, a->data + 4, a->data, a->horario, a->horario + 2, situacao);
             cont += 1;
+            free(nomeCli);
+            free(nomeServ);
+            free(nomeFunc);
         }
     }
     fclose(agen);
@@ -523,7 +562,7 @@ int excluirAgendamento(void){
 
 
     while (fread(&a, sizeof(Agendamento), 1, agen) == 1 && !encontrado) {
-        if ((strcmp(qual, a.agenId) == 0) && a.status && strcmp(a.situacao, "Pendente") != 0) {
+        if ((strcmp(qual, a.agenId) == 0) && a.status && a.situacao != PENDENTE) {
             a.status = False;
             fseek(agen, - (long) sizeof(Agendamento), SEEK_CUR);
             fwrite(&a, sizeof(Agendamento), 1, agen);
@@ -534,7 +573,7 @@ int excluirAgendamento(void){
             printf("Agendamento já foi excluído.\n");
             encontrado = True;
 
-        } else if ((strcmp(qual, a.agenId) == 0) && a.status && strcmp(a.situacao, "Pendente") == 0) {
+        } else if ((strcmp(qual, a.agenId) == 0) && a.status && a.situacao == PENDENTE) {
             printf("Agendamento não pode ser excluído enquanto estiver pendente.\n");
             printf("Atualize a situação antes de excluir.\n");
             encontrado = True;
@@ -578,7 +617,7 @@ int excluirAgendamentoDefinitivo(void) {
     char *id = lerIdAgendamento();
 
     while (fread(a, sizeof(Agendamento), 1, agen) == 1) {
-        if ((strcmp(a->agenId, id) == 0) && (strcmp(a->situacao, "Pendente") != 0)) {
+        if ((strcmp(a->agenId, id) == 0) && (a->situacao != PENDENTE)) {
             encontrado = True;
             printf("Agendamento encontrado e excluído: %s\n", a->agenId);
         } else {
@@ -632,7 +671,7 @@ char* gerarIdAgendamento(void) {
     do {
         id = rand() % 9000 + 1000; // gera 1000–9999
         sprintf(idStr, "%d", id);
-    } while (idExisteCliente(idStr));
+    } while (idExisteAgendamento(idStr));
 
     return idStr;
 }
@@ -671,6 +710,23 @@ int contaServicosAtivos(void){
         }
     }
     fclose(serv);
+    return cont;
+
+}
+
+int contaAgenPendente(void){
+    int cont = 0;
+    FILE *agen = fopen("agendamentos.dat", "rb");
+    if (agen == NULL) {
+        return cont;
+    }
+    Agendamento a; 
+    while (fread(&a, sizeof(Agendamento), 1, agen)) {
+        if ((a.status) && (a.situacao == PENDENTE)){
+            cont += 1;
+        }
+    }
+    fclose(agen);
     return cont;
 
 }
@@ -756,4 +812,13 @@ char* getNomeFunc(char* id) {
 
     fclose(Func);
     return nomeFunc; // deve ser liberado com free() pelo chamador
+}
+
+const char* getSituacaoStr(Situacao s) {
+    switch (s) {
+        case PENDENTE:  return "Pendente";
+        case CONCLUIDO: return "Concluído";
+        case CANCELADO: return "Cancelado";
+        default:        return "Desconhecido";
+    }
 }
