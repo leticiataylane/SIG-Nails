@@ -4,10 +4,14 @@
 #include <strings.h>
 #include <time.h>
 #include "clientes.h"
+#include "servicos.h"
 #include "validacoes.h"
 #include "ler_dados.h"
 #include "erros.h"
 #include "cores.h"
+#include "funcionarios.h"
+#include "agendamentos.h"
+#include "relatorios.h"
 
 //  módulo principal 
 char modCliente(void) {
