@@ -12,6 +12,7 @@ char* lerCPF(void);
 char* lerNascimento(void);
 char* lerIdade(void);
 char* lerData(void);
+char* lerDataMes(void);
 
 char* lerHorario(void);
 
@@ -26,8 +27,9 @@ char* lerIdAgendamento(void);
 char* lerIdServico(void);
 char* lerIdCliente(void);
 char* lerIdFuncionario(char funcionariosDisp[10][5], int cont);
+char* lerIdFuncionarioRelat(void);
 
-char* lerSituacao(const char* horario, const char* data, const char* situacao);
+int lerSituacao(const char* horario, const char* data, int situacao);
 
 
 #endif
