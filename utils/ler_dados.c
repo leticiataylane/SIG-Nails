@@ -141,7 +141,45 @@ char* lerData(void){
         }
     }while(!valido);
     
-    return data;
+    char *dataFormatada = malloc(9 * sizeof(char)); // 8 chars + '\0'
+    if (!dataFormatada) {
+        free(data);
+        return NULL; // falha na alocação
+    }
+
+    // copiar no formato AAAAMMDD
+    sprintf(dataFormatada, "%.4s%.2s%.2s", data + 4, data + 2, data);
+
+    free(data);  // libera a string original
+
+    return dataFormatada;
+
+}
+
+char* lerDataMes(void){
+    char *data = NULL;
+    int valido = 0;
+    do{
+        data = lerString("Digite a data:\n");
+        valido = validaDiaDoMes(data);
+        if(!valido){
+            dadosInvalidos();
+            free(data);
+        }
+    }while(!valido);
+    
+    char *dataFormatada = malloc(9 * sizeof(char)); // 8 chars + '\0'
+    if (!dataFormatada) {
+        free(data);
+        return NULL; // falha na alocação
+    }
+
+    // copiar no formato AAAAMMDD
+    sprintf(dataFormatada, "%.4s%.2s%.2s", data + 4, data + 2, data);
+
+    free(data);  // libera a string original
+
+    return dataFormatada;
 
 }
 
@@ -336,8 +374,8 @@ char* lerIdCliente(void){
 }
 
 
-char* lerSituacao(const char* horario, const char* data, const char* situacao){
-    char *novaSituacao = (char*) malloc(15 * sizeof(char));
+int lerSituacao(const char* horario, const char* data, int situacao){
+    int novaSituacao;
     char op;
     int valido = 0; 
     do{
@@ -347,15 +385,14 @@ char* lerSituacao(const char* horario, const char* data, const char* situacao){
             switch (op)
             {
             case '1':
-                strcpy(novaSituacao, "Concluído");
+                novaSituacao = CONCLUIDO;
                 break;
 
             case '2':
-                strcpy(novaSituacao, "Cancelado");
+                novaSituacao = CANCELADO;
                 break;
             case '0':
-                free(novaSituacao);
-                return NULL;
+                return -1;
                 break;
             default:
                 opcaoInvalida();
@@ -378,6 +415,21 @@ char* lerIdFuncionario(char funcionariosDisp[10][5], int cont){
         } else {
             valido = idFuncionarioDisp(funcionariosDisp, idChar);
         }
+        if(!valido){
+            dadosInvalidos();
+            free(idChar);
+        }
+    }while(!valido);
+    return idChar;
+}
+
+char* lerIdFuncionarioRelat(void){
+    char* idChar = NULL;
+    int valido = 0;
+    do{
+        idChar = lerString("Digite o número do ID:");
+        limpaNum(idChar);
+        valido = idExisteFuncionario(idChar);
         if(!valido){
             dadosInvalidos();
             free(idChar);
