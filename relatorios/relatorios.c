@@ -361,9 +361,7 @@ void relatorioServico(const char op){
     Servico *s=(Servico*) malloc(sizeof(Servico));
     FILE *serv=fopen("servicos.dat","rb");
     if(!serv){
-        printf("├──────────────────────────────────────────────┤\n");
-        printf("│      Não existem serviços cadastrados.       │\n");
-        printf("╰──────────────────────────────────────────────╯\n");
+        naoHaCadastro();
         esperarEnter();
         free(s);
         return;
@@ -380,34 +378,28 @@ void relatorioServico(const char op){
     fclose(serv);
     free(s);
     if(cont<1){
-        printf("├──────────────────────────────────────────────┤\n");
-        printf("│      Não existem serviços com o filtro       │\n");
-        printf("│                  escolhido.                  │\n");
-        printf("╰──────────────────────────────────────────────╯\n");
+        semResulFiltro();
         esperarEnter();
     }
 }
 
 /////////////////////////////////////////////////////////// CLIENTES ///////////////////////////////////////////
 
-char modRelatorioCliente(void) {
+char modRelatorioCliente(void){
     char op;
     do {
         op = menuRelatorioCliente();
-        switch(op){
-            case '1':
-            case '2':
-            case '3':
-            cabecarioRelatorioCliente(op);
+        if (op >= '1' && op <= '3') {
             relatorioCliente(op);
+        } else if (op == '4') {
+            relatorioHistoricoCliente();
+        } else if (op == '0') {
             break;
-            case '0':
-            break;
-            default:
+        } else {
             opcaoInvalida();
-            break;
         }
-    } while(op!='0');
+    } while(op != '0');
+
     return op;
 }
 
@@ -420,7 +412,7 @@ char menuRelatorioCliente(void){
     printf("│  [1] TODOS                                   |\n");
     printf("│  [2] ATIVOS                                  |\n");
     printf("│  [3] EXCLUÍDOS                               |\n");
-    printf("│  [4] INATIVOS                                |\n");
+    printf("│  [4] HISTÓRICO                               |\n");
     printf("│  [0] SAIR                                    |\n");
     printf("╰──────────────────────────────────────────────╯\n");
     
@@ -428,104 +420,175 @@ char menuRelatorioCliente(void){
     return op;
 }
 
-void cabecarioRelatorioCliente(const char op){
-    switch(op){
-        case '1': 
-        printf("╭──────────────────────── RELATÓRIO DE TODOS OS CLIENTES ────────────────────────╮\n"); 
-        printf("│ ID    │ Nome                             │ Nascimento     │ Telefone           │\n"); 
-        printf("├───────┼──────────────────────────────────┼────────────────┼────────────────────┤\n");  
-        break;
-        case '2': 
-        printf("╭───────────────────────── RELATÓRIO DE CLIENTES ATIVOS ─────────────────────────╮\n"); 
-        printf("│ ID    │ Nome                             │ Nascimento     │ Telefone           │\n"); 
-        printf("├───────┼──────────────────────────────────┼────────────────┼────────────────────┤\n");  
-        break;
-        case '3': 
-        printf("╭─────────────────────── RELATÓRIO DE CLIENTES EXCLUÍDOS ────────────────────────╮\n"); 
-        printf("│ ID    │ Nome                             │ Nascimento     │ Telefone           │\n"); 
-        printf("├───────┼──────────────────────────────────┼────────────────┼────────────────────┤\n"); 
-        break;
-        case '4': 
-        printf("╭──────────────────────── RELATÓRIO DE CLIENTES INATIVOS ────────────────────────╮\n"); 
-        printf("│ ID    │ Nome                             │ Nascimento     │ Telefone           │\n"); 
-        printf("├───────┼──────────────────────────────────┼────────────────┼────────────────────┤\n"); 
-        break;
-        case '0': 
-        break;
+void cabecarioRelatorioCliente(char op) {
+    system("clear");
+
+    switch (op) {
+        case '1':
+            printf("╭──────────────────────── RELATÓRIO DE TODOS OS CLIENTES ────────────────────────╮\n");
+            printf("│ ID    │ Nome                             │ Nascimento     │ Telefone           │\n");
+            printf("├───────┼──────────────────────────────────┼────────────────┼────────────────────┤\n");
+            break;
+        case '2':
+            printf("╭──────────────────────── RELATÓRIO DE CLIENTES ATIVOS ─────────────────────────╮\n");
+            printf("│ ID    │ Nome                             │ Nascimento     │ Telefone           │\n");
+            printf("├───────┼──────────────────────────────────┼────────────────┼────────────────────┤\n");
+            break;
+        case '3':
+            printf("╭──────────────────────── RELATÓRIO DE CLIENTES EXCLUÍDOS ───────────────────────╮\n");
+            printf("│ ID    │ Nome                             │ Nascimento     │ Telefone           │\n");
+            printf("├───────┼──────────────────────────────────┼────────────────┼────────────────────┤\n");
+            break;
         default:
-        opcaoInvalida();
-        break;}
+            return;
     }
-    
-    
+}
+
 void printRelatCliente(Cliente *c){
-    printf("│ %-5s │ %-32s │ %-14s │ %-18s │\n", c->id, c->nome, c->dataNascimento, c->telefone);
+    if (c == NULL) return;
+    printf("│ %-5s │ %-32s │ %-14s │ %-18s │\n",
+           c->id,
+           c->nome,
+           c->dataNascimento,
+           c->telefone);
+}
+
+listaCliente* inserirClienteFim(listaCliente* lista, Cliente cli) {
+    listaCliente* novo = (listaCliente*) malloc(sizeof(listaCliente));
+    if (!novo) return lista;
+    novo->dados = cli;
+    novo->prox = NULL;
+
+    if (lista == NULL) return novo;
+
+    listaCliente* aux = lista;
+    while (aux->prox != NULL) aux = aux->prox;
+    aux->prox = novo;
+    return lista;
+}
+
+listaCliente* inserirClienteInicio(listaCliente* lista, Cliente cli) {
+    listaCliente* novo = (listaCliente*) malloc(sizeof(listaCliente));
+    if (!novo) return lista;
+    novo->dados = cli;
+    novo->prox = lista;
+    return novo;
+}
+
+void liberarListaCliente(listaCliente* lista) {
+    listaCliente* atual;
+    while (lista != NULL) {
+        atual = lista;
+        lista = lista->prox;
+        free(atual);
+    }
+}
+
+int temResultadosClienteLista(char op, listaCliente* lista) {
+    listaCliente* aux = lista;
+    while (aux != NULL) {
+        if (op == '1') return 1;
+        if (op == '2' && aux->dados.status == 1) return 1;
+        if (op == '3' && aux->dados.status == 0) return 1;
+        aux = aux->prox;
+    }
+    return 0;
 }
 
 void relatorioCliente(const char op){
-    int cont = 0;
-    Cliente *c = (Cliente*) malloc(sizeof(Cliente));
     FILE *cli = fopen("clientes.dat","rb");
-    if(!cli){ printf("├──────────────────────────────────────────────┤\n│      Não existem clientes cadastrados.       │\n╰──────────────────────────────────────────────╯\n"); esperarEnter(); free(c); return; }
-    while(fread(c,sizeof(Cliente),1,cli)){
-        int deveImprimir=0;
-        switch(op){ case '1': deveImprimir=1; break; case '2': if(c->status==True) deveImprimir=1; break; case '3': if(c->status==False) deveImprimir=1; break; }
-        if(deveImprimir){ printRelatCliente(c); cont++; }
+    if(!cli){
+        naoHaCadastro();
+        return;
     }
+    Cliente tmp;
+    int tem = 0;
+    while (fread(&tmp, sizeof(Cliente), 1, cli) == 1) {
+        if (op == '1' ||
+            (op == '2' && tmp.status == 1) ||
+            (op == '3' && tmp.status == 0)) {
+            tem = 1;
+            break;
+        }
+    }
+    if (!tem) {
+        fclose(cli);
+        semResulFiltro();
+        return;
+    }
+
+    cabecarioRelatorioCliente(op);
+    rewind(cli);
+
+    while (fread(&tmp, sizeof(Cliente), 1, cli) == 1) {
+        int deve = 0;
+        switch(op) {
+            case '1': deve = 1; break;
+            case '2': if (tmp.status == 1) deve = 1; break;
+            case '3': if (tmp.status == 0) deve = 1; break;
+        }
+        if (deve) printRelatCliente(&tmp);
+    }
+    printf("╰───────────────────────────────────────────────────────────────────────────────╯\n");
     fclose(cli);
-    free(c);
-    if(cont<1){ printf("├──────────────────────────────────────────────┤\n│      Não existem clientes com o filtro       │\n│                  escolhido.                  │\n"); }
-    printf("╰──────────────────────────────────────────────╯\n");
     esperarEnter();
 }
 
-void relatorioClientesInativos(void) {
-    int cont = 0;
-    Cliente *c = (Cliente*) malloc(sizeof(Cliente));
-    Agendamento *a = (Agendamento*) malloc(sizeof(Agendamento));
+void relatorioHistoricoCliente(void) {
     FILE *cli = fopen("clientes.dat","rb");
-    FILE *agen;
-    
-    if(!cli){
-        printf("├──────────────────────────────────────────────┤\n│      Não existem clientes cadastrados.       │\n╰──────────────────────────────────────────────╯\n");
-        esperarEnter();
-        free(c); free(a);
+    if (!cli) {
+        naoHaCadastro();
         return;
     }
-    
-    printf("╭──────────────────────── RELATÓRIO DE CLIENTES INATIVOS ────────────────────────╮\n");
-    printf("│ ID    │ Nome                             │ Nascimento     │ Telefone           │\n"); 
-    printf("├───────┼──────────────────────────────────┼────────────────┼────────────────────┤\n"); 
-    
-    while(fread(c,sizeof(Cliente),1,cli)){
-        if(c->status == True){ // Apenas clientes ativos
-            int temAgendamento = 0;
-            agen = fopen("agendamentos.dat","rb");
-            if(agen){
-                while(fread(a,sizeof(Agendamento),1,agen)){
-                    if(strcmp(a->clienteId, c->id) == 0 && a->situacao != CONCLUIDO){
-                        temAgendamento = 1; // Cliente possui agendamento ativo
-                        break;
-                    }
-                }
-                fclose(agen);
-            }
-            if(!temAgendamento){ //inativo
-                printRelatCliente(c);
-                cont++;
-            }
-        }
+
+    listaCliente* listaOrd = NULL;
+    listaCliente* listaRev = NULL;
+    Cliente tmp;
+    while (fread(&tmp, sizeof(Cliente), 1, cli) == 1) {
+        listaOrd = inserirClienteFim(listaOrd, tmp);
+        listaRev = inserirClienteInicio(listaRev, tmp);
     }
-    
     fclose(cli);
-    free(c);
-    free(a);
-    
-    if(cont<1){
-        printf("├──────────────────────────────────────────────┤\n│    Não existem clientes inativos.            │\n");
+
+    if (listaOrd == NULL) {
+        semResulFiltro();
+        return;
     }
-    printf("╰──────────────────────────────────────────────╯\n");
-    esperarEnter();
+    char opHist;
+    do {
+        system("clear");
+        printf("╭──────────────────────────────────────────────╮\n");
+        printf("│            RELATÓRIO: HISTÓRICO              │\n");
+        printf("├──────────────────────────────────────────────┤\n");
+        printf("│  [1] MAIS RECENTES                           │\n");
+        printf("│  [2] MAIS ANTIGOS                            │\n");
+        printf("│  [0] VOLTAR                                  │\n");
+        printf("╰──────────────────────────────────────────────╯\n");
+        opHist = opcao();
+
+        if (opHist == '0') {
+            break;
+        } else if (opHist == '1' || opHist == '2') {
+            listaCliente* uso = (opHist == '1') ? listaRev : listaOrd;
+
+            system("clear");
+            printf("╭─────────────────── RELATÓRIO DE CLIENTES POR HISTÓRICO ────────────────────────╮\n");
+            printf("│ ID    │ Nome                             │ Nascimento     │ Telefone           │\n");
+            printf("├───────┼──────────────────────────────────┼────────────────┼────────────────────┤\n");
+
+            listaCliente* t = uso;
+            while (t != NULL) {
+                printRelatCliente(&t->dados);
+                t = t->prox;
+            }
+            printf("╰───────────────────────────────────────────────────────────────────────────────╯\n");
+            esperarEnter();
+        } else {
+            opcaoInvalida();
+        }
+    } while (opHist != '0');
+    liberarListaCliente(listaOrd);
+    liberarListaCliente(listaRev);
 }
 
 /////////////////////////////////////////////////////////// FUNCIONÁRIOS ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
