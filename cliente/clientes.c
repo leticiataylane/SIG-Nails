@@ -58,7 +58,7 @@ char menuCliente(void) {
     printf(roxo negrito"│"ciano negrito" [2] Atualizar Cliente                         "reset roxo negrito"│\n"reset);
     printf(roxo negrito"│"ciano negrito" [3] Pesquisar Cliente                         "reset roxo negrito"│\n"reset);
     printf(roxo negrito"│"ciano negrito" [4] Listar Clientes                           "reset roxo negrito"│\n"reset);
-    printf(roxo negrito"│"ciano negrito" [5] Excluir Cliente (lógica)                  "reset roxo negrito"│\n"reset);
+    printf(roxo negrito"│"ciano negrito" [5] Excluir Cliente                           "reset roxo negrito"│\n"reset);
     printf(roxo negrito"│"ciano negrito" [0] Voltar ao Menu Principal                  "reset roxo negrito"│\n"reset);
     printf(roxo negrito"★───────────────────────────────────────────────★\n"reset);
 
@@ -116,9 +116,8 @@ void telaExcluirCliente(void) {
     system("clear");
     printf(roxo negrito"★───────────────────────────────────────────────★\n"reset);
     printf(roxo negrito"│                EXCLUSÃO DE CLIENTE            │\n"reset);
-    printf(roxo negrito"★───────────────────────────────────────────────★\n"reset);
-    printf(roxo negrito"│"ciano negrito" A exclusão será LÓGICA (cliente inativo).    "reset roxo negrito"│\n"reset);
-    printf(roxo negrito"│"ciano negrito" Deseja continuar? (S/N)                      "reset roxo negrito"│\n"reset);
+    printf(roxo negrito"★───────────────────────────────────────────────★\n"reset);   
+    printf(roxo negrito"│"ciano negrito" A exclusão LÓGICA (cliente inativo).         "reset roxo negrito"│\n"reset);
     printf(roxo negrito"★───────────────────────────────────────────────★\n"reset);
     excluirCliente();
     esperarEnter();
@@ -259,7 +258,7 @@ void excluirCliente(void) {
     free(id);
 
     if (encontrado)
-        printf("\nCliente excluído logicamente com sucesso!\n");
+        printf("\nCliente excluído com sucesso!\n");
     else
         printf("\nCliente não encontrado ou já inativo.\n");
 }
