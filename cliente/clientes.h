@@ -9,6 +9,11 @@ typedef struct Cliente {
     int status;
 } Cliente;
 
+typedef struct listaCliente {
+    Cliente dados;
+    struct listaCliente* prox;
+} listaCliente;
+
 char modCliente(void);
 void pesquisarCliente(void);
 void cadastrarCliente();
