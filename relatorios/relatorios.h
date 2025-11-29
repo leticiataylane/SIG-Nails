@@ -10,6 +10,8 @@ char menuRelatorioAgendamento(void);
 void printRelatAgendamento(Agendamento *a);
 void cabecarioRelatorioAgendamento(const char op);
 void relatorioAgendamento(const char op);
+
+
 /////////////////////////////////////////////////////SERVICOS/////////////////////////////////////////////////////////////////////
 
 char modRelatorioServico(void);
@@ -17,17 +19,23 @@ char menuRelatorioServico(void);
 void printRelatServico(Servico *s);
 void cabecarioRelatorioServico(const char op);
 void relatorioServico(const char op);
-////////////////////////////////////////////////////////////////////CLIENTES////////////////////////////////////////////////////////////////////////////
 
+
+////////////////////////////////////////////////////////////////////CLIENTES////////////////////////////////////////////////////////////////////////////
 
 char modRelatorioCliente(void);
 char menuRelatorioCliente(void);
+void cabecarioRelatorioCliente(char op);
 void printRelatCliente(Cliente *c);
-void cabecarioRelatorioCliente(const char op);
+listaCliente* inserirClienteFim(listaCliente* lista, Cliente cli);
+listaCliente* inserirClienteInicio(listaCliente* lista, Cliente cli);
+void liberarListaCliente(listaCliente* lista);
+int temResultadosClienteLista(char op, listaCliente* lista);
 void relatorioCliente(const char op);
-void relatorioClientesInativos(void);
-////////////////////////////////////////////////////////////////FUNCIONARIOS////////////////////////////////////////////////////////////////////////////
+void relatorioHistoricoCliente(void);
 
+
+////////////////////////////////////////////////////////////////FUNCIONARIOS////////////////////////////////////////////////////////////////////////////
 
 char modRelatorioFuncionario(void);
 char menuRelatorioFuncionario(void);
