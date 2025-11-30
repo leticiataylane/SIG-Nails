@@ -8,10 +8,10 @@ typedef struct Servico {
     int status;
 } Servico;
 
-typedef struct RelatorioServico {
-    Servico dados;
-    struct RelatorioServico *prox;
-} RelatorioServico;
+typedef struct listaServ {
+    Servico serv;
+    struct listaServ *prox;
+} listaServ;
 
 char modServico(void);
 char menuServico(void);
