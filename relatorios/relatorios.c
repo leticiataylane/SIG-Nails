@@ -293,24 +293,17 @@ char modRelatorioServico(void){
     char op;
     do {
         op = menuRelatorioServico();
-        switch(op) {
-            case '1':
-            cabecarioRelatorioServico(op);
+        if (op >= '1' && op <= '3') {
             relatorioServico(op);
+        }
+        else if (op == '4') {
+            relatorioPrecoServico();
+        }
+        else if (op == '0') {
             break;
-            case '2':
-            cabecarioRelatorioServico(op);
-            relatorioServico(op);
-            break;
-            case '3':
-            cabecarioRelatorioServico(op);
-            relatorioServico(op);
-            break;
-            case '0':
-            break;
-            default:
+        }
+        else {
             opcaoInvalida();
-            break;
         }
     } while(op != '0');
     return op;
@@ -318,19 +311,21 @@ char modRelatorioServico(void){
 
 char menuRelatorioServico(void){
     char op;
+    system("clear");
     printf("╭──────────────────────────────────────────────╮\n");
     printf("│            RELATÓRIOS DOS SERVIÇOS           │\n");
     printf("├──────────────────────────────────────────────┤\n");
     printf("│  [1] TODOS                                   |\n");
     printf("│  [2] ATIVOS                                  |\n");
     printf("│  [3] EXCLUÍDOS                               |\n");
+    printf("|  [4] POR PREÇOS                              |\n");
     printf("│  [0] SAIR                                    |\n");
     printf("╰──────────────────────────────────────────────╯\n");
     op = opcao();
     return op;
 }
 
-void cabecarioRelatorioServico(const char op){
+void cabecalhoRelatorioServico(const char op){
     switch(op) {
         case '1':
         printf("╭──────────────────────────────────────────────╮\n");
@@ -347,6 +342,11 @@ void cabecarioRelatorioServico(const char op){
         printf("│            RELATÓRIO DOS SERVIÇOS            │\n");
         printf("│                   EXCLUÍDOS                  │\n");
         break;
+        case '4':
+        printf("╭──────────────────────────────────────────────╮\n");
+        printf("│            RELATÓRIO DOS SERVIÇOS            │\n");
+        printf("│                 POR PREÇOS                   │\n");
+        break;
     }
 }
 
@@ -362,7 +362,6 @@ void relatorioServico(const char op){
     FILE *serv=fopen("servicos.dat","rb");
     if(!serv){
         naoHaCadastro();
-        esperarEnter();
         free(s);
         return;
     }
@@ -379,7 +378,115 @@ void relatorioServico(const char op){
     free(s);
     if(cont<1){
         semResulFiltro();
-        esperarEnter();
+    }
+}
+
+listaServ* inserirServicoOrdenado(listaServ *lista, Servico novo, int crescente) {
+    listaServ *novoNo = (listaServ*) malloc(sizeof(listaServ));
+    novoNo->serv = novo;
+    novoNo->prox = NULL;
+
+    if (!lista) {
+        return novoNo;
+    }
+
+    if (crescente) {
+        if (novo.preco < lista->serv.preco) {
+            novoNo->prox = lista;
+            return novoNo;
+        }
+    }
+    else {
+        if (novo.preco > lista->serv.preco) {
+            novoNo->prox = lista;
+            return novoNo;
+        }
+    }
+
+    listaServ *atual = lista;
+    while (atual->prox != NULL) {
+        if (crescente && novo.preco < atual->prox->serv.preco)
+            break;
+        if (!crescente && novo.preco > atual->prox->serv.preco)
+            break;
+
+        atual = atual->prox;
+    }
+
+    novoNo->prox = atual->prox;
+    atual->prox = novoNo;
+
+    return lista;
+}
+
+
+void relatorioPrecoServico(void) {
+    FILE *fp = fopen("servicos.dat", "rb");
+    if (!fp) {
+        naoHaCadastro();
+        return;
+    }
+
+    Servico tmp;
+    listaServ *listaCres = NULL;  
+    listaServ *listaDec  = NULL;  
+
+    while (fread(&tmp, sizeof(Servico), 1, fp) == 1) {
+        listaCres = inserirServicoOrdenado(listaCres, tmp, 1); // crescente
+        listaDec  = inserirServicoOrdenado(listaDec,  tmp, 0); // decrescente
+    }
+    fclose(fp);
+
+    if (listaCres == NULL) {
+        semResulFiltro();
+        return;
+    }
+
+    char op;
+    do {
+        system("clear");
+        printf("╭──────────────────────────────────────────────╮\n");
+        printf("│        RELATÓRIO SERVIÇOS POR PREÇO          |\n");
+        printf("├──────────────────────────────────────────────┤\n");
+        printf("│  [1] MAIS BARATOS                            │\n");
+        printf("│  [2] MAIS CAROS                              │\n");
+        printf("│  [0] VOLTAR                                  │\n");
+        printf("╰──────────────────────────────────────────────╯\n");
+        op = opcao();
+
+        if (op == '0') {
+            break;
+
+        } else if (op == '1' || op == '2') {
+            listaServ *uso = (op == '1') ? listaCres : listaDec;
+
+            system("clear");
+            printf("╭────────────── RELATÓRIO DE SERVIÇOS POR PREÇO ───────────────╮\n");
+            printf("│ ID     │ Nome                            │ Preço             │\n");
+            printf("├────────┼─────────────────────────────────┼────────────────────┤\n");
+
+            listaServ *t = uso;
+            while (t != NULL) {
+                printRelatServico(&t->serv);
+                t = t->prox;
+            }
+
+            printf("╰──────────────────────────────────────────────────────────────╯\n");
+            esperarEnter();
+        } else {
+            opcaoInvalida();
+        }
+    } while (op != '0');
+    liberarListaServ(listaCres);
+    liberarListaServ(listaDec);
+}
+
+void liberarListaServ(listaServ *lista) {
+    listaServ *aux;
+    while (lista != NULL) {
+        aux = lista;
+        lista = lista->prox;
+        free(aux);
     }
 }
 
@@ -420,7 +527,7 @@ char menuRelatorioCliente(void){
     return op;
 }
 
-void cabecarioRelatorioCliente(char op) {
+void cabecalhoRelatorioCliente(char op) {
     system("clear");
 
     switch (op) {
@@ -517,7 +624,7 @@ void relatorioCliente(const char op){
         return;
     }
 
-    cabecarioRelatorioCliente(op);
+    cabecalhoRelatorioCliente(op);
     rewind(cli);
 
     while (fread(&tmp, sizeof(Cliente), 1, cli) == 1) {
