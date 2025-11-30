@@ -17,15 +17,18 @@ void relatorioAgendamento(const char op);
 char modRelatorioServico(void);
 char menuRelatorioServico(void);
 void printRelatServico(Servico *s);
-void cabecarioRelatorioServico(const char op);
+void cabecalhoRelatorioServico(const char op);
 void relatorioServico(const char op);
+listaServ* inserirServicoOrdenado(listaServ *lista, Servico novo, int crescente);
+void relatorioPrecoServico(void);
+void liberarListaServ(listaServ *lista);
 
 
 ////////////////////////////////////////////////////////////////////CLIENTES////////////////////////////////////////////////////////////////////////////
 
 char modRelatorioCliente(void);
 char menuRelatorioCliente(void);
-void cabecarioRelatorioCliente(char op);
+void cabecalhoRelatorioCliente(char op);
 void printRelatCliente(Cliente *c);
 listaCliente* inserirClienteFim(listaCliente* lista, Cliente cli);
 listaCliente* inserirClienteInicio(listaCliente* lista, Cliente cli);
