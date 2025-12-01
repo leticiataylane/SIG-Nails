@@ -152,8 +152,7 @@ void cadastrarServico(void) {
     strcpy(s.nome, nome);
     free(nome);
 
-    s.preco = lerPrecoServico();  
-    setbuf(stdin, NULL);
+    s.preco = lerPrecoServico();
 
     s.status = 1;
 
@@ -183,8 +182,8 @@ void listarServicos(void) {
         if (s.status == 1) {
             printf("├───────────────────────────────────────────────┤\n");
             printf("│ ID: %-40s  │\n", s.id);
-            printf("│ Nome: %-38s │ \n", s.nome);
-            printf("│ Preço: R$%-37.2f  │\n", s.preco);
+            printf("│ Nome: %-39s │ \n", s.nome);
+            printf("│ Preço: R$%-35.2f  │\n", s.preco);
             encontrou = 1;
         }
     }
@@ -211,7 +210,7 @@ void atualizarServico(void) {
     while (fread(&s, sizeof(Servico), 1, fp) == 1) {
         if ((strcmp(s.id, id) == 0) && s.status == 1) {
             printf( "Novo nome: ");
-            setbuf(stdin, NULL);
+            esperarEnter();
             fgets(s.nome, sizeof(s.nome), stdin);
             s.nome[strcspn(s.nome, "\n")] = '\0';
 
