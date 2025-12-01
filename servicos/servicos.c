@@ -11,7 +11,6 @@
 #include "cores.h"
 
 // modulos
-
 char modServico(void) {
     char opServico;
 
@@ -50,74 +49,74 @@ char menuServico(void) {
     char op;
 
     system("clear");
-    printf(roxo negrito"\n★───────────────────────────────────────────────★\n" reset);
-    printf(roxo negrito"│                MENU DE SERVIÇOS               │\n" reset);
-    printf(roxo negrito"★───────────────────────────────────────────────★\n" reset);
-    printf(roxo negrito"│" ciano negrito" [1] Cadastrar Serviço                         " reset roxo negrito"│\n" reset);
-    printf(roxo negrito"│" ciano negrito" [2] Atualizar Serviço                         " reset roxo negrito"│\n" reset);
-    printf(roxo negrito"│" ciano negrito" [3] Pesquisar Serviço                         " reset roxo negrito"│\n" reset);
-    printf(roxo negrito"│" ciano negrito" [4] Listar Serviços                           " reset roxo negrito"│\n" reset);
-    printf(roxo negrito"│" ciano negrito" [5] Excluir Serviço                           " reset roxo negrito"│\n" reset);
-    printf(roxo negrito"│" ciano negrito" [0] Voltar ao Menu Principal                  " reset roxo negrito"│\n" reset);
-    printf(roxo negrito"★───────────────────────────────────────────────★\n" reset);
+    printf("╭───────────────────────────────────────────────╮\n");
+    printf("│                 MENU DE SERVIÇOS              │\n");
+    printf("├───────────────────────────────────────────────┤\n");
+    printf("│ [1] Cadastrar Novo Servico                    │\n");
+    printf("│ [2] Atualizar Servico                         │\n");
+    printf("│ [3] Pesquisar Servico                         │\n");
+    printf("│ [4] Listar Servicos                           │\n");
+    printf("│ [5] Excluir Servico                           │\n");
+    printf("│ [0] Voltar ao Menu Principal                  │\n");
+    printf("╰───────────────────────────────────────────────╯\n");
     op = opcao();
     return op;
 }
 
 void telaCadastrarServico(void) {
     system("clear");
-    printf(roxo negrito"★───────────────────────────────────────────────★\n" reset);
-    printf(roxo negrito"│          CADASTRO DE NOVO SERVIÇO             │\n" reset);
-    printf(roxo negrito"★───────────────────────────────────────────────★\n" reset);
-    printf(roxo negrito"│" ciano negrito"  Insira as informações abaixo:                " reset roxo negrito"│\n" reset);
-    printf(roxo negrito"│" ciano negrito"  - Nome do Serviço                            " reset roxo negrito"│\n" reset);
-    printf(roxo negrito"│" ciano negrito"  - Preço                                      " reset roxo negrito"│\n" reset);
-    printf(roxo negrito"★───────────────────────────────────────────────★\n" reset);
+    printf("╭───────────────────────────────────────────────╮\n");
+    printf("│          CADASTRO DE NOVO SERVIÇO             │\n");
+    printf("├───────────────────────────────────────────────┤\n");
+    printf("│  Insira as informações abaixo:                │\n");
+    printf("│  - Nome do Serviço                            │\n");
+    printf("│  - Preço                                      │\n");
+    printf("╰───────────────────────────────────────────────╯\n");
     cadastrarServico();
     esperarEnter();
 }
 
 void telaAtualizarServico(void) {
     system("clear");
-    printf(roxo negrito"★───────────────────────────────────────────────★\n" reset);
-    printf(roxo negrito"│              ATUALIZAR SERVIÇO                │\n" reset);
-    printf(roxo negrito"★───────────────────────────────────────────────★\n" reset);
-    printf(roxo negrito"│"ciano negrito" Informe o ID do serviço que deseja atualizar. "roxo negrito"│\n" reset);
-    printf(roxo negrito"│"ciano negrito" Apenas serviços ativos podem ser alterados.   "roxo negrito"│\n" reset);
-    printf(roxo negrito"★───────────────────────────────────────────────★\n" reset);
+    printf("╭───────────────────────────────────────────────╮\n");
+    printf("│              ATUALIZAR SERVIÇO                │\n");
+    printf("├───────────────────────────────────────────────┤\n");
+    printf("| Informe o ID do serviço que deseja atualizar. │\n");
+    printf("| Apenas serviços ativos podem ser alterados.   │\n");
+    printf("╰───────────────────────────────────────────────╯\n");
     atualizarServico();
     esperarEnter();
 }
 
 void telaPesquisarServico(void) {
     system("clear");
-    printf(roxo negrito"★────────────────────────────────────────────────★\n" reset);
-    printf(roxo negrito"│               PESQUISAR SERVIÇO                │\n" reset);
-    printf(roxo negrito"★────────────────────────────────────────────────★\n" reset);
-    printf(roxo negrito"│" ciano negrito"  Digite o ID do serviço para buscar seus dados │\n" reset);
-    printf(roxo negrito"★────────────────────────────────────────────────★\n" reset);
+    printf("╭────────────────────────────────────────────────╮\n");
+    printf("│               PESQUISAR SERVIÇO                │\n");
+    printf("├────────────────────────────────────────────────┤\n");
+    printf("│  Digite o ID do serviço para buscar seus dados │\n");
+    printf("├────────────────────────────────────────────────┤\n");
     pesquisarServico();
     esperarEnter();
 }
 
 void telaListarServico(void) {
     system("clear");
-    printf(roxo negrito"★───────────────────────────────────────────────★\n"reset);
-    printf(roxo negrito"│                LISTA DE SERVIÇOS              │\n"reset);
+    printf("╭───────────────────────────────────────────────╮\n");
+    printf("│                LISTA DE SERVIÇOS              │\n");
     listarServicos();
-    printf(roxo negrito"★───────────────────────────────────────────────★\n"reset);
+    printf("╰───────────────────────────────────────────────╯\n");
     esperarEnter();
 }
 
 void telaExcluirServico(void) {
     char op;
     system("clear");
-    printf(roxo negrito"★───────────────────────────────────────────────★\n" reset);
-    printf(roxo negrito"│                EXCLUIR SERVIÇO                │\n" reset);
-    printf(roxo negrito"★───────────────────────────────────────────────★\n" reset);
-    printf(roxo negrito"│" ciano negrito" [1] Exclusão Lógica (Inativar Serviço)        │\n" reset);
-    printf(roxo negrito"│" ciano negrito" [0] Voltar                                    │\n" reset);
-    printf(roxo negrito"★───────────────────────────────────────────────★\n" reset);
+    printf("╭───────────────────────────────────────────────╮\n");
+    printf("│                EXCLUIR SERVIÇO                │\n");
+    printf("├───────────────────────────────────────────────┤\n");
+    printf("│ [1] Exclusão Lógica (Inativar Serviço)        │\n");
+    printf("│ [0] Voltar                                    │\n");
+    printf("╰───────────────────────────────────────────────╯\n");
 
     do {
         op = opcao();
@@ -147,7 +146,7 @@ void cadastrarServico(void) {
     strcpy(s.id, idStr);
     free(idStr);
 
-    printf(roxo negrito"\n★ CADASTRAR SERVIÇO ★\n\n" reset);
+    printf("\n CADASTRAR SERVIÇO \n\n");
 
     char *nome = lerNomeCurto("Nome do serviço: ");
     strcpy(s.nome, nome);
@@ -167,7 +166,7 @@ void cadastrarServico(void) {
     fwrite(&s, sizeof(Servico), 1, fp);
     fclose(fp);
 
-    printf("\n★ Serviço cadastrado com sucesso! ID: %s ★\n", s.id);
+    printf("\n Serviço cadastrado com sucesso! ID: %s \n", s.id);
 }
 
 void listarServicos(void) {
@@ -182,10 +181,10 @@ void listarServicos(void) {
 
     while (fread(&s, sizeof(Servico), 1, fp) == 1) {
         if (s.status == 1) {
-            printf(roxo negrito"★───────────────────────────────────────────────★\n" reset);
-            printf(roxo negrito"│" ciano negrito" ID: %-40s  │\n" reset, s.id);
-            printf(roxo negrito"│" ciano negrito" Nome: %-38s │ \n" reset, s.nome);
-            printf(roxo negrito"│" ciano negrito" Preço: R$%-37.2f  │\n" reset, s.preco);
+            printf("├───────────────────────────────────────────────┤\n");
+            printf("│ ID: %-40s  │\n", s.id);
+            printf("│ Nome: %-38s │ \n", s.nome);
+            printf("│ Preço: R$%-37.2f  │\n", s.preco);
             encontrou = 1;
         }
     }
@@ -211,12 +210,12 @@ void atualizarServico(void) {
 
     while (fread(&s, sizeof(Servico), 1, fp) == 1) {
         if ((strcmp(s.id, id) == 0) && s.status == 1) {
-            printf(ciano negrito "Novo nome: " reset);
+            printf( "Novo nome: ");
             setbuf(stdin, NULL);
             fgets(s.nome, sizeof(s.nome), stdin);
             s.nome[strcspn(s.nome, "\n")] = '\0';
 
-            printf(ciano negrito "Novo preço: " reset);
+            printf( "Novo preço: ");
             s.preco = lerDinheiro();
 
             fseek(fp, - (long) sizeof(Servico), SEEK_CUR);
@@ -229,7 +228,7 @@ void atualizarServico(void) {
     fclose(fp);
 
     if (encontrado)
-        printf("\n★ Serviço atualizado com sucesso! ★\n");
+        printf("\n Serviço atualizado com sucesso! \n");
     else
         printf("\nServiço não encontrado ou inativo.\n");
 
@@ -266,7 +265,7 @@ void excluirServico(void) {
     if (!encontrado)
         printf("Serviço não encontrado.\n");
     else
-        printf("\n★ Serviço excluído logicamente com sucesso! ★\n");
+        printf("\n Serviço excluído logicamente com sucesso! \n");
 
     esperarEnter();
 }
@@ -286,11 +285,11 @@ void pesquisarServico(void) {
 
     while (fread(&s, sizeof(Servico), 1, fp) == 1) {
         if (s.status == 1 && strcmp(s.id, idBusca) == 0) {
-            printf(roxo negrito"★───────────────────────────────────────────────★\n" reset);
-            printf(roxo negrito"│" ciano negrito" ID: %-40s " roxo negrito"│\n" reset, s.id);
-            printf(roxo negrito"│" ciano negrito" Nome: %-38s " roxo negrito"│\n" reset, s.nome);
-            printf(roxo negrito"│" ciano negrito" Preço: %-37.2f " roxo negrito"│\n" reset, s.preco);
-            printf(roxo negrito"★───────────────────────────────────────────────★\n" reset);
+            printf("├───────────────────────────────────────────────┤\n");
+            printf("│ ID: %-40s │\n", s.id);
+            printf("│ Nome: %-38s │\n", s.nome);
+            printf("│ Preço: %-37.2f │\n", s.preco);
+            printf("╰───────────────────────────────────────────────╯\n");
             encontrou = 1;
         }
     }
