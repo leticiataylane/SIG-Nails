@@ -12,7 +12,7 @@
 
 
 // void pauseEnter(void) {
-//     printf("\n" rosa negrito "(Pressione Enter para continuar...)" reset);
+//     printf("\n" rosa negrito "(Pressione Enter para continuar...)" );
 //     int c;
 //     while ((c = getchar()) != '\n' && c != EOF) { }
 // }
@@ -21,11 +21,11 @@ void telaInicial(void) {
 
         system("clear");
 
-        printf(roxo negrito "╭─────────────────────────────────────────────────╮\n" reset);
-        printf(roxo negrito "│ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ │\n" reset);
-        printf(roxo negrito "│ ★"ciano negrito "        BEM-VINDO AO SISTEMA SIG-NAILS       "roxo negrito "★ │\n" reset);
-        printf(roxo negrito "│ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ │\n" reset);
-        printf(roxo negrito "╰─────────────────────────────────────────────────╯\n" reset);
+        printf("╭─────────────────────────────────────────────────╮\n");
+        printf("|                                                 |\n");
+        printf("│          BEM-VINDO AO SISTEMA SIG-NAILS         │\n");
+        printf("|                                                 |\n");
+        printf("╰─────────────────────────────────────────────────╯\n");
         sleep(2);
 }
 
@@ -36,17 +36,17 @@ char menuPrincipal(void) {
 
     system("clear");
     printf("\n");
-    printf(roxo negrito "★────────────────────────────────────────────★\n" reset);
-    printf(ciano negrito "              SIG-NAILS MENU PRINCIPAL        \n" reset);
-    printf(roxo negrito "★────────────────────────────────────────────★\n" reset);
-    printf(ciano "1. Agendamentos\n" reset);
-    printf(ciano "2. Serviços\n" reset);
-    printf(ciano "3. Clientes\n" reset);
-    printf(ciano "4. Funcionários\n" reset);
-    printf(ciano "5. Informações\n" reset);
-    printf(ciano "6. Relatórios\n" reset);
-    printf(ciano "0. Sair\n" reset);
-    printf(roxo negrito "★────────────────────────────────────────────★\n" reset);
+    printf("╭─────────────────────────────────────────────╮\n" );
+    printf("|           SIG-NAILS MENU PRINCIPAL          |\n" );
+    printf("├─────────────────────────────────────────────┤\n" );
+    printf("| 1. Agendamentos                             |\n" );
+    printf("| 2. Serviços                                 |\n" );
+    printf("| 3. Clientes                                 |\n" );
+    printf("| 4. Funcionários                             |\n" );
+    printf("| 5. Informações                              |\n" );
+    printf("| 6. Relatórios                               |\n" );
+    printf("| 0. Sair                                     |\n" );
+    printf("╰─────────────────────────────────────────────╯\n" );
 
     op = opcao();
     return op;
@@ -58,16 +58,16 @@ void telaSobre(void) {
     system("clear"); 
     
     printf("\n");
-    printf(roxo negrito "★────────────────────────────────────────────★\n" reset); 
-    printf(ciano negrito "        SOBRE A EMPRESA E A EQUIPE        \n" reset); 
-    printf(roxo negrito "★────────────────────────────────────────────★\n" reset);
+    printf("╭────────────────────────────────────────────╮\n" ); 
+    printf("|       SOBRE A EMPRESA E A EQUIPE           |\n" ); 
+    printf("╰────────────────────────────────────────────╯\n" );
 
-    printf(ciano negrito "SIG-Nails " reset "é um sistema feito para\n");
+    printf("SIG-Nails ""é um sistema feito para\n");
     printf("organizar serviços de manicure e pedicure,\n");
     printf("trazendo praticidade para profissionais e clientes.\n\n");
 
-    printf("Equipe responsável: " ciano negrito "Letícia Taylane e Flávia Juliana\n" reset);
-    printf(roxo negrito "★────────────────────────────────────────────★\n" reset);
+    printf("Equipe responsável: " "Letícia Taylane e Flávia Juliana\n" );
+    printf("──────────────────────────────────────────────\n" );
 
     esperarEnter(); 
 }
@@ -76,12 +76,12 @@ void telaSobre(void) {
 
 void telaFinal() {
     system("clear");
-    printf(roxo negrito "\n★────────────────────────────────────────────★\n"reset);
-    printf(roxo negrito "│"ciano negrito"         SIG-Nails - ENCERRAR               "roxo negrito"│\n");
-    printf(roxo negrito "★────────────────────────────────────────────★\n"reset);
-    printf(roxo negrito "│" reset ciano " Obrigada por utilizar o sistema!           "roxo negrito"│\n"reset);
-    printf(roxo negrito "│" reset ciano " Cuide-se e volte sempre!                   "roxo negrito"│\n");
-    printf(roxo negrito"★────────────────────────────────────────────★\n"reset);
+    printf("╭────────────────────────────────────────────╮\n");
+    printf("|         SIG-Nails - ENCERRAR               │\n");
+    printf("├────────────────────────────────────────────┤\n");
+    printf("│ Obrigada por utilizar o sistema!           │\n");
+    printf("│ Cuide-se e volte sempre!                   │\n");
+    printf("╰────────────────────────────────────────────╯\n");
     esperarEnter();
 }
 
@@ -89,18 +89,18 @@ void telaFinal() {
 void telaAjuda(void) {
     system("clear"); 
     printf("\n");
-    printf(roxo negrito "★────────────────────────────────────────────★\n" reset); 
-    printf(ciano negrito "              AJUDA E CONTATO               \n" reset); 
-    printf(roxo negrito "★────────────────────────────────────────────★\n" reset);
-    printf(ciano negrito "★ Como navegar pelo sistema:\n" reset);
+    printf("╭────────────────────────────────────────────╮\n" ); 
+    printf("|              AJUDA E CONTATO               |\n" ); 
+    printf("╰────────────────────────────────────────────╯\n" );
+    printf(" Como navegar pelo sistema:\n" );
     printf("- Use os números do menu principal para escolher as opções.\n");
     printf("- Pressione ENTER quando solicitado para voltar.\n");
     printf("- Evite usar teclas diferentes dos números indicados.\n\n");
 
-    printf(ciano negrito "★ Precisa de suporte?\n" reset);
+    printf(" Precisa de suporte?\n" );
     printf("- Email: suporte@signails.com\n");
     printf("- WhatsApp: (99) 99999-9999\n");
     printf("- Instagram: @sig_nails\n");
-    printf(roxo negrito "★────────────────────────────────────────────★\n\n" reset);
+    printf("──────────────────────────────────────────────\n" );
     esperarEnter(); 
 }
