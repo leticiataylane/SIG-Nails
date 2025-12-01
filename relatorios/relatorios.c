@@ -636,7 +636,7 @@ void relatorioCliente(const char op){
         }
         if (deve) printRelatCliente(&tmp);
     }
-    printf("╰───────────────────────────────────────────────────────────────────────────────╯\n");
+    printf("╰────────────────────────────────────────────────────────────────────────────────╯\n");
     fclose(cli);
     esperarEnter();
 }
@@ -688,7 +688,7 @@ void relatorioHistoricoCliente(void) {
                 printRelatCliente(&t->dados);
                 t = t->prox;
             }
-            printf("╰───────────────────────────────────────────────────────────────────────────────╯\n");
+            printf("╰────────────────────────────────────────────────────────────────────────────────╯\n");
             esperarEnter();
         } else {
             opcaoInvalida();
