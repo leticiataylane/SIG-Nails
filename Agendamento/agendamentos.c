@@ -73,28 +73,28 @@ char menuAgendamento(void){
 void telaCadastrarAgendamento(void){
     
     system("clear");
-    printf(roxo negrito "✿ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ✿\n"reset);
-    printf(rosa negrito "                GUIA DE AGENDAMENTO                   \n"reset);
-    printf(roxo negrito "✿ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ✿\n"reset);
-    printf(azul" 1. Escolha para qual cliente agendar o serviço[ATENÇÃO: só serão agendados serviços para clientes já cadastrados].\n"reset);
-    printf(azul" 2. Veja a tabela de preços e serviços e escolha o desejado.\n"reset);
-    printf(azul" 3. Informe os dados do agendamento: ID do cliente, ID do serviço, data e hora (8h - 20h).\n"reset);
-    printf(azul" 4. Aguarde a confirmação.\n"reset);
-    printf(rosa negrito "\nPressione ENTER para continuar...\n"reset);
+    printf("╭───────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮\n");
+    printf("|                                           GUIA DE AGENDAMENTO                                                     |\n");
+    printf("├───────────────────────────────────────────────────────────────────────────────────────────────────────────────────┤\n");
+    printf("| 1. Escolha para qual cliente agendar o serviço [ATENÇÃO: só serão agendados serviços para clientes já cadastrados]|\n");
+    printf("| 2. Veja a tabela de preços e serviços e escolha o desejado.                                                       |\n");
+    printf("| 3. Informe os dados do agendamento: ID do cliente, ID do serviço, data e hora (8h - 20h).                         |\n");
+    printf("| 4. Aguarde a confirmação.                                                                                         |\n");
+    printf("╰───────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯\n");
     esperarEnter();
 
     cadastrarAgendamento();
 
     // system("clear");
-    // printf(roxo negrito "✿ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ✿\n"reset);
-    // printf(rosa negrito "        TABELA DE PREÇOS   \n"reset);
-    // printf(roxo negrito "✿ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ✿\n"reset);
-    // printf(negrito "Manicure"reset rosa negrito" ............ "ciano"R$25\n"reset);//adicionar printagem automática
-    // printf(negrito "Pedicure"reset rosa negrito" ............ "ciano"R$30\n"reset);
-    // printf(negrito "Mani + Pedi"reset rosa negrito" ......... "ciano"R$50\n"reset);
-    // printf(negrito "Spa dos Pés"reset rosa negrito" ......... "ciano"R$45\n"reset);
-    // printf(negrito "Blindagem de Unhas"reset rosa negrito" .. "ciano"R$60\n"reset);
-    // printf(rosa negrito "\nPressione ENTER para continuar...\n"reset);
+    // printf( "✿ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ✿\n");
+    // printf(rosa negrito "        TABELA DE PREÇOS   \n");
+    // printf( "✿ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ✿\n");
+    // printf(negrito "Manicure" rosa negrito" ............ "ciano"R$25\n");//adicionar printagem automática
+    // printf(negrito "Pedicure" rosa negrito" ............ "ciano"R$30\n");
+    // printf(negrito "Mani + Pedi" rosa negrito" ......... "ciano"R$50\n");
+    // printf(negrito "Spa dos Pés" rosa negrito" ......... "ciano"R$45\n");
+    // printf(negrito "Blindagem de Unhas" rosa negrito" .. "ciano"R$60\n");
+    // printf(rosa negrito "\nPressione ENTER para continuar...\n");
     // esperarEnter();
 
 }
