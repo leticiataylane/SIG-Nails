@@ -210,11 +210,10 @@ void atualizarServico(void) {
     while (fread(&s, sizeof(Servico), 1, fp) == 1) {
         if ((strcmp(s.id, id) == 0) && s.status == 1) {
             printf( "Novo nome: ");
-            esperarEnter();
             fgets(s.nome, sizeof(s.nome), stdin);
             s.nome[strcspn(s.nome, "\n")] = '\0';
 
-            printf( "Novo preço: ");
+            
             s.preco = lerDinheiro();
 
             fseek(fp, - (long) sizeof(Servico), SEEK_CUR);
@@ -230,8 +229,6 @@ void atualizarServico(void) {
         printf("\n Serviço atualizado com sucesso! \n");
     else
         printf("\nServiço não encontrado ou inativo.\n");
-
-    esperarEnter();
 }
 
 // exclusão logica
