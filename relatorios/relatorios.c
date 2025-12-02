@@ -152,16 +152,16 @@ void cabecarioRelatorioAgendamento(const char op){
     printf("╭───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮\n");
     switch(op) {
         case '1':
-            printf("│                                                                              AGENDAMENTOS PENDENTES                                                                            │\n"); 
+            printf("│                                                                              AGENDAMENTOS PENDENTES                                                                           │\n"); 
         break;
         case '2':
-            printf("│                                                                             AGENDAMENTOS CONCLUÍDOS                                                                            │\n"); 
+            printf("│                                                                             AGENDAMENTOS CONCLUÍDOS                                                                           │\n"); 
             break;
         case '3':
-            printf("│                                                                             AGENDAMENTOS CANCELADOS                                                                            │\n"); 
+            printf("│                                                                             AGENDAMENTOS CANCELADOS                                                                           │\n"); 
             break;
         case '4':
-            printf("│                                                                              TODOS OS AGENDAMENTOS                                                                             │\n");
+            printf("│                                                                              TODOS OS AGENDAMENTOS                                                                            │\n");
             break;
         case '5':
             printf("│                                                                               AGENDAMENTOS ATIVOS                                                                             │\n"); 
@@ -179,7 +179,7 @@ void cabecarioRelatorioAgendamento(const char op){
             printf("│                                                                       AGENDAMENTOS DO MÊS POR FUNCIONÁRIO                                                                     │\n"); 
             break;
     }
-    printf("├────────────┬─────────────────────────────────────────┬─────────────────────────────────────────┬──────────────────────────┬──────────────────┬─────────────────┼──────────────┤\n");
+    printf("├────────────┬─────────────────────────────────────────┬─────────────────────────────────────────┬──────────────────────────┬──────────────────┬─────────────────┬──────────────┤\n");
     printf("│     ID:    │                 Cliente:                │               Funcionario:              │         servico:         │       Data:      │     Horário:    │   Situação:  │\n"); 
 }
 
@@ -282,7 +282,7 @@ void relatorioAgendamento(const char op){
         printRelatAgendamentoListas(lista);
         liberarListaAgen(lista);
     }
-    printf("╰────────────┴─────────────────────────────────────────┴─────────────────────────────────────────┴──────────────────────────┴──────────────────┴─────────────────┴─────────────────╯\n");
+    printf("╰────────────┴─────────────────────────────────────────┴─────────────────────────────────────────┴──────────────────────────┴──────────────────┴─────────────────┴──────────────╯\n");
     esperarEnter();
 }
 
