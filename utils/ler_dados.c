@@ -392,7 +392,7 @@ int lerSituacao(const char* horario, const char* data, int situacao){
                 novaSituacao = CANCELADO;
                 break;
             case '0':
-                return -1;
+                novaSituacao = PENDENTE;
                 break;
             default:
                 opcaoInvalida();
@@ -400,6 +400,10 @@ int lerSituacao(const char* horario, const char* data, int situacao){
             }
         }
     }while((op != '0') && (!valido));
+
+    if(op == '0'){
+        novaSituacao = PENDENTE;
+    }
 
     return novaSituacao;
 }
