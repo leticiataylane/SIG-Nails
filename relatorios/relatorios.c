@@ -44,15 +44,15 @@ char menuRelatorios(void) {
 
     system("clear");
     printf("\n");
-    printf(roxo negrito "★────────────────────────────────────────────★\n" reset);
-    printf(ciano negrito "                     RELATÓRIOS               \n" reset);
-    printf(roxo negrito "★────────────────────────────────────────────★\n" reset);
-    printf(ciano "1. Agendamentos\n" reset);
-    printf(ciano "2. Serviços\n" reset);
-    printf(ciano "3. Clientes\n" reset);
-    printf(ciano "4. Funcionários\n" reset);
-    printf(ciano "0. Sair\n" reset);
-    printf(roxo negrito "★────────────────────────────────────────────★\n" reset);
+    printf("╭──────────────────────────────────────────────╮\n");
+    printf("|                  RELATÓRIOS                  |\n");
+    printf("├──────────────────────────────────────────────┤\n");
+    printf("| [1] Agendamentos                             |\n");
+    printf("| [2] Serviços                                 |\n");
+    printf("| [3] Clientes                                 |\n");
+    printf("| [4] Funcionários                             |\n");
+    printf("| [0] Sair                                     |\n");
+    printf("╰──────────────────────────────────────────────╯\n");
 
     op = opcao();
     return op;
