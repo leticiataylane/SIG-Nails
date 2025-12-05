@@ -373,15 +373,19 @@ int validaNome(char *nome){
     return True;
 }
 
-int validaNomeCurto(char *str) {
+int validaNomeCurto(const char *str) {
+    const char *acentos = "áàâãéêíóôõúüçÁÀÂÃÉÊÍÓÔÕÚÜÇ";
+
     if (str == NULL || strlen(str) < 2) {
         return 0;
     }
-
     for (int i = 0; str[i] != '\0'; i++) {
-        if (!isalpha(str[i]) && str[i] != ' ') {
-            return 0;
-        }
+        unsigned char c = str[i];
+        if (isalpha(c) || c == ' ')
+            continue;
+        if (strchr(acentos, c) != NULL)
+            continue;
+        return 0;
     }
 
     return 1;

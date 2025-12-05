@@ -11,7 +11,7 @@ int validaIdade(char *nascimento);
 int validaCPF(char *cpf);
 int validaEmail(char *email);
 int validaNome(char *nome);
-int validaNomeCurto(char *str);
+int validaNomeCurto(const char *str);
 int validaTelefone(char *telefone);
 int validaSituacao(const char* horario, const char* data, int situacao, const char op);
 
