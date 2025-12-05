@@ -54,12 +54,12 @@ char menuCliente(void) {
     printf("╭───────────────────────────────────────────────╮\n");
     printf("│                 MENU DE CLIENTES              │\n");
     printf("├───────────────────────────────────────────────┤\n");
-    printf("│ [1] Cadastrar Novo Cliente                    │\n");
-    printf("│ [2] Atualizar Cliente                         │\n");
-    printf("│ [3] Pesquisar Cliente                         │\n");
-    printf("│ [4] Listar Clientes                           │\n");
-    printf("│ [5] Excluir Cliente                           │\n");
-    printf("│ [0] Voltar ao Menu Principal                  │\n");
+    printf("│ [1] CADASTRAR                                 │\n");
+    printf("│ [2] ATUALIZAR                                 │\n");
+    printf("│ [3] PESQUISAR                                 │\n");
+    printf("│ [4] LISTAR                                    │\n");
+    printf("│ [5] EXCLUIR                                   │\n");
+    printf("│ [0] VOLTAR AO MENU PRINCIPAL                  │\n");
     printf("╰───────────────────────────────────────────────╯\n");
 
     opC = opcao();
@@ -98,7 +98,7 @@ void telaPesquisarCliente(void) {
     printf("│               PESQUISAR CLIENTE                │\n");
     printf("├────────────────────────────────────────────────┤\n");
     printf("│ Digite o ID do cliente para buscar seus dados. │\n");
-    printf("├────────────────────────────────────────────────┤\n");
+    printf("╰────────────────────────────────────────────────╯\n");
     pesquisarCliente();
     esperarEnter();
 }
@@ -107,8 +107,10 @@ void telaListarCliente(void) {
     system("clear");
     printf("╭───────────────────────────────────────────────╮\n");
     printf("│                LISTA DE CLIENTES              │\n");
-    listarClientes();
     printf("├───────────────────────────────────────────────┤\n");
+    printf("| Veja a seguir a lista de clientes cadastrados.|\n");
+    printf("╰───────────────────────────────────────────────╯\n");
+    listarClientes();
     esperarEnter();
 }
 
@@ -118,7 +120,7 @@ void telaExcluirCliente(void) {
     printf("│                EXCLUSÃO DE CLIENTE            │\n");
     printf("├───────────────────────────────────────────────┤\n");   
     printf("│ A exclusão LÓGICA (cliente inativo).          │\n");
-    printf("├───────────────────────────────────────────────┤\n");
+    printf("╰───────────────────────────────────────────────╯\n");
     excluirCliente();
     esperarEnter();
 }
@@ -166,20 +168,20 @@ void listarClientes(void) {
         printf("Nenhum cliente cadastrado.\n");
         return;
     }
-
     Cliente c;
     int encontrou = 0;
-
+    printf("╭─────────────────────────── CLIENTES ENCONTRADOS ───────────────────────────╮\n");
+    printf("│ %-7s│ %-34s│ %-14s│ %-14s│\n",
+           "ID", "Nome", "Nascimento", "Telefone");
+    printf("├────────┼───────────────────────────────────┼───────────────┼───────────────┤\n");
     while (fread(&c, sizeof(Cliente), 1, fp) == 1) {
         if (c.status == 1) {
-            printf("├───────────────────────────────────────────────┤\n");
-            printf("│ ID: %-40s \n", c.id);
-            printf("│ Nome: %-38s \n", c.nome);
-            printf("│ Nascimento: %-32s \n", c.dataNascimento);
-            printf("│ Telefone: %-35s \n", c.telefone);
+            printf("│ %-7s│ %-35s│ %-14s│ %-14s│\n",
+                   c.id, c.nome, c.dataNascimento, c.telefone);
             encontrou = 1;
         }
     }
+    printf("╰────────────────────────────────────────────────────────────────────────────╯\n");
 
     fclose(fp);
     if (!encontrou)
@@ -277,21 +279,26 @@ void pesquisarCliente(void) {
 
     while (fread(&c, sizeof(Cliente), 1, fp) == 1) {
         if (c.status == 1 && strcmp(c.id, idBusca) == 0) {
-            printf("╭───────────────────────────────────────────────┤\n");
-            printf("│ ID: %-40s │\n", c.id);
-            printf("│ Nome: %-38s │\n", c.nome);
-            printf("│ Nascimento: %-32s │\n", c.dataNascimento);
-            printf("│ Telefone: %-35s │\n", c.telefone);
-            printf("╰───────────────────────────────────────────────╯\n");
+
+            printf("╭─────────────────────────── CLIENTES ENCONTRADOS ───────────────────────────╮\n");
+            printf("│ %-7s│ %-34s│ %-14s│ %-14s│\n",
+                   "ID", "Nome", "Nascimento", "Telefone");
+            printf("├────────┼───────────────────────────────────┼───────────────┼───────────────┤\n");
+
+            printf("│ %-7s│ %-35s│ %-14s│ %-14s│\n",
+                   c.id, c.nome, c.dataNascimento, c.telefone);
+
+            printf("╰────────────────────────────────────────────────────────────────────────────╯\n");
+
             encontrou = 1;
         }
     }
-
     fclose(fp);
     free(idBusca);
     if (!encontrou)
         printf("Nenhum cliente encontrado com esse ID.\n");
 }
+
 
 //  IDs 
 char* gerarIdCliente(void) {
