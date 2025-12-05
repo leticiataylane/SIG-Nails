@@ -52,12 +52,12 @@ char menuServico(void) {
     printf("╭───────────────────────────────────────────────╮\n");
     printf("│                 MENU DE SERVIÇOS              │\n");
     printf("├───────────────────────────────────────────────┤\n");
-    printf("│ [1] Cadastrar Novo Servico                    │\n");
-    printf("│ [2] Atualizar Servico                         │\n");
-    printf("│ [3] Pesquisar Servico                         │\n");
-    printf("│ [4] Listar Servicos                           │\n");
-    printf("│ [5] Excluir Servico                           │\n");
-    printf("│ [0] Voltar ao Menu Principal                  │\n");
+    printf("│ [1] CADASTRAR                                 │\n");
+    printf("│ [2] ATUALIZAR                                 │\n");
+    printf("│ [3] PESQUISAR                                 │\n");
+    printf("│ [4] LISTAR                                    │\n");
+    printf("│ [5] EXCLUIR                                   │\n");
+    printf("│ [0] VOLTAR AO MENU PRINCIPAL                  │\n");
     printf("╰───────────────────────────────────────────────╯\n");
     op = opcao();
     return op;
@@ -94,7 +94,7 @@ void telaPesquisarServico(void) {
     printf("│               PESQUISAR SERVIÇO                │\n");
     printf("├────────────────────────────────────────────────┤\n");
     printf("│  Digite o ID do serviço para buscar seus dados │\n");
-    printf("├────────────────────────────────────────────────┤\n");
+    printf("╰────────────────────────────────────────────────╯\n");
     pesquisarServico();
     esperarEnter();
 }
@@ -103,8 +103,10 @@ void telaListarServico(void) {
     system("clear");
     printf("╭───────────────────────────────────────────────╮\n");
     printf("│                LISTA DE SERVIÇOS              │\n");
-    listarServicos();
+    printf("├───────────────────────────────────────────────┤\n");
+    printf("| Veja abaixo todos os serviços cadastrados.    │\n");
     printf("╰───────────────────────────────────────────────╯\n");
+    listarServicos();
     esperarEnter();
 }
 
@@ -174,21 +176,21 @@ void listarServicos(void) {
         printf("Nenhum serviço cadastrado.\n");
         return;
     }
-
     Servico s;
     int encontrou = 0;
-
+    printf("╭──────────────────────────── LISTA DE SERVIÇOS ───────────────────────────╮\n");
+    printf("│ %-7s│ %-49s│ %-14s│\n", "ID", "Nome", "Preço");
+    printf("├────────┼──────────────────────────────────────────────────┼──────────────┤\n");
     while (fread(&s, sizeof(Servico), 1, fp) == 1) {
         if (s.status == 1) {
-            printf("├───────────────────────────────────────────────┤\n");
-            printf("│ ID: %-40s  │\n", s.id);
-            printf("│ Nome: %-39s │ \n", s.nome);
-            printf("│ Preço: R$%-35.2f  │\n", s.preco);
+            printf("│ %-7s│ %-49s│ R$ %-10.2f│\n",
+                   s.id, s.nome, s.preco);
             encontrou = 1;
         }
     }
-    fclose(fp);
+    printf("╰──────────────────────────────────────────────────────────────────────────╯\n");
 
+    fclose(fp);
     if (!encontrou)
         printf("Nenhum serviço ativo encontrado.\n");
 }
@@ -263,7 +265,6 @@ void excluirServico(void) {
     else
         printf("\n Serviço excluído logicamente com sucesso! \n");
 
-    esperarEnter();
 }
 
 // Pesquisa
@@ -281,21 +282,22 @@ void pesquisarServico(void) {
 
     while (fread(&s, sizeof(Servico), 1, fp) == 1) {
         if (s.status == 1 && strcmp(s.id, idBusca) == 0) {
-            printf("├───────────────────────────────────────────────┤\n");
-            printf("│ ID: %-40s │\n", s.id);
-            printf("│ Nome: %-38s │\n", s.nome);
-            printf("│ Preço: %-37.2f │\n", s.preco);
-            printf("╰───────────────────────────────────────────────╯\n");
+            printf("╭──────────────────────────── SERVIÇO ENCONTRADO ──────────────────────────╮\n");
+            printf("│ %-7s│ %-49s│ %-14s│\n", "ID", "Nome", "Preço");
+            printf("├────────┼──────────────────────────────────────────────────┼──────────────┤\n");
+            printf("│ %-7s│ %-49s│ R$ %-10.2f│\n",
+                   s.id, s.nome, s.preco);
+
+            printf("╰──────────────────────────────────────────────────────────────────────────╯\n");
+
             encontrou = 1;
         }
     }
-
     if (!encontrou)
         printf("Nenhum serviço encontrado com esse ID.\n");
 
     free(idBusca);
     fclose(fp);
-    esperarEnter();
 }
 
 // IDs
