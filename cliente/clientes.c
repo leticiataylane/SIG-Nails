@@ -52,14 +52,14 @@ char menuCliente(void) {
 
     system("clear");
     printf("╭───────────────────────────────────────────────╮\n");
-    printf("│                 MENU DE CLIENTES              │\n");
+    printf("│                 "roxo"MENU DE CLIENTES"reset"              │\n");
     printf("├───────────────────────────────────────────────┤\n");
-    printf("│ [1] CADASTRAR                                 │\n");
-    printf("│ [2] ATUALIZAR                                 │\n");
-    printf("│ [3] PESQUISAR                                 │\n");
-    printf("│ [4] LISTAR                                    │\n");
-    printf("│ [5] EXCLUIR                                   │\n");
-    printf("│ [0] VOLTAR AO MENU PRINCIPAL                  │\n");
+    printf("│ "roxo"[1] CADASTRAR                "reset"                 │\n");
+    printf("│ "roxo"[2] ATUALIZAR                "reset"                 │\n");
+    printf("│ "roxo"[3] PESQUISAR                "reset"                 │\n");
+    printf("│ "roxo"[4] LISTAR                   "reset"                 │\n");
+    printf("│ "roxo"[5] EXCLUIR                  "reset"                 │\n");
+    printf("│ "roxo"[0] VOLTAR AO MENU PRINCIPAL "reset"                 │\n");
     printf("╰───────────────────────────────────────────────╯\n");
 
     opC = opcao();
@@ -69,7 +69,7 @@ char menuCliente(void) {
 void telaCadastrarCliente(void) {
     system("clear");
     printf("╭───────────────────────────────────────────────╮\n");
-    printf("│            CADASTRO DE NOVO CLIENTE           │\n");
+    printf("│            "roxo"CADASTRO DE NOVO CLIENTE"reset"           │\n");
     printf("├───────────────────────────────────────────────┤\n");
     printf("│ Insira as informações abaixo:                 │\n");
     printf("│ - Nome                                        │\n");
@@ -83,7 +83,7 @@ void telaCadastrarCliente(void) {
 void telaAtualizarCliente(void) {
     system("clear");
     printf("╭───────────────────────────────────────────────╮\n");
-    printf("│               ATUALIZAR CLIENTE               │\n");
+    printf("│               "roxo"ATUALIZAR CLIENTE"reset"               │\n");
     printf("├───────────────────────────────────────────────┤\n");
     printf("│ Informe o ID do cliente a atualizar.          │\n");
     printf("│ Somente clientes ativos podem ser alterados.  │\n");
@@ -95,7 +95,7 @@ void telaAtualizarCliente(void) {
 void telaPesquisarCliente(void) {
     system("clear");
     printf("╭────────────────────────────────────────────────╮\n");
-    printf("│               PESQUISAR CLIENTE                │\n");
+    printf("│               "roxo"PESQUISAR CLIENTE"reset"                │\n");
     printf("├────────────────────────────────────────────────┤\n");
     printf("│ Digite o ID do cliente para buscar seus dados. │\n");
     printf("╰────────────────────────────────────────────────╯\n");
@@ -106,7 +106,7 @@ void telaPesquisarCliente(void) {
 void telaListarCliente(void) {
     system("clear");
     printf("╭───────────────────────────────────────────────╮\n");
-    printf("│                LISTA DE CLIENTES              │\n");
+    printf("│                "roxo"LISTA DE CLIENTES"reset"              │\n");
     printf("├───────────────────────────────────────────────┤\n");
     printf("| Veja a seguir a lista de clientes cadastrados.|\n");
     printf("╰───────────────────────────────────────────────╯\n");
@@ -117,7 +117,7 @@ void telaListarCliente(void) {
 void telaExcluirCliente(void) {
     system("clear");
     printf("╭───────────────────────────────────────────────╮\n");
-    printf("│                EXCLUSÃO DE CLIENTE            │\n");
+    printf("│                "roxo"EXCLUSÃO DE CLIENTE"reset"            │\n");
     printf("├───────────────────────────────────────────────┤\n");   
     printf("│ A exclusão LÓGICA (cliente inativo).          │\n");
     printf("╰───────────────────────────────────────────────╯\n");
