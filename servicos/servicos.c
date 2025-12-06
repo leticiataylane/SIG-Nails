@@ -50,14 +50,14 @@ char menuServico(void) {
 
     system("clear");
     printf("╭───────────────────────────────────────────────╮\n");
-    printf("│                 MENU DE SERVIÇOS              │\n");
+    printf("│                 "roxo"MENU DE SERVIÇOS"reset"              │\n");
     printf("├───────────────────────────────────────────────┤\n");
-    printf("│ [1] CADASTRAR                                 │\n");
-    printf("│ [2] ATUALIZAR                                 │\n");
-    printf("│ [3] PESQUISAR                                 │\n");
-    printf("│ [4] LISTAR                                    │\n");
-    printf("│ [5] EXCLUIR                                   │\n");
-    printf("│ [0] VOLTAR AO MENU PRINCIPAL                  │\n");
+    printf("│ "roxo"[1] CADASTRAR                "reset"                 │\n");
+    printf("│ "roxo"[2] ATUALIZAR                "reset"                 │\n");
+    printf("│ "roxo"[3] PESQUISAR                "reset"                 │\n");
+    printf("│ "roxo"[4] LISTAR                   "reset"                 │\n");
+    printf("│ "roxo"[5] EXCLUIR                  "reset"                 │\n");
+    printf("│ "roxo"[0] VOLTAR AO MENU PRINCIPAL "reset"                 │\n");
     printf("╰───────────────────────────────────────────────╯\n");
     op = opcao();
     return op;
@@ -66,7 +66,7 @@ char menuServico(void) {
 void telaCadastrarServico(void) {
     system("clear");
     printf("╭───────────────────────────────────────────────╮\n");
-    printf("│          CADASTRO DE NOVO SERVIÇO             │\n");
+    printf("│          "roxo"CADASTRO DE NOVO SERVIÇO"reset"             │\n");
     printf("├───────────────────────────────────────────────┤\n");
     printf("│  Insira as informações abaixo:                │\n");
     printf("│  - Nome do Serviço                            │\n");
@@ -79,7 +79,7 @@ void telaCadastrarServico(void) {
 void telaAtualizarServico(void) {
     system("clear");
     printf("╭───────────────────────────────────────────────╮\n");
-    printf("│              ATUALIZAR SERVIÇO                │\n");
+    printf("│              "roxo"ATUALIZAR SERVIÇO"reset"                │\n");
     printf("├───────────────────────────────────────────────┤\n");
     printf("| Informe o ID do serviço que deseja atualizar. │\n");
     printf("| Apenas serviços ativos podem ser alterados.   │\n");
@@ -91,7 +91,7 @@ void telaAtualizarServico(void) {
 void telaPesquisarServico(void) {
     system("clear");
     printf("╭────────────────────────────────────────────────╮\n");
-    printf("│               PESQUISAR SERVIÇO                │\n");
+    printf("│               "roxo"PESQUISAR SERVIÇO"reset"                │\n");
     printf("├────────────────────────────────────────────────┤\n");
     printf("│  Digite o ID do serviço para buscar seus dados │\n");
     printf("╰────────────────────────────────────────────────╯\n");
@@ -102,7 +102,7 @@ void telaPesquisarServico(void) {
 void telaListarServico(void) {
     system("clear");
     printf("╭───────────────────────────────────────────────╮\n");
-    printf("│                LISTA DE SERVIÇOS              │\n");
+    printf("│                "roxo"LISTA DE SERVIÇOS"reset"              │\n");
     printf("├───────────────────────────────────────────────┤\n");
     printf("| Veja abaixo todos os serviços cadastrados.    │\n");
     printf("╰───────────────────────────────────────────────╯\n");
@@ -114,7 +114,7 @@ void telaExcluirServico(void) {
     char op;
     system("clear");
     printf("╭───────────────────────────────────────────────╮\n");
-    printf("│                EXCLUIR SERVIÇO                │\n");
+    printf("│                "roxo"EXCLUIR SERVIÇO"reset"                │\n");
     printf("├───────────────────────────────────────────────┤\n");
     printf("│ [1] Exclusão Lógica (Inativar Serviço)        │\n");
     printf("│ [0] Voltar                                    │\n");
