@@ -189,7 +189,8 @@ void relatorioAgendamento(const char op){
     Agendamento a;
     FILE *agen = fopen("agendamentos.dat","rb");
     if(!agen){
-        printf("├──────────────────────────────────────────────┤\n");
+        system("clear");
+        printf("╭──────────────────────────────────────────────╮\n");
         printf("│    Não existem agendamentos cadastrados.     │\n");
         printf("╰──────────────────────────────────────────────╯\n");
         esperarEnter();
@@ -326,34 +327,33 @@ char menuRelatorioServico(void){
 }
 
 void cabecalhoRelatorioServico(const char op){
+    system("clear");
+    printf("╭─────────────────────────────────────────────────────────╮\n");
     switch(op) {
         case '1':
-        printf("╭──────────────────────────────────────────────╮\n");
-        printf("│            RELATÓRIO DE TODOS OS             │\n");
-        printf("│                   SERVIÇOS                   │\n");
+        printf("│              RELATÓRIO DE TODOS OS SERVIÇOS             │\n");
         break;
         case '2':
-        printf("╭──────────────────────────────────────────────╮\n");
-        printf("│            RELATÓRIO DOS SERVIÇOS            │\n");
-        printf("│                    ATIVOS                    │\n");
+
+        printf("│              RELATÓRIO DOS SERVIÇOS ATIVOS              │\n");
         break;
         case '3':
-        printf("╭──────────────────────────────────────────────╮\n");
-        printf("│            RELATÓRIO DOS SERVIÇOS            │\n");
-        printf("│                   EXCLUÍDOS                  │\n");
+
+        printf("│             RELATÓRIO DOS SERVIÇOS EXCLUÍDOS            │\n");
         break;
         case '4':
-        printf("╭──────────────────────────────────────────────╮\n");
-        printf("│            RELATÓRIO DOS SERVIÇOS            │\n");
-        printf("│                 POR PREÇOS                   │\n");
+
+        printf("│            RELATÓRIO DOS SERVIÇOS POR PREÇOS            │\n");
         break;
     }
+    printf("├──────────┬─────────────────────────────────┬────────────┤\n");
+    printf("│    ID:   │              NOME:              │   PREÇO:   │\n");
+
 }
 
 void printRelatServico(Servico *s){
-    printf("├─────┬────────────────────────────────────┬────────────┤\n");
-    printf("│ ID: %-6s │ Nome: %-30s │ R$%-8.2f │\n", s->id, s->nome, s->preco);
-    printf("├─────┴────────────────────────────────────┴────────────┤\n");
+    printf("├──────────┼─────────────────────────────────┼────────────┤\n");
+    printf("│   %-6s │  %-30s │ R$%-8.2f │\n", s->id, s->nome, s->preco);
 }
 
 void relatorioServico(const char op){
@@ -365,6 +365,7 @@ void relatorioServico(const char op){
         free(s);
         return;
     }
+    cabecalhoRelatorioServico(op);
     while(fread(s,sizeof(Servico),1,serv)){
         int deveImprimir=0;
         switch(op){
@@ -376,9 +377,12 @@ void relatorioServico(const char op){
     }
     fclose(serv);
     free(s);
+    printf("╰──────────┴─────────────────────────────────┴────────────╯\n");
     if(cont<1){
+        system("clear");
         semResulFiltro();
     }
+    esperarEnter();
 }
 
 listaServ* inserirServicoOrdenado(listaServ *lista, Servico novo, int crescente) {
@@ -461,9 +465,7 @@ void relatorioPrecoServico(void) {
             listaServ *uso = (op == '1') ? listaCres : listaDec;
 
             system("clear");
-            printf("╭────────────── RELATÓRIO DE SERVIÇOS POR PREÇO ───────────────╮\n");
-            printf("│ ID     │ Nome                            │ Preço             │\n");
-            printf("├────────┼─────────────────────────────────┼────────────────────┤\n");
+            cabecalhoRelatorioServico('4');
 
             listaServ *t = uso;
             while (t != NULL) {
@@ -471,7 +473,7 @@ void relatorioPrecoServico(void) {
                 t = t->prox;
             }
 
-            printf("╰──────────────────────────────────────────────────────────────╯\n");
+            printf("╰──────────┴─────────────────────────────────┴────────────╯\n");
             esperarEnter();
         } else {
             opcaoInvalida();
